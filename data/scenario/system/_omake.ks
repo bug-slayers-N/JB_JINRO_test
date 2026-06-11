@@ -1,0 +1,5 @@
+[preload  storage="./data/bgimage/credits.png"  ]
+[preload  storage="./data/bgimage/BG_credits_260524.png"  ]
+[preload  storage="./data/bgimage/omake_story.png"  ]
+[preload  storage="./data/bgimage/93853245_p0.png"  ]
+[return]

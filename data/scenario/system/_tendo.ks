@@ -1,0 +1,7 @@
+[preload  storage="./data/fgimage/chara/5/tendo_normal.png"  ]
+[preload  storage="./data/fgimage/chara/5/tendo_normal_2.png"  ]
+[preload  storage="./data/fgimage/chara/5/tendo_ki.png"  ]
+[preload  storage="./data/fgimage/chara/5/tendo_do.png"  ]
+[preload  storage="./data/fgimage/chara/5/tendo_ai.png"  ]
+[preload  storage="./data/fgimage/chara/5/tendo_insane.png"  ]
+[return]

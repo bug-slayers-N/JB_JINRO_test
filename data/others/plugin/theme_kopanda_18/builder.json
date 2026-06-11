@@ -1,0 +1,16 @@
+{
+    "name": {
+        "ja": "スプラッター",
+        "en": "Splatter"
+    },
+    "pm": {
+        "font_color": "0xCCCCCC",
+        "name_color": "0xEEEEEE",
+        "frame_opacity": 255
+    },
+    "glink": "ts18",
+    "pro": 0,
+    "width": 1280,
+    "height": 720,
+    "author": "kopanda"
+}

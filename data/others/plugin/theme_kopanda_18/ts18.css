@@ -1,0 +1,305 @@
+/*メニュ－ボタン系
+-------------------------------------*/
+.menu_item {
+	position: relative;
+	margin: 0;
+	cursor: pointer;
+}
+
+.menu_item img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+/* セーブ */
+.menu_save {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top:  158px;
+	left: 244px;
+}
+
+/* ロード */
+.menu_load {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top:  158px;
+	left: 648px;
+}
+
+/* コンフィグ */
+.menu_config {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top:  368px;
+	left: 244px;
+}
+
+/* タイトルに戻る */
+.menu_back_title {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top:  368px;
+	left: 648px;
+}
+
+
+/* バックログ画面の設定
+--------------------------------------*/
+.log_body {
+	position: absolute;
+	top: 235px;
+	left: 240px;
+	width: 900px;
+	height: 370px;
+	margin: 0;
+	padding: 20px 110px 20px 30px;
+	border: none;
+	border-radius: none;
+	color: #888;
+	background: none;
+	font-weight: normal;
+	text-align: left;
+	line-height: 1.6em;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	box-sizing: border-box;
+}
+
+/* スクロールバー */
+.log_body::-webkit-scrollbar {
+	width: 12px;
+}
+.log_body::-webkit-scrollbar-thumb {
+	border-radius: none;
+	background: #666;
+}
+
+.log_body::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* セーブ・ロード画面の設定
+--------------------------------------*/
+.area_save_list {
+	display: block;
+	width: 800px;
+	height: 420px;
+	margin: 190px -100px 0 0;
+	padding: 0 100px 0 0;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+}
+
+/* スクロールバー */
+.area_save_list::-webkit-scrollbar {
+	width:12px;
+}
+
+.area_save_list::-webkit-scrollbar-thumb {
+	border-radius: none;
+	background: #666;
+}
+
+.area_save_list::-webkit-scrollbar-track {
+	border-radius: none;
+	background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* セーブデータリスト全体の設定 */
+.save_list {
+	display: table;
+	table-layout: fixed;
+	position: absolute;
+	width: 800px;
+	height: 124px;
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+	font-weight: normal;
+	background-color: none;
+	border: none;
+	border-collapse: separate;
+	border-spacing: 0 16px;
+	box-sizing: border-box;
+}
+
+/* セーブデータの設定 */
+.save_list_item {
+	display:table-row;
+	width: 800px;
+	height: 124px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.save_list_item:hover > .save_list_item_thumb{
+	background: url('image/system/saveslot2.png');
+	background-repeat: y-repeat;
+	background-position: left top;
+	background-color: none;
+}
+
+.save_list_item:hover > .save_list_item_area{
+	background: url('image/system/saveslot2.png');
+	background-repeat: y-repeat;
+	background-position: right top;
+	background-color: none;
+}
+
+.save_list_item:hover {
+	background: none;
+}
+
+/* セーブデータのサムネイル部分の設定 */
+.save_list_item_thumb {
+	display: table-cell;
+	width: 180px;
+	height: 124px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: url('image/system/saveslot.png');
+	background-repeat: y-repeat;
+	background-position: left top;
+	box-sizing: border-box;
+}
+
+/* サムネイル画像の設定 */
+.save_list_item_thumb img {
+	width: 160px;
+	height: 90px;
+	margin: 0;
+	padding: 15px 0 0 28px;
+	border: none;
+	border-radius: 0px;
+}
+
+/* セーブデータのテキスト部文の設定 */
+.save_list_item_area {
+	display: table-cell;
+	width: 620px;
+	height: 124px;
+	padding: 0 0 0 50px;
+	border-radius: none;
+	border: none;
+	background: url('image/system/saveslot.png');
+	background-repeat: y-repeat;
+	background-position: right top;
+	text-align: left;
+	vertical-align: top;
+	box-sizing: border-box;
+}
+
+/* セーブデータの日付の設定 */
+.save_list_item_date {
+	display: block;
+	margin: 0;
+	padding: 16px 0 0 0;
+	height: 20px;
+	line-height: 1;
+	color: #ddd;
+	font-weight: bold;
+	box-sizing: border-box;
+}
+
+/* セーブデータのテキストの設定 */
+.save_list_item_text {
+	display: block;
+	height: 90px;
+	margin: 0;
+	padding: 28px 40px 16px 0;
+	line-height: 1.3;
+	color: #888;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.layer_event_click{
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.layer{
+	background-size: 100% 100%;
+}
+
+.button_menu{
+	position: absolute;
+	z-index: 99999;
+	cursor: pointer;
+}
+
+/*glink
+--------------------------------------------- */
+/* normal */
+.ts18 {
+  position: relative;
+  display: inline-block;
+  padding: .55em .6em;
+  background-color: #000000;
+	background-image: linear-gradient(to bottom, #333333 0%, #000000 100%);
+	color: #999999;
+  text-shadow: none;
+  border-radius: 0px;
+  border: 1px solid #000000;
+	box-shadow: 0 4px 0 #000000;
+  box-sizing: border-box;
+}
+
+.ts18::after {
+  position: absolute;
+  content: "";
+	top: 3px;
+	right: 3px;
+	left: 3px;
+	bottom: 3px;
+	border-width: 1px;
+	border-style: solid;
+	border-image-source: linear-gradient(to bottom, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
+	border-image-slice: 1;
+}
+
+
+/* hover */
+.ts18:hover {
+	background-color: #3a0608;
+	background-image: linear-gradient(to bottom, #111111 0%, #3a0608 100%);
+	color: #e6e6e6;
+	box-shadow: 0 4px 0 #911d22;
+}
+
+
+/* active */
+.ts18:active {
+	background-color: #070707;
+	background-image: linear-gradient(to bottom, #070707 0%, #222222 100%);
+	color: #f93240;
+	border: 1px solid #c21500;
+	box-shadow: none;
+	box-sizing: border-box;
+	transform: translateY(4px);
+}
+
+.ts18:active::after {
+	border-image-source: linear-gradient(to top, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
+}

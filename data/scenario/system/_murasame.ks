@@ -1,0 +1,6 @@
+[preload  storage="./data/fgimage/chara/3/murasame_normal.png"  ]
+[preload  storage="./data/fgimage/chara/3/murasame_normal_2.png"  ]
+[preload  storage="./data/fgimage/chara/3/murasame_ki.png"  ]
+[preload  storage="./data/fgimage/chara/3/murasame_do.png"  ]
+[preload  storage="./data/fgimage/chara/3/murasame_insane.png"  ]
+[return]

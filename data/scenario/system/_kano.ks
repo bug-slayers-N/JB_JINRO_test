@@ -1,0 +1,6 @@
+[preload  storage="./data/fgimage/chara/4/kano_normal.png"  ]
+[preload  storage="./data/fgimage/chara/4/kano_normal_2.png"  ]
+[preload  storage="./data/fgimage/chara/4/kano_ki.png"  ]
+[preload  storage="./data/fgimage/chara/4/kano_do.png"  ]
+[preload  storage="./data/fgimage/chara/4/kano_insane.png"  ]
+[return]
