@@ -2,16 +2,24 @@
 
 *show
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
+[endscript]
+
 [chara_hide_all  time="0"  wait="true"  ]
 [chara_show  name="mafutsu"  time="1000"  wait="true"  storage="chara/1/mafutsu_normal.png"  width="320"  height="720"  top="0"  ]
 [return  ]
 *show2
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
+[endscript]
+
 [chara_show  name="mafutsu"  time="1000"  wait="true"  storage="chara/1/mafutsu_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show_normal
 
-[jump  storage="mafutsu.ks"  target="*show_normal2"  cond="f.mafutsu_calm<25"  ]
+[jump  storage="mafutsu.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
 [chara_mod  name="mafutsu"  time="300"  cross="false"  storage="chara/1/mafutsu_normal.png"  ]
 [return  ]
 *show_normal2
@@ -27,7 +35,7 @@
 [return  ]
 *show_ai
 
-[jump  storage="mafutsu.ks"  target="*show_normal2"  cond="f.mafutsu_calm<25"  ]
+[jump  storage="mafutsu.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
 [chara_mod  name="mafutsu"  time="300"  cross="false"  storage="chara/1/mafutsu_ai.png"  ]
 [return  ]
 *show_jinro
@@ -62,7 +70,7 @@
 *debate01
 
 [call  storage="mafutsu.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==3"  ]
+[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="mafutsu.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #真経津
@@ -194,7 +202,6 @@
 [jump  storage="vote.ks"  target="*player_vote"  ]
 *death
 
-[tb_eval  exp="f.mafutsu_calm=100"  name="mafutsu_calm"  cmd="="  op="t"  val="100"  val_2="undefined"  ]
 [call  storage="mafutsu.ks"  target="*show"  ]
 [call  storage="mafutsu.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
@@ -276,7 +283,7 @@
 「もちろんボクは村人！」[p]
 [_tb_end_text]
 
-[return  ]
+[jump  storage="say_human.ks"  target="*say_human_reply"  ]
 *noisy
 
 [call  storage="mafutsu.ks"  target="*show2"  ]
@@ -372,7 +379,7 @@
 [return  ]
 *stop
 
-[call  storage="mafutsu.ks"  target="*show2"  cond=""  ]
+[call  storage="mafutsu.ks"  target="*show"  cond=""  ]
 [tb_start_text mode=1 ]
 #真経津
 「案外そういうこと言う人が怪しかったりするよね～」[p]
@@ -381,6 +388,7 @@
 [return  ]
 *stop2
 
+[call  storage="mafutsu.ks"  target="*show2"  ]
 [call  storage="mafutsu.ks"  target="*show_raku"  ]
 [tb_start_text mode=1 ]
 #真経津

@@ -18,6 +18,10 @@
 [call  storage="murasame.ks"  target="*day01_01"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*day01_01"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*day01_01"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*day01_01"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*day01_01"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*day01_01"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*day01_01"  cond="f.player==9"  ]
 [mask  time="300"  effect="fadeIn"  color="0x000000"  ]
 [chara_hide_all  time="0"  wait="false"  ]
 [tb_image_hide  time="0"  ]
@@ -104,82 +108,74 @@
 [_tb_end_text]
 
 [iscript]
-var names=["真経津","獅子神","村雨","叶","天堂"];
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var aliveNames=[];
-for(var i=0;i<5;i++){
-if(aliveArr[i]==="1")aliveNames.push(names[i]);
+for(var i=0;i<n;i++){
+if(aliveArr[i]==="1")aliveNames.push(names[i+1]);
 }
-f.vote_disp1=aliveNames.join("、");
+f.display01=aliveNames.join("、");
 [endscript]
 
 [tb_start_text mode=1 ]
-残りの生存者は[emb exp="f.vote_disp1"]です。[p]
+残りの生存者は[emb exp="f.display01"]です。[p]
 2日目を開始します。[p]
 [_tb_end_text]
 
 [iscript]
-var aliveArr=String(f.alive).split(",");
-var coArr=String(f.co).split(",");
-var playerNum=parseInt(f.player);
-var playerRole=parseInt(f.role);
-var found=false;
-for(var i=1;i<=5;i++){
-if(i===playerNum&&playerRole!==3) continue;
-if(coArr[i-1]!=="1") continue;
-var role=parseInt([f.mafutsu,f.sisigami,f.murasame,f.kano,f.tendo][i-1]);
-if(role!==3) continue;
-if(aliveArr[i-1]==="1"){found=true;break;}
+var charNames=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+
+// f.sclaim: 占い師申告ログ "day,reporter,target,result" 4値1セットの追記式ログ
+var sArr=String(f.sclaim).split(',');
+var sShown=parseInt(f.sclaim_shown);
+if(isNaN(sShown))sShown=-1;
+var sMaxDay=sShown;
+var sLines=[];
+for(var i=0;i+3<sArr.length;i+=4){
+var sDay=parseInt(sArr[i]);
+var sReporter=parseInt(sArr[i+1]);
+var sTarget=parseInt(sArr[i+2]);
+var sResult=parseInt(sArr[i+3]);
+if(sDay>sShown){
+sLines.push(charNames[sReporter]+"は"+charNames[sTarget]+"を"+(sResult===1?"人狼":"人間")+"と報告しました。");
+if(sDay>sMaxDay)sMaxDay=sDay;
 }
-f.jump=found?"":"nothing";
+}
+f.display01=sLines.length>0?("占い師の報告は次の通りです。"+sLines.join("")):"";
+f.sclaim_shown=sMaxDay;
+
+// f.pclaim: 霊媒師申告ログ 同じく"day,reporter,target,result"4値1セット
+var pArr=String(f.pclaim).split(',');
+var pShown=parseInt(f.pclaim_shown);
+if(isNaN(pShown))pShown=-1;
+var pMaxDay=pShown;
+var pLines=[];
+for(var i=0;i+3<pArr.length;i+=4){
+var pDay=parseInt(pArr[i]);
+var pReporter=parseInt(pArr[i+1]);
+var pTarget=parseInt(pArr[i+2]);
+var pResult=parseInt(pArr[i+3]);
+if(pDay>pShown){
+pLines.push(charNames[pReporter]+"は"+charNames[pTarget]+"を"+(pResult===1?"人狼":"人間")+"と報告しました。");
+if(pDay>pMaxDay)pMaxDay=pDay;
+}
+}
+f.display02=pLines.length>0?("霊媒師の報告は次の通りです。"+pLines.join("")):"";
+f.pclaim_shown=pMaxDay;
+
+f.jump=(f.display01===""&&f.display02==="")?"nothing":"";
 [endscript]
 
 [jump  storage="scenario.ks"  target="*nothing"  cond="f.jump=='nothing'"  ]
 [tb_start_text mode=1 ]
-占い師からは下記の報告がありました。[p]
-[_tb_end_text]
-
-[iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-var seerNum=0;
-for(var i=1;i<=5;i++){if(roles[i-1]===3){seerNum=i;break;}}
-var sr2=String(f.seer_result2).split(",");
-var claim2=String(f.claim2).split(",");
-var idx=(seerNum-1)*2;
-claim2[idx]=sr2[0];
-claim2[idx+1]=sr2[1];
-f.claim2=claim2.join(",");
-[endscript]
-
-[iscript]
-function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
-function isCO(c){return String(f.co).split(',')[c-1]==='1';}
-var charNames=["真経津","獅子神","村雨","叶","天堂"];
-var claim2arr=String(f.claim2).split(',');
-var disps=["","","","",""];
-var idx=0;
-for(var i=1;i<=5;i++){
-if(isAlive(i)&&isCO(i)){
-var tgt=parseInt(claim2arr[(i-1)*2]);
-var res=parseInt(claim2arr[(i-1)*2+1]);
-if(tgt!==0){
-var reporter=charNames[i-1];
-var target=charNames[tgt-1];
-var result=res===1?"人狼":"人間";
-disps[idx]=reporter+"は"+target+"を"+result+"と報告しました。";
-idx++;
-}
-}
-}
-f.vote_disp1=disps[0];
-f.vote_disp2=disps[1];
-f.vote_disp3=disps[2];
-f.vote_disp4=disps[3];
-f.vote_disp5=disps[4];
-[endscript]
-
-[tb_start_text mode=1 ]
-[emb exp="f.vote_disp1"]  [emb exp="f.vote_disp2"]  [emb exp="f.vote_disp3"]  [emb exp="f.vote_disp4"]  [emb exp="f.vote_disp5"][p]
+役職者から下記の報告がありました。[p]
+[if exp="f.display01!=''"]
+[emb exp="f.display01"][p]
+[endif]
+[if exp="f.display02!=''"]
+[emb exp="f.display02"][p]
+[endif]
 [_tb_end_text]
 
 *nothing
@@ -189,9 +185,10 @@ f.vote_disp5=disps[4];
 *jinro_win
 
 [iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-for(var i=1;i<=5;i++){
-if(roles[i-1]===1){f.target=i;break;}
+var n=parseInt(f.gamemode);
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===1){f.target=i;break;}
 }
 [endscript]
 
@@ -201,9 +198,10 @@ if(roles[i-1]===1){f.target=i;break;}
 [call  storage="kano.ks"  target="*jinro_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*jinro_win"  cond="f.target==5"  ]
 [iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-for(var i=1;i<=5;i++){
-if(roles[i-1]===2){f.target=i;break;}
+var n=parseInt(f.gamemode);
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===9){f.target=i;break;}
 }
 [endscript]
 
@@ -216,9 +214,10 @@ if(roles[i-1]===2){f.target=i;break;}
 *human_win
 
 [iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-for(var i=1;i<=5;i++){
-if(roles[i-1]===3){f.target=i;break;}
+var n=parseInt(f.gamemode);
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===10){f.target=i;break;}
 }
 [endscript]
 
@@ -228,9 +227,10 @@ if(roles[i-1]===3){f.target=i;break;}
 [call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
 [iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-for(var i=1;i<=5;i++){
-if(roles[i-1]===4){f.target=i;break;}
+var n=parseInt(f.gamemode);
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===15){f.target=i;break;}
 }
 [endscript]
 
@@ -240,9 +240,10 @@ if(roles[i-1]===4){f.target=i;break;}
 [call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
 [iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-for(var i=1;i<=5;i++){
-if(roles[i-1]===5){f.target=i;break;}
+var n=parseInt(f.gamemode);
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===16){f.target=i;break;}
 }
 [endscript]
 
@@ -257,10 +258,11 @@ if(roles[i-1]===5){f.target=i;break;}
 *win
 
 [iscript]
+function isWolfTeam(role){return role<10;}
 var role=parseInt(f.role);
 var win=parseInt(f.win);
-if(win===1&&role>=3&&role<=5){f.win=0;}
-else if(win===2&&role>=1&&role<=2){f.win=0;}
+if(win===1&&!isWolfTeam(role)){f.win=0;}
+else if(win===2&&isWolfTeam(role)){f.win=0;}
 else{f.win=1;}
 [endscript]
 
@@ -315,10 +317,10 @@ else{f.win=1;}
 *X
 
 [iscript]
-var charNames = ["真経津","獅子神","村雨","叶","天堂"];
-var roleNames = ["","人狼","狂人","占い師","村人","村人"];
-var charName = charNames[parseInt(f.player)-1];
-var roleName = roleNames[parseInt(f.role)];
+var charNames = ["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var roleMap = {1:"人狼",2:"人狼",3:"人狼",4:"人狼",5:"人狼",9:"狂人",10:"占い師",11:"霊媒師",12:"騎士",15:"村人",16:"村人",17:"村人"};
+var charName = charNames[parseInt(f.player)];
+var roleName = roleMap[parseInt(f.role)]||"不明";
 var isWin = parseInt(f.win)===0;
 var result = isWin ? "勝利" : "敗北";
 var text = "【非公式】"+charName+"("+roleName+")で"+result+"しました。フレンズ達の人狼ゲームで嘘つきを見破ろう！→https://bug-slayers-N.github.io/JB_JINRO/";

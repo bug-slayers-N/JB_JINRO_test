@@ -9,6 +9,10 @@
 [call  storage="murasame.ks"  target="*debate_Top"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*debate_Top"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*debate_Top"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*debate_Top"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*debate_Top"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*debate_Top"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*debate_Top"  cond="f.player==9"  ]
 *turn_count
 
 [tb_eval  exp="f.jump=0"  name="jump"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
@@ -16,11 +20,19 @@
 [iscript]
 var day=parseInt(f.day);
 var turn=parseInt(f.turn);
-if(day===1&&turn>=10){f.result="vote";}
-else if(day>=2&&turn>=5){f.result="vote";}
+var mode=parseInt(f.gamemode);
+var threshold;
+if(day===1){
+threshold=10;
+}else if(day===2&&mode===9){
+threshold=7;
+}else{
+threshold=5;
+}
+f.result = turn>=threshold ? 1 : 0;
 [endscript]
 
-[jump  storage="end.ks"  target="*turn_reset"  cond="f.result!='vote'"  ]
+[jump  storage="end.ks"  target="*turn_reset_end"  cond="f.result==0"  ]
 [tb_eval  exp="f.turn=0"  name="turn"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [tb_eval  exp="f.day+=1"  name="day"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
 [tb_eval  exp="f.action=0"  name="action"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
@@ -30,7 +42,11 @@ else if(day>=2&&turn>=5){f.result="vote";}
 [jump  storage="murasame.ks"  target="*vote"  cond="f.player==3"  ]
 [jump  storage="kano.ks"  target="*vote"  cond="f.player==4"  ]
 [jump  storage="tendo.ks"  target="*vote"  cond="f.player==5"  ]
-*turn_reset
+[jump  storage="shigure.ks"  target="*vote"  cond="f.player==6"  ]
+[jump  storage="yamabuki.ks"  target="*vote"  cond="f.player==7"  ]
+[jump  storage="gato.ks"  target="*vote"  cond="f.player==8"  ]
+[jump  storage="urushibara.ks"  target="*vote"  cond="f.player==9"  ]
+*turn_reset_end
 
 [tb_eval  exp="f.turn+=1"  name="turn"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
 [call  storage="UI.ks"  target="*myrole"  ]
@@ -42,43 +58,33 @@ else if(day>=2&&turn>=5){f.result="vote";}
 [tb_show_message_window  ]
 [bg  time="1000"  method="crossfade"  storage="92690259_p0.png"  ]
 [iscript]
-f.vote_disp2=f.win===1?"村人陣営の勝利です。":"人狼陣営の勝利です。";
+f.display01=f.win===1?"村人陣営の勝利です。":"人狼陣営の勝利です。";
 [endscript]
 
 [tb_start_text mode=1 ]
 #システム
-[emb exp="f.vote_disp2"][p]
+[emb exp="f.display01"][p]
 今回の役職は[p]
 [_tb_end_text]
 
 [iscript]
-var names=["真経津","獅子神","村雨","叶","天堂"];
-var roleNames=["","人狼","狂人","占い師","村人","村人"];
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-var lines=["","","","",""];
-for(var i=0;i<5;i++){
-lines[i]=names[i]+"："+roleNames[roles[i]];
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var roleMap={1:"人狼",2:"人狼",3:"人狼",4:"人狼",5:"人狼",9:"狂人",10:"占い師",11:"霊媒師",12:"騎士",15:"村人",16:"村人",17:"村人"};
+var n=parseInt(f.gamemode);
+var charArr=String(f.character).split(",");
+var lines=[];
+for(var i=0;i<n;i++){
+var role=parseInt(charArr[i]);
+lines.push(names[i+1]+"："+(roleMap[role]||"不明"));
 }
-f.vote_disp1=lines[0];
-f.vote_disp2=lines[1];
-f.vote_disp3=lines[2];
-f.vote_disp4=lines[3];
-f.vote_disp5=lines[4];
+f.result=lines.join("、");
 [endscript]
 
 [tb_start_text mode=1 ]
 #システム
-[emb exp="f.vote_disp1"]、[emb exp="f.vote_disp2"]、[emb exp="f.vote_disp3"]、[emb exp="f.vote_disp4"]、[emb exp="f.vote_disp5"]でした[p]
+[emb exp="f.result"]でした[p]
 
 [_tb_end_text]
-
-[iscript]
-f.mafutsu_calm=100;
-f.sisigami_calm=80;
-f.murasame_calm=110;
-f.kano_calm=100;
-f.tendo_calm=120;
-[endscript]
 
 [jump  storage="scenario.ks"  target="*jinro_win"  cond="f.win==2"  ]
 [jump  storage="scenario.ks"  target="*human_win"  cond="f.win==1"  ]
@@ -108,49 +114,44 @@ f.tendo_calm=120;
 *omake
 
 [iscript]
-var roles=[parseInt(f.mafutsu),parseInt(f.sisigami),parseInt(f.murasame),parseInt(f.kano),parseInt(f.tendo)];
-var aliveArr=String(f.alive).split(",");
-var playerRole=roles[parseInt(f.player)-1];
-if(playerRole===1){
+function getRole(i){return parseInt(String(f.character).split(',')[i-1]);}
+function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
+function isCO(c){return String(f.co).split(',')[c-1]==='1';}
+function isWolfTeam(role){return role<10;}
+var p=parseInt(f.player),r=parseInt(f.role),w=parseInt(f.win);
+var n=parseInt(f.gamemode);
+var ac=String(f.alive).split(',').filter(function(v){return v==='1';}).length;
+var pd=isAlive(p);
+// win2判定（人狼プレイヤーが狂人と2人生存で勝利）
+if(isWolfTeam(r)&&r!==9){
 var survivors=[];
-for(var i=0;i<5;i++){
-if(aliveArr[i]==="1")survivors.push(roles[i]);
-}
-if(survivors.length===2&&survivors.indexOf(1)!==-1&&survivors.indexOf(2)!==-1){
+for(var i=1;i<=n;i++){if(isAlive(i))survivors.push(getRole(i));}
+if(survivors.length===2&&survivors.some(function(v){return v===r;})&&survivors.some(function(v){return v===9;})){
 f.list='win2';
 }
 }
-[endscript]
-
-[iscript]
-function getRole(i){return parseInt([f.mafutsu,f.sisigami,f.murasame,f.kano,f.tendo][i-1]);}
-function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
-function isCO(c){return String(f.co).split(',')[c-1]==='1';}
-var p=parseInt(f.player),r=parseInt(f.role),w=parseInt(f.win);
-var ac=String(f.alive).split(',').filter(function(v){return v==='1';}).length;
-var pd=isAlive(p);
 if(p===1){
 if(r===1&&w===2)sf.ma_s01=1;
-if(r>=3&&ac===4&&w===1)sf.ma_s02=1;
+if(!isWolfTeam(r)&&ac===4&&w===1)sf.ma_s02=1;
 if(r===1&&isCO(1)&&w===2)sf.ma_s03=1;
 }
-if(p===2&&(r===4||r===5)&&w===1){
+if(p===2&&!isWolfTeam(r)&&w===1){
 sf.si_s01=1;
 if(pd)sf.si_s02=1;
 if(ac===4)sf.si_s03=1;
 }
 if(p===3){
-if(r===3&&w===1){sf.mu_s01=1;if(pd)sf.mu_s02=1;}
-if(r===1&&isAlive(3)){for(var i=1;i<=5;i++){if(getRole(i)===2&&isAlive(i)){sf.mu_s03=1;break;}}}
+if(r===10&&w===1){sf.mu_s01=1;if(pd)sf.mu_s02=1;}
+if(r===1&&isAlive(3)){for(var i=1;i<=n;i++){if(getRole(i)===9&&isAlive(i)){sf.mu_s03=1;break;}}}
 }
 if(p===4){
-if(r===2&&w===2){sf.ka_s01=1;if(pd)sf.ka_s02=1;}
-if(r>=3&&r<=5&&ac===4&&parseInt(f.action)<3)sf.ka_s03=1;
+if(r===9&&w===2){sf.ka_s01=1;if(pd)sf.ka_s02=1;}
+if(!isWolfTeam(r)&&ac===4&&parseInt(f.action)<3)sf.ka_s03=1;
 }
 if(p===5){
-var wc=(r<=2&&w===2)||(r>=3&&w===1);
+var wc=(isWolfTeam(r)&&w===2)||(!isWolfTeam(r)&&w===1);
 if(wc&&isCO(5)){sf.te_s01=1;if(pd)sf.te_s02=1;}
-if(r===3&&w===1&&pd)sf.te_s03=1;
+if(r===10&&w===1&&pd)sf.te_s03=1;
 }
 [endscript]
 

@@ -9,16 +9,22 @@ if(f.name==="叶")f.name="黎明";
 [return  ]
 *show
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
+[endscript]
 [chara_hide_all  time="500"  wait="true"  ]
 [chara_show  name="tendo"  time="1000"  wait="true"  storage="chara/5/tendo_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show2
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
+[endscript]
 [chara_show  name="tendo"  time="1000"  wait="true"  storage="chara/5/tendo_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show_normal
 
-[jump  storage="tendo.ks"  target="*show_normal2"  cond="f.tendo_calm<30"  ]
+[jump  storage="tendo.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
 [chara_mod  name="tendo"  time="300"  cross="false"  storage="chara/5/tendo_normal.png"  ]
 [return  ]
 *show_normal2
@@ -31,7 +37,7 @@ if(f.name==="叶")f.name="黎明";
 [return  ]
 *show_do
 
-[jump  storage="tendo.ks"  target="*show_normal2"  cond="f.tendo_calm<30"  ]
+[jump  storage="tendo.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
 [chara_mod  name="tendo"  time="300"  cross="false"  storage="chara/5/tendo_do.png"  ]
 [return  ]
 *show_ai
@@ -74,7 +80,7 @@ if(f.name==="叶")f.name="黎明";
 *debate01
 
 [call  storage="tendo.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==3"  ]
+[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="tendo.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #天堂
@@ -280,7 +286,7 @@ if(f.name==="叶")f.name="黎明";
 「神は当然村人陣営に味方をしている」[p]
 [_tb_end_text]
 
-[return  ]
+[jump  storage="say_human.ks"  target="*say_human_reply"  ]
 *noisy
 
 [call  storage="tendo.ks"  target="*show2"  ]
@@ -366,7 +372,7 @@ if(f.name==="叶")f.name="黎明";
 [return  ]
 *stop
 
-[call  storage="tendo.ks"  target="*show2"  ]
+[call  storage="tendo.ks"  target="*show"  ]
 [call  storage="tendo.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #天堂
@@ -376,6 +382,7 @@ if(f.name==="叶")f.name="黎明";
 [return  ]
 *stop2
 
+[call  storage="tendo.ks"  target="*show2"  ]
 [call  storage="tendo.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #天堂

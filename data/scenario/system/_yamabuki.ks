@@ -1,0 +1,6 @@
+[preload  storage="./data/fgimage/chara/8/yamabuki_normal.png"  ]
+[preload  storage="./data/fgimage/chara/8/yamabuki_normal_2.png"  ]
+[preload  storage="./data/fgimage/chara/8/yamabuki_ki.png"  ]
+[preload  storage="./data/fgimage/chara/8/yamabuki_do.png"  ]
+[preload  storage="./data/fgimage/chara/8/yamabuki_insane.png"  ]
+[return]

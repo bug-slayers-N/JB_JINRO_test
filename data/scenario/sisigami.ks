@@ -2,16 +2,22 @@
 
 *show
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
+[endscript]
 [chara_hide_all  time="500"  wait="true"  ]
 [chara_show  name="sisigami"  time="1000"  wait="true"  storage="chara/2/shishigami_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show2
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
+[endscript]
 [chara_show  name="sisigami"  time="1000"  wait="true"  storage="chara/2/shishigami_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show_normal
 
-[jump  storage="sisigami.ks"  target="*show_normal2"  cond="f.sisigami_calm<20"  ]
+[jump  storage="sisigami.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
 [chara_mod  name="sisigami"  time="300"  cross="false"  storage="chara/2/shishigami_normal.png"  ]
 [return  ]
 *show_normal2
@@ -24,7 +30,7 @@
 [return  ]
 *show_ai
 
-[jump  storage="sisigami.ks"  target="*show_normal2"  cond="f.sisigami_calm<20"  ]
+[jump  storage="sisigami.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
 [chara_mod  name="sisigami"  time="300"  cross="false"  storage="chara/2/shishigami_aseri.png"  ]
 [return  ]
 *show_gimon
@@ -67,7 +73,7 @@
 *debate01
 
 [call  storage="sisigami.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==3"  ]
+[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="sisigami.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #獅子神
@@ -198,7 +204,6 @@
 [jump  storage="vote.ks"  target="*player_vote"  ]
 *death
 
-[tb_eval  exp="f.sisigami_calm=80"  name="sisigami_calm"  cmd="="  op="t"  val="80"  val_2="undefined"  ]
 [call  storage="sisigami.ks"  target="*show"  ]
 [call  storage="sisigami.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
@@ -278,7 +283,7 @@
 「あ？勿論、村人だよ」[p]
 [_tb_end_text]
 
-[return  ]
+[jump  storage="say_human.ks"  target="*say_human_reply"  ]
 *noisy
 
 [call  storage="sisigami.ks"  target="*show2"  ]
@@ -365,7 +370,7 @@
 [return  ]
 *stop
 
-[call  storage="sisigami.ks"  target="*show2"  ]
+[call  storage="sisigami.ks"  target="*show"  ]
 [call  storage="sisigami.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #獅子神
@@ -375,6 +380,7 @@
 [return  ]
 *stop2
 
+[call  storage="sisigami.ks"  target="*show2"  ]
 [call  storage="sisigami.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #獅子神

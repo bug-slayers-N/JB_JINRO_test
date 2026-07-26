@@ -1,0 +1,8 @@
+[preload  storage="./data/fgimage/chara/6/suo_egao.png"  ]
+[preload  storage="./data/fgimage/chara/6/suo_normal.png"  ]
+[preload  storage="./data/bgimage/BG_selectChara.png"  ]
+[preload  storage="./data/bgimage/BG_tutorial_1.png"  ]
+[preload  storage="./data/bgimage/SS.png"  ]
+[preload  storage="./data/bgimage/BG_selectChara_noText_260429kari.png"  ]
+[preload  storage="./data/bgimage/93853245_p0.png"  ]
+[return]

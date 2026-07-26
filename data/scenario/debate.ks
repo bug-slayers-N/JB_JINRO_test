@@ -1,20 +1,47 @@
 [_tb_system_call storage=system/_debate.ks]
 
 [cm  ]
+*gamestart
+
 [mask  time="300"  effect="fadeIn"  color="0x000000"  ]
 [tb_show_message_window  ]
 [chara_hide_all  time="0"  wait="true"  ]
 [call  storage="UI.ks"  target="*myrole"  ]
 [bg  time="0"  method="crossfade"  storage="93853245_p0.png"  ]
+[call  storage="specialist.ks"  target="*uranai_randam"  ]
+
+[iscript]
+if(parseInt(f.gamemode)>=9&&parseInt(f.role)<=5){
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var charArr=String(f.character).split(",");
+var wolfNames=[];
+for(var i=0;i<charArr.length;i++){
+if(parseInt(charArr[i])<=5)wolfNames.push(names[i+1]);
+}
+f.display01=wolfNames.join("、");
+}
+[endscript]
+
+[jump  storage="debate.ks"  target="*wolf_skip"  cond="f.gamemode<9||f.role>5"  ]
+[tb_start_text mode=1 ]
+人狼は[emb exp="f.display01"]です。[p]
+
+[_tb_end_text]
+
+*wolf_skip
+
 [mask_off  time="300"  effect="fadeOut"  ]
-[call  storage="uranai.ks"  target="*uranai_randam"  ]
-*top2
+*debate_dialogue
 
 [call  storage="mafutsu.ks"  target="*debate01"  cond="f.player==1"  ]
 [call  storage="sisigami.ks"  target="*debate01"  cond="f.player==2"  ]
 [call  storage="murasame.ks"  target="*debate01"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*debate01"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*debate01"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*debate01"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*debate01"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
 [jump  storage="end.ks"  target="*turn_count"  ]
 *debate_top
 
@@ -35,15 +62,30 @@ if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 [glink  color="btn_08_yellow"  storage="debate.ks"  size="20"  text="強く疑う"  x="100"  y="275"  width="150"  height=""  _clickable_img=""  target="*push"  ]
 *push_done
 
-[jump  storage="debate.ks"  target="*lie"  cond="f.co!='0,0,0,0,0'"  ]
-[glink  color="btn_08_purple"  storage="debate.ks"  size="20"  text="COを求める"  x="300"  y="200"  width="150"  height=""  _clickable_img=""  target="*plz_CO"  ]
-[jump  storage="debate.ks"  target="*seer"  cond="f.role!=3"  ]
-[glink  color="btn_08_blue"  storage="debate.ks"  size="20"  text="COする"  x="300"  y="50"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
-*seer
+[iscript]
+var coArr=String(f.co).split(",");
+if(parseInt(f.gamemode)===9){
+var has1=coArr.indexOf("1")!==-1;
+var has2=coArr.indexOf("2")!==-1;
+f.result=(has1&&has2)?1:0;
+}else{
+f.result=coArr.indexOf("1")!==-1?1:0;
+}
+[endscript]
 
-[jump  storage="debate.ks"  target="*lie"  cond="f.role>2"  ]
-[glink  color="btn_08_black"  storage="debate.ks"  size="20"  text="偽COする"  x="300"  y="125"  width="150"  height=""  _clickable_img=""  target="*fCO"  ]
-*lie
+[jump  storage="debate.ks"  target="*liar"  cond="f.result==1"  ]
+[glink  color="btn_08_purple"  storage="debate.ks"  size="20"  text="COを求める"  x="300"  y="200"  width="150"  height=""  _clickable_img=""  target="*plz_CO"  ]
+[jump  storage="debate.ks"  target="*medium_button"  cond="f.role!=10"  ]
+[glink  color="btn_08_blue"  storage="debate.ks"  size="20"  text="COする"  x="300"  y="50"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
+*medium_button
+
+[jump  storage="debate.ks"  target="*fake_button"  cond="f.role!=11"  ]
+[glink  color="btn_08_blue"  storage="debate.ks"  size="20"  text="COする"  x="300"  y="50"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
+*fake_button
+
+[jump  storage="debate.ks"  target="*liar"  cond="f.role>=10"  ]
+[glink  color="btn_08_black"  storage="debate.ks"  size="20"  text="偽COする"  x="300"  y="125"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
+*liar
 
 [glink  color="btn_07_red"  storage="debate.ks"  size="20"  text="状況確認"  target="*check"  x="213"  y="369"  width=""  height=""  _clickable_img=""  ]
 [s  ]
@@ -55,6 +97,10 @@ if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 [jump  storage="murasame.ks"  target="*doubt"  cond="f.player==3"  ]
 [jump  storage="kano.ks"  target="*doubt"  cond="f.player==4"  ]
 [jump  storage="tendo.ks"  target="*doubt"  cond="f.player==5"  ]
+[jump  storage="shigure.ks"  target="*doubt"  cond="f.player==6"  ]
+[jump  storage="yamabuki.ks"  target="*doubt"  cond="f.player==7"  ]
+[jump  storage="gato.ks"  target="*doubt"  cond="f.player==8"  ]
+[jump  storage="urushibara.ks"  target="*doubt"  cond="f.player==9"  ]
 *cover
 
 [call  storage="system.ks"  target="*action"  ]
@@ -63,6 +109,10 @@ if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 [jump  storage="murasame.ks"  target="*cover"  cond="f.player==3"  ]
 [jump  storage="kano.ks"  target="*cover"  cond="f.player==4"  ]
 [jump  storage="tendo.ks"  target="*cover"  cond="f.player==5"  ]
+[jump  storage="shigure.ks"  target="*cover"  cond="f.player==6"  ]
+[jump  storage="yamabuki.ks"  target="*cover"  cond="f.player==7"  ]
+[jump  storage="gato.ks"  target="*cover"  cond="f.player==8"  ]
+[jump  storage="urushibara.ks"  target="*cover"  cond="f.player==9"  ]
 *watch
 
 [call  storage="system.ks"  target="*quiet"  ]
@@ -75,26 +125,16 @@ if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 *plz_CO
 
 [call  storage="system.ks"  target="*action"  ]
-[tb_eval  exp="f.ai_actor=0"  name="ai_actor"  cmd="="  op="t"  val="0"  ]
-[call  storage="mafutsu.ks"  target="*pCO"  cond="f.player==1"  ]
-[call  storage="sisigami.ks"  target="*pCO"  cond="f.player==2"  ]
-[call  storage="murasame.ks"  target="*pCO"  cond="f.player==3"  ]
-[call  storage="kano.ks"  target="*pCO"  cond="f.player==4"  ]
-[call  storage="tendo.ks"  target="*pCO"  cond="f.player==5"  ]
-[jump  storage="CO.ks"  target="*pCO_start"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[jump  storage="CO.ks"  target="*please_CO"  ]
 *CO
 
 [call  storage="system.ks"  target="*action"  ]
-[jump  storage="CO.ks"  target="*true_CO"  ]
-*fCO
-
-[tb_eval  exp="f.name2=0"  name="name2"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-[call  storage="system.ks"  target="*action"  ]
-[jump  storage="CO.ks"  target="*player_fake_CO"  ]
+[jump  storage="CO.ks"  target="*player_CO"  ]
 *say_human
 
 [call  storage="system.ks"  target="*action"  ]
-[tb_eval  exp="f.ai_actor=0"  name="ai_actor"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="say_human.ks"  target="*say_human"  ]
 *auto
 
@@ -103,51 +143,74 @@ if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 *check
 
 [iscript]
-f.vote_disp1="";
-f.vote_disp2="";
-f.vote_disp3="";
-f.vote_disp4="";
-f.vote_disp5="";
+f.display01="";
+f.display02="";
+f.display03="";
+f.display04="";
+f.display05="";
+f.display06="";
+f.display07="";
+f.display08="";
+f.display09="";
 [endscript]
 
 [iscript]
-var names=["真経津","獅子神","村雨","叶","天堂"];
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var aliveNames=[];
-for(var i=0;i<5;i++){
-if(aliveArr[i]==="1")aliveNames.push(names[i]);
+for(var i=0;i<n;i++){
+if(aliveArr[i]==="1")aliveNames.push(names[i+1]);
 }
 f.result=aliveNames.join("、");
 [endscript]
 
 [iscript]
-var charNames=["真経津","獅子神","村雨","叶","天堂"];
+var charNames=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
 var resultNames=["人間","人狼"];
-var coArr=String(f.co).split(",");
-var claim=String(f.claim).split(",");
-var claim2=String(f.claim2).split(",");
-var aliveArr=String(f.alive).split(",");
-var disps=[];
-for(var i=1;i<=5;i++){
-if(coArr[i-1]==="0")continue;
-var c1t=parseInt(claim[(i-1)*2]);
-var c1r=parseInt(claim[(i-1)*2+1]);
-if(c1t>0){
-disps.push(charNames[i-1]+" → "+charNames[c1t-1]+"："+resultNames[c1r]+"、");
+function getSclaim(){
+if(String(f.sclaim)==="0")return [];
+var arr=String(f.sclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
 }
-if(aliveArr[i-1]==="1"){
-var c2t=parseInt(claim2[(i-1)*2]);
-var c2r=parseInt(claim2[(i-1)*2+1]);
-if(c2t>0){
-disps.push(charNames[i-1]+" → "+charNames[c2t-1]+"："+resultNames[c2r]+"、");
+function getPclaim(){
+if(String(f.pclaim)==="0")return [];
+var arr=String(f.pclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
+}
+var slots=["","","","","","","","",""];
+// 占い報告：day日目 → スロット(2*day-1)（1日目→01、2日目→03、3日目→05…）
+// day=0（ゲーム開始時のランダム占い）は1日目と同じスロット01に集約表示する
+var sclaims=getSclaim();
+for(var i=0;i<sclaims.length;i++){
+var day=sclaims[i][0],reporter=sclaims[i][1],target=sclaims[i][2],result=sclaims[i][3];
+var slot=(day===0)?1:2*day-1;
+if(slot>=1&&slot<=9){
+slots[slot-1]+=charNames[reporter]+" → "+charNames[target]+"："+resultNames[result]+"、";
 }
 }
+// 霊媒報告：day日目 → スロット(2*day-2)（2日目→02、3日目→04、4日目→06、5日目→08）
+var pclaims=getPclaim();
+for(var j=0;j<pclaims.length;j++){
+var pday=pclaims[j][0],preporter=pclaims[j][1],ptarget=pclaims[j][2],presult=pclaims[j][3];
+var pslot=2*pday-2;
+if(pslot>=1&&pslot<=9){
+slots[pslot-1]+=charNames[preporter]+" → "+charNames[ptarget]+"："+resultNames[presult]+"、";
 }
-f.vote_disp1=disps.length>0?disps[0]:"";
-f.vote_disp2=disps.length>1?disps[1]:"";
-f.vote_disp3=disps.length>2?disps[2]:"";
-f.vote_disp4=disps.length>3?disps[3]:"";
-f.vote_disp5=disps.length>4?disps[4]:"";
+}
+f.display01=slots[0];
+f.display02=slots[1];
+f.display03=slots[2];
+f.display04=slots[3];
+f.display05=slots[4];
+f.display06=slots[5];
+f.display07=slots[6];
+f.display08=slots[7];
+f.display09=slots[8];
 [endscript]
 
 [tb_start_text mode=1 ]
@@ -157,9 +220,14 @@ f.vote_disp5=disps.length>4?disps[4]:"";
 
 [_tb_end_text]
 
-[jump  storage="debate.ks"  target="*0CO"  cond="f.co=='0,0,0,0,0'"  ]
+[iscript]
+var coArr2=String(f.co).split(",");
+f.result=coArr2.some(function(v){return v!=="0";})?0:1;
+[endscript]
+
+[jump  storage="debate.ks"  target="*0CO"  cond="f.result==1"  ]
 [tb_start_text mode=1 ]
-占い師の報告は[emb exp="f.vote_disp1"]  [emb exp="f.vote_disp2"]  [emb exp="f.vote_disp3"]  [emb exp="f.vote_disp4"]  [emb exp="f.vote_disp5"]です。[p]
+占い師・霊媒師の報告は[emb exp="f.display01"][emb exp="f.display02"][emb exp="f.display03"][emb exp="f.display04"][emb exp="f.display05"][emb exp="f.display06"][emb exp="f.display07"][emb exp="f.display08"][emb exp="f.display09"]です。[p]
 
 [_tb_end_text]
 
@@ -171,4 +239,8 @@ f.vote_disp5=disps.length>4?disps[4]:"";
 [call  storage="murasame.ks"  target="*debate01"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*debate01"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*debate01"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*debate01"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*debate01"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
 [jump  storage="debate.ks"  target="*debate_top"  ]

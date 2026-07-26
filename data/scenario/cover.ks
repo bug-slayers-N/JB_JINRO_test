@@ -10,26 +10,16 @@
 [iscript]
 var playerNum=parseInt(f.player);
 var targetNum=parseInt(f.target);
-function gi(a,b){var o=(a-1)*4;var t=[];for(var i=1;i<=5;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){
-if(num===1)return parseFloat(f.mafutsu_calm);
-if(num===2)return parseFloat(f.sisigami_calm);
-if(num===3)return parseFloat(f.murasame_calm);
-if(num===4)return parseFloat(f.kano_calm);
-return parseFloat(f.tendo_calm);
-}
-function addCalm(num,val){
-if(num===1){f.mafutsu_calm=parseFloat(f.mafutsu_calm)+val;}
-else if(num===2){f.sisigami_calm=parseFloat(f.sisigami_calm)+val;}
-else if(num===3){f.murasame_calm=parseFloat(f.murasame_calm)+val;}
-else if(num===4){f.kano_calm=parseFloat(f.kano_calm)+val;}
-else{f.tendo_calm=parseFloat(f.tendo_calm)+val;}
-}
+var n=parseInt(f.gamemode);
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+var calmArr=String(f.calm).split(",");
+function getCalm(num){return parseFloat(calmArr[num-1]);}
+function addCalm(num,val){calmArr[num-1]=String(parseFloat(calmArr[num-1])+val);f.calm=calmArr.join(",");}
 var aliveArr=String(f.alive).split(",");
 function isAlive(i){return aliveArr[i-1]==="1";}
 var actorCalm=getCalm(playerNum);
 var lowest=true;
-for(var i=1;i<=5;i++){if(!isAlive(i)||i===playerNum)continue;if(getCalm(i)<actorCalm){lowest=false;break;}}
+for(var i=1;i<=n;i++){if(!isAlive(i)||i===playerNum)continue;if(getCalm(i)<actorCalm){lowest=false;break;}}
 var lk=String(f.like).split(",");
 var idx=gi(targetNum,playerNum);
 var murasame=playerNum===3;
@@ -49,6 +39,10 @@ f.like=lk.join(",");
 [jump  storage="murasame.ks"  target="*cover2"  cond="f.player==3"  ]
 [jump  storage="kano.ks"  target="*cover2"  cond="f.player==4"  ]
 [jump  storage="tendo.ks"  target="*cover2"  cond="f.player==5"  ]
+[jump  storage="shigure.ks"  target="*cover2"  cond="f.player==6"  ]
+[jump  storage="yamabuki.ks"  target="*cover2"  cond="f.player==7"  ]
+[jump  storage="gato.ks"  target="*cover2"  cond="f.player==8"  ]
+[jump  storage="urushibara.ks"  target="*cover2"  cond="f.player==9"  ]
 *show
 
 [call  storage="mafutsu.ks"  target="*shiro"  cond="f.target==1"  ]
@@ -56,32 +50,33 @@ f.like=lk.join(",");
 [call  storage="murasame.ks"  target="*shiro"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*shiro"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*shiro"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*shiro"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*shiro"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*shiro"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*shiro"  cond="f.target==9"  ]
 [jump  storage="observe.ks"  target="*observe"  ]
 *cover_ai
 
 [iscript]
 // actorの役職を取得してf.resultに格納（分岐判定用）
-f.result=parseInt([f.mafutsu,f.sisigami,f.murasame,f.kano,f.tendo][parseInt(f.ai_actor)-1]);
+var charArr=String(f.character).split(",");
+f.result=parseInt(charArr[parseInt(f.ai_actor)-1]);
 [endscript]
 
 *ai_jinro
 
-[jump  storage="cover.ks"  target="*ai_mad"  cond="f.result!=1"  ]
+[jump  storage="cover.ks"  target="*ai_mad"  cond="f.result>5"  ]
 [iscript]
 var actorNum=parseInt(f.ai_actor);
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var coArr=String(f.co).split(",");
 var claimArr=String(f.claim).split(",");
 var claimArr2=String(f.claim2).split(",");
-function gi(a,b){var o=(a-1)*4;var t=[];for(var i=1;i<=5;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){
-if(num===1)return parseFloat(f.mafutsu_calm);
-if(num===2)return parseFloat(f.sisigami_calm);
-if(num===3)return parseFloat(f.murasame_calm);
-if(num===4)return parseFloat(f.kano_calm);
-return parseFloat(f.tendo_calm);
-}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+var calmArr=String(f.calm).split(",");
+function getCalm(num){return parseFloat(calmArr[num-1]);}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function reportedWolf(actor,c){
@@ -92,7 +87,7 @@ return false;
 }
 var actorCO=coArr[actorNum-1]!=="0";
 var candidates=[];
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||reportedWolf(actorNum,i))continue;
 if(actorCO&&coArr[i-1]!=="0")continue;
 candidates.push(i);
@@ -107,9 +102,10 @@ f.target=pool.length>0?pool[Math.floor(Math.random()*pool.length)]:0;
 [jump  storage="cover.ks"  target="*ai_calc"  ]
 *ai_mad
 
-[jump  storage="cover.ks"  target="*ai_seer"  cond="f.result!=2"  ]
+[jump  storage="cover.ks"  target="*ai_seer"  cond="f.result!=9"  ]
 [iscript]
 var actorNum=parseInt(f.ai_actor);
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var coArr=String(f.co).split(",");
 var claimArr=String(f.claim).split(",");
@@ -132,7 +128,7 @@ if(Math.random()>=0.5){
 f.target=0;f.ai_result=1;
 }else{
 var candidates=[];
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(!isExcluded(i))candidates.push(i);
 }
 if(candidates.length>0){
@@ -148,16 +144,17 @@ f.target=0;f.ai_result=1;
 [jump  storage="cover.ks"  target="*back"  ]
 *ai_seer
 
-[jump  storage="cover.ks"  target="*ai_vill"  cond="f.result!=3"  ]
+[jump  storage="cover.ks"  target="*ai_vill"  cond="f.result!=10"  ]
 [iscript]
 var actorNum=parseInt(f.ai_actor);
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
 var claimArr=String(f.claim).split(",");
 var claimArr2=String(f.claim2).split(",");
-function gi(a,b){var o=(a-1)*4;var t=[];for(var i=1;i<=5;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function hasCO(i){return coArr[i-1]!=="0";}
 function isLiarFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3||v===4;}
@@ -183,7 +180,7 @@ if(target===0){
 var excluded=wolfResult;
 if(!actorCO){
 var coChars=[];
-for(var i=1;i<=5;i++){if(isAlive(i)&&i!==actorNum&&hasCO(i)&&!reportedWolf(actorNum,i))coChars.push(i);}
+for(var i=1;i<=n;i++){if(isAlive(i)&&i!==actorNum&&hasCO(i)&&!reportedWolf(actorNum,i))coChars.push(i);}
 if(coChars.length>=2){
 var liarCO=coChars.filter(function(c){return isLiarFor(actorNum,c);});
 var honestCO=coChars.filter(function(c){return !isLiarFor(actorNum,c)&&excluded.indexOf(c)===-1;});
@@ -191,7 +188,7 @@ if(liarCO.length>0&&honestCO.length>0){target=honestCO[0];}
 }
 }
 if(target===0){
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||reportedWolf(actorNum,i))continue;
 if(actorCO&&hasCO(i))continue;
 if(parseInt(lk[gi(actorNum,i)])>=30){target=i;break;}
@@ -199,7 +196,7 @@ if(parseInt(lk[gi(actorNum,i)])>=30){target=i;break;}
 }
 if(target===0){
 var pool=[];
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||hasCO(i)||reportedWolf(actorNum,i))continue;
 if(actorCO&&hasCO(i))continue;
 if(parseInt(lk[gi(i,actorNum)])>=0)pool.push(i);
@@ -208,7 +205,7 @@ if(pool.length>0){
 target=pool[Math.floor(Math.random()*pool.length)];
 }else{
 var best=-999999,bestChar=-1;
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||reportedWolf(actorNum,i))continue;
 if(actorCO&&hasCO(i))continue;
 var v=parseInt(lk[gi(i,actorNum)]);
@@ -227,13 +224,14 @@ f.target=target;
 
 [iscript]
 var actorNum=parseInt(f.ai_actor);
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
 var claimArr=String(f.claim).split(",");
 var claimArr2=String(f.claim2).split(",");
-function gi(a,b){var o=(a-1)*4;var t=[];for(var i=1;i<=5;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function hasCO(i){return coArr[i-1]!=="0";}
 function isLiarFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3||v===4;}
@@ -245,21 +243,21 @@ return false;
 }
 var target=0;
 var coChars=[];
-for(var i=1;i<=5;i++){if(isAlive(i)&&i!==actorNum&&hasCO(i)&&!reportedWolf(actorNum,i))coChars.push(i);}
+for(var i=1;i<=n;i++){if(isAlive(i)&&i!==actorNum&&hasCO(i)&&!reportedWolf(actorNum,i))coChars.push(i);}
 if(coChars.length>=2){
 var liarCO=coChars.filter(function(c){return isLiarFor(actorNum,c);});
 var honestCO=coChars.filter(function(c){return !isLiarFor(actorNum,c);});
 if(liarCO.length>0&&honestCO.length>0){target=honestCO[0];}
 }
 if(target===0){
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||reportedWolf(actorNum,i))continue;
 if(parseInt(lk[gi(actorNum,i)])>=30){target=i;break;}
 }
 }
 if(target===0){
 var pool=[];
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||hasCO(i)||reportedWolf(actorNum,i))continue;
 if(parseInt(lk[gi(i,actorNum)])>=0)pool.push(i);
 }
@@ -267,7 +265,7 @@ if(pool.length>0){
 target=pool[Math.floor(Math.random()*pool.length)];
 }else{
 var best=-999999,bestChar=-1;
-for(var i=1;i<=5;i++){
+for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||reportedWolf(actorNum,i))continue;
 var v=parseInt(lk[gi(i,actorNum)]);
 if(v>best||(v===best&&i<bestChar)){best=v;bestChar=i;}
@@ -285,27 +283,17 @@ f.target=target;
 [iscript]
 var actorNum=parseInt(f.ai_actor);
 var targetNum=parseInt(f.target);
+var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
-function gi(a,b){var o=(a-1)*4;var t=[];for(var i=1;i<=5;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){
-if(num===1)return parseFloat(f.mafutsu_calm);
-if(num===2)return parseFloat(f.sisigami_calm);
-if(num===3)return parseFloat(f.murasame_calm);
-if(num===4)return parseFloat(f.kano_calm);
-return parseFloat(f.tendo_calm);
-}
-function addCalm(num,val){
-if(num===1){f.mafutsu_calm=parseFloat(f.mafutsu_calm)+val;}
-else if(num===2){f.sisigami_calm=parseFloat(f.sisigami_calm)+val;}
-else if(num===3){f.murasame_calm=parseFloat(f.murasame_calm)+val;}
-else if(num===4){f.kano_calm=parseFloat(f.kano_calm)+val;}
-else{f.tendo_calm=parseFloat(f.tendo_calm)+val;}
-}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+var calmArr=String(f.calm).split(",");
+function getCalm(num){return parseFloat(calmArr[num-1]);}
+function addCalm(num,val){calmArr[num-1]=String(parseFloat(calmArr[num-1])+val);f.calm=calmArr.join(",");}
 function isAlive(i){return aliveArr[i-1]==="1";}
 var actorCalm=getCalm(actorNum);
 var lowest=true;
-for(var i=1;i<=5;i++){if(!isAlive(i)||i===actorNum)continue;if(getCalm(i)<actorCalm){lowest=false;break;}}
+for(var i=1;i<=n;i++){if(!isAlive(i)||i===actorNum)continue;if(getCalm(i)<actorCalm){lowest=false;break;}}
 var idx=gi(targetNum,actorNum);
 var murasame=actorNum===3;
 if(lowest){
@@ -324,6 +312,10 @@ f.like=lk.join(",");
 [jump  storage="murasame.ks"  target="*cover2"  cond="f.ai_actor==3"  ]
 [jump  storage="kano.ks"  target="*cover2"  cond="f.ai_actor==4"  ]
 [jump  storage="tendo.ks"  target="*cover2"  cond="f.ai_actor==5"  ]
+[jump  storage="shigure.ks"  target="*cover2"  cond="f.ai_actor==6"  ]
+[jump  storage="yamabuki.ks"  target="*cover2"  cond="f.ai_actor==7"  ]
+[jump  storage="gato.ks"  target="*cover2"  cond="f.ai_actor==8"  ]
+[jump  storage="urushibara.ks"  target="*cover2"  cond="f.ai_actor==9"  ]
 *back
 
 [jump  storage="cover.ks"  target="*reset"  ]
