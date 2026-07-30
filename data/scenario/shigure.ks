@@ -70,7 +70,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *debate01
 
 [call  storage="shigure.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="shigure.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #時雨
@@ -215,14 +214,23 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show2"  ]
 [call  storage="shigure.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="shigure.ks"  target="*show_ki"  ]
+[jump  storage="shigure.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #時雨
-「言っておく、私が[emb exp="f.display01"]だ」[p]
+「言っておく、私が[emb exp="f.display09"]だ」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
 [emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
 [_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
+[tb_start_text mode=1 ]
+#時雨
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+[_tb_end_text]
 
 [return  ]
 *CO2
@@ -258,7 +266,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #時雨
-「[emb exp="f.display01"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.name"]は名乗り出るべきではないか？」[p]
 [_tb_end_tyrano_code]
 
 [return  ]

@@ -24,7 +24,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [return  ]
 *show_normal2
 
-[chara_mod  name="urushibara"  time="300"  cross="false"  storage="chara/10/urushibara_normal_2.png"  ]
+[chara_mod  name="urushibara"  time="300"  cross="false"  storage="chara/10/gato_normal2.png"  ]
 [return  ]
 *show_ki
 
@@ -74,7 +74,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *debate01
 
 [call  storage="urushibara.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="urushibara.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #漆原
@@ -219,14 +218,23 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*show2"  ]
 [call  storage="urushibara.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="urushibara.ks"  target="*show_ki"  ]
+[jump  storage="urushibara.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #漆原
-「言っておく、私が[emb exp="f.display01"]だ」[p]
+「言っておく、私が[emb exp="f.display09"]だ」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
 [emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
 [_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
+[tb_start_text mode=1 ]
+#漆原
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+[_tb_end_text]
 
 [return  ]
 *CO2
@@ -262,7 +270,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #漆原
-「[emb exp="f.display01"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.name"]は名乗り出るべきではないか？」[p]
 [_tb_end_tyrano_code]
 
 [return  ]

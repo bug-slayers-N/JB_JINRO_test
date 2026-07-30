@@ -5,6 +5,7 @@
 [iscript]
 f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 [endscript]
+
 [chara_hide_all  time="500"  wait="true"  ]
 [chara_show  name="sisigami"  time="1000"  wait="true"  storage="chara/2/shishigami_normal.png"  width="320"  height="720"  ]
 [return  ]
@@ -13,6 +14,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 [iscript]
 f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 [endscript]
+
 [chara_show  name="sisigami"  time="1000"  wait="true"  storage="chara/2/shishigami_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show_normal
@@ -73,7 +75,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 *debate01
 
 [call  storage="sisigami.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="sisigami.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #獅子神
@@ -218,14 +219,23 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 [call  storage="sisigami.ks"  target="*show2"  ]
 [call  storage="sisigami.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="sisigami.ks"  target="*show_ki"  ]
-[tb_start_text mode=1 ]
+[jump  storage="sisigami.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
+[tb_start_tyrano_code]
 #獅子神
-「あー、オレが占い師なんだわ」[p]
-[_tb_end_text]
+「あー、オレが[emb exp="f.display09"]なんだわ」[p]
+[_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
 [emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
 [_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
+[tb_start_text mode=1 ]
+#獅子神
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+[_tb_end_text]
 
 [return  ]
 *CO2
@@ -259,10 +269,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 
 [call  storage="sisigami.ks"  target="*show2"  ]
 [call  storage="sisigami.ks"  target="*show_gimon"  ]
-[tb_start_text mode=1 ]
+[tb_start_tyrano_code]
 #獅子神
-「占い師が出てくれると助かるんだけどよ」[p]
-[_tb_end_text]
+「[emb exp="f.name"]が出てくれると助かるんだけどよ」[p]
+[_tb_end_tyrano_code]
 
 [return  ]
 *s_human

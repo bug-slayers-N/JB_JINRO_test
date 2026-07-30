@@ -8,8 +8,9 @@
 [chara_hide_all  time="0"  wait="true"  ]
 [call  storage="UI.ks"  target="*myrole"  ]
 [bg  time="0"  method="crossfade"  storage="93853245_p0.png"  ]
+[mask_off  time="300"  effect="fadeOut"  ]
 [call  storage="specialist.ks"  target="*uranai_randam"  ]
-
+[call  storage="specialist.ks"  target="*game_start"  cond="f.role==10"  ]
 [iscript]
 if(parseInt(f.gamemode)>=9&&parseInt(f.role)<=5){
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
@@ -24,13 +25,13 @@ f.display01=wolfNames.join("、");
 
 [jump  storage="debate.ks"  target="*wolf_skip"  cond="f.gamemode<9||f.role>5"  ]
 [tb_start_text mode=1 ]
-人狼は[emb exp="f.display01"]です。[p]
+#システム
+この試合の人狼は[emb exp="f.display01"]です。[p]
 
 [_tb_end_text]
 
 *wolf_skip
 
-[mask_off  time="300"  effect="fadeOut"  ]
 *debate_dialogue
 
 [call  storage="mafutsu.ks"  target="*debate01"  cond="f.player==1"  ]
@@ -50,6 +51,24 @@ var aliveArr = String(f.alive).split(",");
 if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 [endscript]
 
+[iscript]
+f.jump=0;
+f.result=0;
+f.target=0;
+f.ai_actor=0;
+f.role2=0;
+f.win=0;
+f.display01=0;
+f.display02="";
+f.display03="";
+f.display04="";
+f.display05="";
+f.display06="";
+f.display07="";
+f.display08="";
+f.display09="";
+[endscript]
+
 [jump  storage="debate.ks"  target="*auto"  cond="f.player_death==1"  ]
 [glink  color="btn_08_red"  storage="debate.ks"  size="20"  text="疑う"  x="100"  y="50"  width="150"  height=""  _clickable_img=""  target="*doubt"  ]
 [glink  color="btn_08_white"  storage="debate.ks"  size="20"  text="かばう"  x="100"  y="125"  width="150"  height=""  _clickable_img=""  target="*cover"  ]
@@ -62,30 +81,20 @@ if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
 [glink  color="btn_08_yellow"  storage="debate.ks"  size="20"  text="強く疑う"  x="100"  y="275"  width="150"  height=""  _clickable_img=""  target="*push"  ]
 *push_done
 
-[iscript]
-var coArr=String(f.co).split(",");
-if(parseInt(f.gamemode)===9){
-var has1=coArr.indexOf("1")!==-1;
-var has2=coArr.indexOf("2")!==-1;
-f.result=(has1&&has2)?1:0;
-}else{
-f.result=coArr.indexOf("1")!==-1?1:0;
-}
-[endscript]
-
-[jump  storage="debate.ks"  target="*liar"  cond="f.result==1"  ]
+[call  storage="debate.ks"  target="*CO_judge"  ]
+[jump  storage="debate.ks"  target="*pCO_list"  cond="f.display02==1"  ]
 [glink  color="btn_08_purple"  storage="debate.ks"  size="20"  text="COを求める"  x="300"  y="200"  width="150"  height=""  _clickable_img=""  target="*plz_CO"  ]
-[jump  storage="debate.ks"  target="*medium_button"  cond="f.role!=10"  ]
-[glink  color="btn_08_blue"  storage="debate.ks"  size="20"  text="COする"  x="300"  y="50"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
-*medium_button
+*pCO_list
 
-[jump  storage="debate.ks"  target="*fake_button"  cond="f.role!=11"  ]
+[call  storage="debate.ks"  target="*CO_judge"  ]
+[jump  storage="debate.ks"  target="*CO_list"  cond="f.display02==1"  ]
 [glink  color="btn_08_blue"  storage="debate.ks"  size="20"  text="COする"  x="300"  y="50"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
-*fake_button
+*CO_list
 
-[jump  storage="debate.ks"  target="*liar"  cond="f.role>=10"  ]
-[glink  color="btn_08_black"  storage="debate.ks"  size="20"  text="偽COする"  x="300"  y="125"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
-*liar
+[call  storage="debate.ks"  target="*CO_judge"  ]
+[jump  storage="debate.ks"  target="*fake_CO_list"  cond="f.display02==1"  ]
+[glink  color="btn_08_black"  storage="debate.ks"  size="20"  text="偽COする"  x="300"  y="125"  width="150"  height=""  _clickable_img=""  target="*fake_CO"  ]
+*fake_CO_list
 
 [glink  color="btn_07_red"  storage="debate.ks"  size="20"  text="状況確認"  target="*check"  x="213"  y="369"  width=""  height=""  _clickable_img=""  ]
 [s  ]
@@ -130,7 +139,20 @@ f.result=coArr.indexOf("1")!==-1?1:0;
 *CO
 
 [call  storage="system.ks"  target="*action"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[iscript]
+var role=parseInt(f.role);
+if(role===10)f.result=1;
+else if(role===11)f.result=2;
+[endscript]
+
 [jump  storage="CO.ks"  target="*player_CO"  ]
+*fake_CO
+
+[call  storage="system.ks"  target="*action"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.role2='fco'"  name="role2"  cmd="="  op="t"  val="fco"  val_2="undefined"  ]
+[jump  storage="CO.ks"  target="*9mode_choice"  ]
 *say_human
 
 [call  storage="system.ks"  target="*action"  ]
@@ -141,18 +163,6 @@ f.result=coArr.indexOf("1")!==-1?1:0;
 [glink  color="btn_08_lime"  storage="AI.ks"  size="20"  text="様子を見る"  x="100"  y="200"  width="150"  height=""  _clickable_img=""  target="*randam_ai"  ]
 [s  ]
 *check
-
-[iscript]
-f.display01="";
-f.display02="";
-f.display03="";
-f.display04="";
-f.display05="";
-f.display06="";
-f.display07="";
-f.display08="";
-f.display09="";
-[endscript]
 
 [iscript]
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
@@ -214,7 +224,7 @@ f.display09=slots[8];
 [endscript]
 
 [tb_start_text mode=1 ]
-#ガイド
+#システム
 残りの生存者は[emb exp="f.result"]です。[p]
 
 
@@ -244,3 +254,35 @@ f.result=coArr2.some(function(v){return v!=="0";})?0:1;
 [call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
 [call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
 [jump  storage="debate.ks"  target="*debate_top"  ]
+*CO_judge
+
+[tb_eval  exp="f.display01+=1"  name="display01"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
+[iscript]
+function getCO(c){return parseInt(String(f.co).split(',')[c-1]);}
+var gm = parseInt(f.gamemode);
+var coArr = String(f.co).split(',');
+var has1 = coArr.indexOf('1') !== -1;
+var has2 = coArr.indexOf('2') !== -1;
+var role = parseInt(f.role);
+var d1 = parseInt(f.display01);
+if(d1 === 1){
+var cond = (gm === 5 && has1) || (gm === 9 && has1 && has2);
+f.display02 = cond ? 1 : 0;
+}else if(d1 === 2){
+if(role === 10 && has1){
+f.display02 = 1;
+}else if(role === 11 && has2){
+f.display02 = 1;
+}else if(role !== 10 && role !== 11){
+f.display02 = 1;
+}else{
+f.display02 = 0;
+}
+}else if(d1 === 3){
+var condA = (gm === 5 && has1) || (gm === 9 && has1 && has2);
+var condB = getCO(parseInt(f.player)) !== 0;
+f.display02 = (condA || condB) ? 1 : 0;
+}
+[endscript]
+
+[return  ]

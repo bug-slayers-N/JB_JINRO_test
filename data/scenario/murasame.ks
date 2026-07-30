@@ -5,6 +5,7 @@
 [iscript]
 f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [endscript]
+
 [chara_hide_all  time="500"  wait="true"  ]
 [chara_show  name="murasame"  time="1000"  wait="true"  storage="chara/3/murasame_normal.png"  width="320"  height="720"  ]
 [return  ]
@@ -13,6 +14,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [iscript]
 f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [endscript]
+
 [chara_show  name="murasame"  time="1000"  wait="true"  storage="chara/3/murasame_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show_normal
@@ -72,7 +74,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 *debate01
 
 [call  storage="murasame.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="murasame.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #村雨
@@ -217,14 +218,23 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [call  storage="murasame.ks"  target="*show2"  ]
 [call  storage="murasame.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="murasame.ks"  target="*show_ki"  ]
-[tb_start_text mode=1 ]
+[jump  storage="murasame.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
+[tb_start_tyrano_code]
 #村雨
-「言っておく、私が占い師だ」[p]
-[_tb_end_text]
+「言っておく、私が[emb exp="f.display09"]だ」[p]
+[_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
 [emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
 [_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
+[tb_start_text mode=1 ]
+#村雨
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+[_tb_end_text]
 
 [return  ]
 *CO2
@@ -258,10 +268,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 
 [call  storage="murasame.ks"  target="*show2"  ]
 [call  storage="murasame.ks"  target="*show_normal"  ]
-[tb_start_text mode=1 ]
+[tb_start_tyrano_code]
 #村雨
-「占い師は名乗り出るべきではないか？」[p]
-[_tb_end_text]
+「[emb exp="f.name"]は名乗り出るべきではないか？」[p]
+[_tb_end_tyrano_code]
 
 [return  ]
 *s_human

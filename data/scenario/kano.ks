@@ -83,7 +83,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 *debate01
 
 [call  storage="kano.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="kano.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #叶
@@ -233,14 +232,20 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [call  storage="kano.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="kano.ks"  target="*show_ki"  ]
 [call  storage="kano.ks"  target="*kano_namechange"  ]
-[tb_start_text mode=1 ]
-#叶
-「じゃーん！オレが占い師！」[p]
-[_tb_end_text]
-
+[jump  storage="kano.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
+#叶
+「じゃーん！オレが[emb exp="f.name2"]！」[p]
 [emb exp="f.name"]を占ったぞ！結果は[emb exp="f.name2"]！[p]
 [_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
+[tb_start_text mode=1 ]
+#叶
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+[_tb_end_text]
 
 [return  ]
 *CO2
@@ -274,10 +279,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 
 [call  storage="kano.ks"  target="*show2"  ]
 [call  storage="kano.ks"  target="*show_ki"  ]
-[tb_start_text mode=1 ]
+[tb_start_tyrano_code]
 #叶
-「占い師が名乗り出た方が面白くない？」[p]
-[_tb_end_text]
+「[emb exp="f.name"]が名乗り出た方が面白くない？」[p]
+[_tb_end_tyrano_code]
 
 [return  ]
 *s_human

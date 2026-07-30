@@ -75,10 +75,124 @@ f.name = names[f.target];
 
 [tb_eval  exp="f.target=9"  name="target"  cmd="="  op="t"  val="9"  val_2="undefined"  ]
 [jump  storage="UI.ks"  target="*jump"  ]
+*list_judge
+
+[tb_eval  exp="f.display05+=1"  name="display05"  cmd="+="  op="t"  val="1"  ]
+[iscript]
+function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
+var c = parseInt(f.display05);
+if(!isAlive(c) || c === parseInt(f.player)){
+f.display06 = 1;
+}else{
+f.display06 = 0;
+}
+[endscript]
+
+[return  ]
 *listA
 
 [tb_eval  exp="f.list='A'"  name="list"  cmd="="  op="t"  val="A"  val_2="undefined"  ]
-[jump  storage="UI.ks"  target="*list"  ]
+[tb_eval  exp="f.display05=0"  name="display05"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[jump  storage="UI.ks"  target="*listA_9"  cond="f.gamemode==9"  ]
+[jump  storage="UI.ks"  target="*listA_5"  ]
+*listA_9
+
+[tb_eval  exp="f.display04=200"  name="display04"  cmd="="  op="t"  val="200"  ]
+[tb_eval  exp="f.display08=200"  name="display08"  cmd="="  op="t"  val="200"  ]
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_1_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="真経津"  x="200"  y="&f.display04"  target="*list_ma"  ]
+[tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
+*A9_1_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_2_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="獅子神"  x="700"  y="&f.display08"  target="*list_si"  ]
+[tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
+*A9_2_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_3_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="村雨"  x="200"  y="&f.display04"  target="*list_mu"  ]
+[tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
+*A9_3_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_4_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="叶"  x="700"  y="&f.display08"  target="*list_ka"  ]
+[tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
+*A9_4_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_5_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="天堂"  x="200"  y="&f.display04"  target="*list_te"  ]
+[tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
+*A9_5_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_6_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="時雨"  x="700"  y="&f.display08"  target="*list_shigure"  ]
+[tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
+*A9_6_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_7_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="山吹"  x="200"  y="&f.display04"  target="*list_yamabuki"  ]
+[tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
+*A9_7_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_8_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="牙頭"  x="700"  y="&f.display08"  target="*list_gato"  ]
+[tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
+*A9_8_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A9_9_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="漆原"  x="200"  y="&f.display04"  target="*list_urushibara"  ]
+[tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
+*A9_9_skip
+
+[jump  storage="UI.ks"  target="*A9_end"  cond="f.jump=='uranai'"  ]
+[jump  storage="UI.ks"  target="*A9_end"  cond="f.jump=='CO'"  ]
+[call  storage="UI.ks"  target="*back"  ]
+*A9_end
+
+[s  ]
+*listA_5
+
+[tb_eval  exp="f.display05=0"  name="display05"  cmd="="  op="t"  val="0"  ]
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A5_1_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="真経津"  autopos="true"  target="*list_ma"  ]
+*A5_1_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A5_2_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="獅子神"  autopos="true"  target="*list_si"  ]
+*A5_2_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A5_3_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="村雨"  autopos="true"  target="*list_mu"  ]
+*A5_3_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A5_4_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="叶"  autopos="true"  target="*list_ka"  ]
+*A5_4_skip
+
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*A5_5_skip"  cond="f.display06==1"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="天堂"  autopos="true"  target="*list_te"  ]
+*A5_5_skip
+
+[jump  storage="UI.ks"  target="*A5_end"  cond="f.jump=='uranai'"  ]
+[jump  storage="UI.ks"  target="*A5_end"  cond="f.jump=='CO'"  ]
+[call  storage="UI.ks"  target="*back"  ]
+*A5_end
+
+[s  ]
 *listB
 
 [tb_eval  exp="f.list='B'"  name="list"  cmd="="  op="t"  val="B"  val_2="undefined"  ]
@@ -91,203 +205,89 @@ f.name = names[f.target];
 *5mode_pic
 
 [bg  time="1000"  method="crossfade"  storage="BG_selectChara_noText_260429kari.png"  ]
-[jump  storage="UI.ks"  target="*list"  ]
+[jump  storage="UI.ks"  target="*listB_5"  ]
 *9mode_pic
 
 [bg  time="1000"  method="crossfade"  storage="9mode.png"  ]
-*list
+[jump  storage="UI.ks"  target="*listB_9"  ]
+*listB_9
 
-[tb_eval  exp="f.target=1"  name="target"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*ma_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*ma_B"  cond="f.list=='B'"  ]
-*ma_B_jump
+[tb_eval  exp="f.display05=0"  name="display05"  cmd="="  op="t"  val="0"  ]
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_1_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="真経津晨にする"  x="72"  y="297"  target="*list_ma"  ]
+*B9_1_skip
 
-[tb_eval  exp="f.target=2"  name="target"  cmd="="  op="t"  val="2"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*si_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*si_B"  cond="f.list=='B'"  ]
-*si_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_2_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="獅子神敬一にする"  x="315"  y="289"  target="*list_si"  ]
+*B9_2_skip
 
-[tb_eval  exp="f.target=3"  name="target"  cmd="="  op="t"  val="3"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*mu_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*mu_B"  cond="f.list=='B'"  ]
-*mu_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_3_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_blue"  storage="UI.ks"  size="20"  text="村雨礼二にする"  x="573"  y="291"  target="*list_mu"  ]
+*B9_3_skip
 
-[tb_eval  exp="f.target=4"  name="target"  cmd="="  op="t"  val="4"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*ka_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*ka_B"  cond="f.list=='B'"  ]
-*ka_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_4_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_purple"  storage="UI.ks"  size="20"  text="叶黎明にする"  x="825"  y="286"  target="*list_ka"  ]
+*B9_4_skip
 
-[tb_eval  exp="f.target=5"  name="target"  cmd="="  op="t"  val="5"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*te_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*te_B"  cond="f.list=='B'"  ]
-*te_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_5_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1062"  y="283"  target="*list_te"  ]
+*B9_5_skip
 
-[jump  storage="UI.ks"  target="*list_end"  cond="f.gamemode!=9"  ]
-[tb_eval  exp="f.target=6"  name="target"  cmd="="  op="t"  val="6"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*shigure_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*shigure_B"  cond="f.list=='B'"  ]
-*shigure_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_6_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_green"  storage="UI.ks"  size="20"  text="時雨賢人にする"  x="199"  y="600"  target="*list_shigure"  ]
+*B9_6_skip
 
-[tb_eval  exp="f.target=7"  name="target"  cmd="="  op="t"  val="7"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*yamabuki_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*yamabuki_B"  cond="f.list=='B'"  ]
-*yamabuki_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_7_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="山吹千春にする"  x="440"  y="595"  target="*list_yamabuki"  ]
+*B9_7_skip
 
-[tb_eval  exp="f.target=8"  name="target"  cmd="="  op="t"  val="8"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*gato_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*gato_B"  cond="f.list=='B'"  ]
-*gato_B_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_8_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="牙頭猛晴にする"  x="691"  y="591"  target="*list_gato"  ]
+*B9_8_skip
 
-[tb_eval  exp="f.target=9"  name="target"  cmd="="  op="t"  val="9"  val_2="undefined"  ]
-[call  storage="UI.ks"  target="*listB_check"  ]
-[call  storage="UI.ks"  target="*urushibara_A"  cond="f.list=='A'"  ]
-[call  storage="UI.ks"  target="*urushibara_B"  cond="f.list=='B'"  ]
-*urushibara_B_jump
-
-*list_end
-
-[jump  storage="UI.ks"  target="*back2"  cond="f.jump=='uranai'"  ]
-[jump  storage="UI.ks"  target="*back2"  cond="f.jump=='CO'"  ]
-[call  storage="UI.ks"  target="*back"  cond="f.list=='A'"  ]
-*back2
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B9_9_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="漆原伊月にする"  x="944"  y="589"  target="*list_urushibara"  ]
+*B9_9_skip
 
 [s  ]
-*listB_check
+*listB_5
 
-[iscript]
-var t=parseInt(f.target);
-var aliveArr=String(f.alive).split(",");
-f.result=(parseInt(f.player)===t||aliveArr[t-1]==="0")?1:0;
-[endscript]
+[tb_eval  exp="f.display05=0"  name="display05"  cmd="="  op="t"  val="0"  ]
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B5_1_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="真経津晨にする"  x="50"  y="500"  target="*list_ma"  ]
+*B5_1_skip
 
-[jump  storage="UI.ks"  target="*listB_jump"  cond="f.result==1"  ]
-[return  ]
-*listB_jump
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B5_2_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="獅子神敬一にする"  x="305"  y="500"  target="*list_si"  ]
+*B5_2_skip
 
-[jump  storage="UI.ks"  target="*ma_B_jump"  cond="f.target==1"  ]
-[jump  storage="UI.ks"  target="*si_B_jump"  cond="f.target==2"  ]
-[jump  storage="UI.ks"  target="*mu_B_jump"  cond="f.target==3"  ]
-[jump  storage="UI.ks"  target="*ka_B_jump"  cond="f.target==4"  ]
-[jump  storage="UI.ks"  target="*te_B_jump"  cond="f.target==5"  ]
-[jump  storage="UI.ks"  target="*shigure_B_jump"  cond="f.target==6"  ]
-[jump  storage="UI.ks"  target="*yamabuki_B_jump"  cond="f.target==7"  ]
-[jump  storage="UI.ks"  target="*gato_B_jump"  cond="f.target==8"  ]
-[jump  storage="UI.ks"  target="*urushibara_B_jump"  cond="f.target==9"  ]
-*ma_A
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B5_3_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_blue"  storage="UI.ks"  size="20"  text="村雨礼二にする"  x="550"  y="500"  target="*list_mu"  ]
+*B5_3_skip
 
-[glink  color="black"  storage="UI.ks"  size="20"  text="真経津"  autopos="true"  target="*list_ma"  ]
-[return  ]
-*ma_B
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B5_4_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_purple"  storage="UI.ks"  size="20"  text="叶黎明にする"  x="810"  y="500"  target="*list_ka"  ]
+*B5_4_skip
 
-[jump  storage="UI.ks"  target="*ma_B_9"  cond="f.gamemode==9"  ]
-[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="真経津晨にする"  x="50"  y="500"  width=""  height=""  _clickable_img=""  target="*list_ma"  ]
-[jump  storage="UI.ks"  target="*ma_B_end"  ]
-*ma_B_9
+[call  storage="UI.ks"  target="*list_judge"  ]
+[jump  storage="UI.ks"  target="*B5_5_skip"  cond="f.display06==1"  ]
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1050"  y="500"  target="*list_te"  ]
+*B5_5_skip
 
-[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="真経津晨にする"  x="72"  y="297"  width=""  height=""  _clickable_img=""  target="*list_ma"  ]
-*ma_B_end
-
-[return  ]
-*si_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="獅子神"  autopos="true"  target="*list_si"  ]
-[return  ]
-*si_B
-
-[jump  storage="UI.ks"  target="*si_B_9"  cond="f.gamemode==9"  ]
-[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="獅子神敬一にする"  x="305"  y="500"  width=""  height=""  _clickable_img=""  target="*list_si"  ]
-[jump  storage="UI.ks"  target="*si_B_end"  ]
-*si_B_9
-
-[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="獅子神敬一にする"  x="315"  y="289"  width=""  height=""  _clickable_img=""  target="*list_si"  ]
-*si_B_end
-
-[return  ]
-*mu_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="村雨"  autopos="true"  target="*list_mu"  ]
-[return  ]
-*mu_B
-
-[jump  storage="UI.ks"  target="*mu_B_9"  cond="f.gamemode==9"  ]
-[glink  color="btn_06_blue"  storage="UI.ks"  size="20"  text="村雨礼二にする"  x="550"  y="500"  width=""  height=""  _clickable_img=""  target="*list_mu"  ]
-[jump  storage="UI.ks"  target="*mu_B_end"  ]
-*mu_B_9
-
-[glink  color="btn_06_blue"  storage="UI.ks"  size="20"  text="村雨礼二にする"  x="573"  y="291"  width=""  height=""  _clickable_img=""  target="*list_mu"  ]
-*mu_B_end
-
-[return  ]
-*ka_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="叶"  autopos="true"  target="*list_ka"  ]
-[return  ]
-*ka_B
-
-[jump  storage="UI.ks"  target="*ka_B_9"  cond="f.gamemode==9"  ]
-[glink  color="btn_06_purple"  storage="UI.ks"  size="20"  text="叶黎明にする"  x="810"  y="500"  width=""  height=""  _clickable_img=""  target="*list_ka"  ]
-[jump  storage="UI.ks"  target="*ka_B_end"  ]
-*ka_B_9
-
-[glink  color="btn_06_purple"  storage="UI.ks"  size="20"  text="叶黎明にする"  x="825"  y="286"  width=""  height=""  _clickable_img=""  target="*list_ka"  ]
-*ka_B_end
-
-[return  ]
-*te_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="天堂"  autopos="true"  target="*list_te"  ]
-[return  ]
-*te_B
-
-[jump  storage="UI.ks"  target="*te_B_9"  cond="f.gamemode==9"  ]
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1050"  y="500"  width=""  height=""  _clickable_img=""  target="*list_te"  ]
-[jump  storage="UI.ks"  target="*te_B_end"  ]
-*te_B_9
-
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1062"  y="283"  width=""  height=""  _clickable_img=""  target="*list_te"  ]
-*te_B_end
-
-[return  ]
-*shigure_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="時雨"  autopos="true"  target="*list_shigure"  ]
-[return  ]
-*shigure_B
-
-[glink  color="btn_06_green"  storage="UI.ks"  size="20"  text="時雨賢人にする"  x="199"  y="600"  width=""  height=""  _clickable_img=""  target="*list_shigure"  ]
-[return  ]
-*yamabuki_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="山吹"  autopos="true"  target="*list_yamabuki"  ]
-[return  ]
-*yamabuki_B
-
-[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="山吹千春にする"  x="440"  y="595"  width=""  height=""  _clickable_img=""  target="*list_yamabuki"  ]
-[return  ]
-*gato_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="牙頭"  autopos="true"  target="*list_gato"  ]
-[return  ]
-*gato_B
-
-[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="牙頭猛晴にする"  x="691"  y="591"  width=""  height=""  _clickable_img=""  target="*list_gato"  ]
-[return  ]
-*urushibara_A
-
-[glink  color="black"  storage="UI.ks"  size="20"  text="漆原"  autopos="true"  target="*list_urushibara"  ]
-[return  ]
-*urushibara_B
-
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="漆原伊月にする"  x="944"  y="589"  width=""  height=""  _clickable_img=""  target="*list_urushibara"  ]
-[return  ]
+[s  ]
 *back
 
 [glink  color="black"  storage="UI.ks"  size="20"  text="戻る"  target="*back_top"  ]
@@ -295,16 +295,14 @@ f.result=(parseInt(f.player)===t||aliveArr[t-1]==="0")?1:0;
 *jump
 
 [jump  storage="CO.ks"  target="*CO_back"  cond="f.jump=='CO'"  ]
+[jump  storage="specialist.ks"  target="*fakeseer_back"  cond="f.jump=='fakeseer'"  ]
 [jump  storage="doubt.ks"  target="*list_back"  cond="f.jump=='doubt'"  ]
 [jump  storage="cover.ks"  target="*list_back"  cond="f.jump=='cover'"  ]
 [jump  storage="vote.ks"  target="*player_vote_back"  cond="f.jump=='vote'"  ]
-[jump  storage="uranai.ks"  target="*uranai_back"  cond="f.jump=='uranai'"  ]
 [jump  storage="night.ks"  target="*wolf_end"  cond="f.jump=='wolf'"  ]
 *back_top
 
 [tb_eval  exp="f.action-=1"  name="action"  cmd="-="  op="t"  val="1"  val_2="undefined"  ]
-[tb_eval  exp="f.jump=0"  name="jump"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-[tb_eval  exp="f.win=0"  name="win"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [jump  storage="debate.ks"  target="*debate_top"  ]
 *vote
 
@@ -342,4 +340,5 @@ f.result="占い報告："+disps.join("")+(pdisps.length>0?"　霊媒報告："+
 [endscript]
 
 [tb_ptext_show  x="43"  y="35"  size="20"  color="0x000000"  time="0"  text="&f.result;"  anim="false"  face="fantasy"  edge="undefined"  shadow="undefined"  ]
-[jump  storage="UI.ks"  target="*list"  ]
+[jump  storage="UI.ks"  target="*listB_9"  cond="f.gamemode==9"  ]
+[jump  storage="UI.ks"  target="*listB_5"  ]

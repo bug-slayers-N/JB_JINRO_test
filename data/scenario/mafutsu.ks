@@ -70,7 +70,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 *debate01
 
 [call  storage="mafutsu.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="mafutsu.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #真経津
@@ -216,14 +215,20 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [call  storage="mafutsu.ks"  target="*show2"  ]
 [call  storage="mafutsu.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="mafutsu.ks"  target="*show_raku"  ]
+[jump  storage="mafutsu.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
+[tb_start_tyrano_code]
+#真経津
+「はいはーい！ボクが[emb exp="f.display09"！」[p]
+「[emb exp="f.name"]さんは[emb exp="f.name2"]だったよ！」[p]
+[_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
 [tb_start_text mode=1 ]
 #真経津
-「はいはーい！ボクが占い師！」[p]
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
 [_tb_end_text]
-
-[tb_start_tyrano_code]
-[emb exp="f.name"]さんを占ったよ！結果は[emb exp="f.name2"]！[p]
-[_tb_end_tyrano_code]
 
 [return  ]
 *CO2
@@ -255,12 +260,12 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [jump  storage="CO.ks"  target="*vsCO_back"  ]
 *pCO
 
-[call  storage="mafutsu.ks"  target="*show2"  ]
+[call  storage="mafutsu.ks"  target="*show"  ]
 [call  storage="mafutsu.ks"  target="*show_normal"  ]
-[tb_start_text mode=1 ]
+[tb_start_tyrano_code]
 #真経津
-「そういえば占い師って誰なの～？」[p]
-[_tb_end_text]
+「そういえばって[emb exp="f.name"]って誰なの～？」[p]
+[_tb_end_tyrano_code]
 
 [chara_hide_all  time="0"  wait="true"  ]
 [return  ]
@@ -276,7 +281,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [return  ]
 *human
 
-[call  storage="mafutsu.ks"  target="*show2"  ]
+[call  storage="mafutsu.ks"  target="*show"  ]
 [call  storage="mafutsu.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #真経津

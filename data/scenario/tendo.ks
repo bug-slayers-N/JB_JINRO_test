@@ -12,6 +12,7 @@ if(f.name==="叶")f.name="黎明";
 [iscript]
 f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [endscript]
+
 [chara_hide_all  time="500"  wait="true"  ]
 [chara_show  name="tendo"  time="1000"  wait="true"  storage="chara/5/tendo_normal.png"  width="320"  height="720"  ]
 [return  ]
@@ -20,6 +21,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [iscript]
 f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [endscript]
+
 [chara_show  name="tendo"  time="1000"  wait="true"  storage="chara/5/tendo_normal.png"  width="320"  height="720"  ]
 [return  ]
 *show_normal
@@ -80,7 +82,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 *debate01
 
 [call  storage="tendo.ks"  target="*debate_Top"  ]
-[call  storage="uranai.ks"  target="*game_start"  cond="f.role==10"  ]
 [jump  storage="tendo.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #天堂
@@ -224,14 +225,23 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [call  storage="tendo.ks"  target="*show2"  ]
 [call  storage="tendo.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="tendo.ks"  target="*tendo_namechange"  ]
-[tb_start_text mode=1 ]
+[jump  storage="tendo.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
+[tb_start_tyrano_code]
 #天堂
-「私が占い師だ。神託を受けよ、人の子よ」[p]
-[_tb_end_text]
+「私が[emb exp="f.display09"]だ。神託を受けよ、人の子よ」[p]
+[_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
 [emb exp="f.name"]は[emb exp="f.name2"]だ。[p]
 [_tb_end_tyrano_code]
+
+[return  ]
+*CO_day1
+
+[tb_start_text mode=1 ]
+#天堂
+「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+[_tb_end_text]
 
 [return  ]
 *CO2

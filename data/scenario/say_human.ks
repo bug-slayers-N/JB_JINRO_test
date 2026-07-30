@@ -3,6 +3,7 @@
 *say_human
 
 [tb_eval  exp="f.display07=f.ai_actor"  name="display07"  cmd="="  op="h"  val="ai_actor"  val_2="undefined"  ]
+[tb_eval  exp="f.say_human=1"  name="say_human"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
 [call  storage="mafutsu.ks"  target="*s_human"  cond="f.display07==1"  ]
 [call  storage="sisigami.ks"  target="*s_human"  cond="f.display07==2"  ]
 [call  storage="murasame.ks"  target="*s_human"  cond="f.display07==3"  ]
