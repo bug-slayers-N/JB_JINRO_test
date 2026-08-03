@@ -235,7 +235,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [jump  storage="kano.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #叶
-「じゃーん！オレが[emb exp="f.name2"]！」[p]
+「じゃーん！オレが[emb exp="f.display09"]！」[p]
 [emb exp="f.name"]を占ったぞ！結果は[emb exp="f.name2"]！[p]
 [_tb_end_tyrano_code]
 

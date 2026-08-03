@@ -7,45 +7,11 @@
 夜になりました。[p]
 [_tb_end_text]
 
+[call  storage="specialist.ks"  target="*seer_night"  ]
+[call  storage="specialist.ks"  target="*psychic_night"  ]
+[call  storage="specialist.ks"  target="*fake_seer_night"  ]
+[call  storage="specialist.ks"  target="*fake_psychic_night"  ]
 [jump  storage="night.ks"  target="*player_death"  cond="f.player_death==1"  ]
-[jump  storage="uranai.ks"  target="*uranai_night"  cond="f.role==10"  ]
-[iscript]
-var coArr = String(f.co).split(",");
-var playerCO = coArr[parseInt(f.player)-1] === "1";
-var role = parseInt(f.role);
-f.result = 0; // 初期化（前ターンの残り値をクリア）
-if(playerCO && (role <= 5 || role === 9)){
-f.result = "fake";
-}
-[endscript]
-
-[jump  storage="night.ks"  target="*fake_end"  cond="f.result!='fake'"  ]
-[tb_eval  exp="f.name2='fake'"  name="name2"  cmd="="  op="t"  val="fake"  val_2="undefined"  ]
-[tb_start_text mode=1 ]
-#システム
-明日の占い報告を決めましょう。[p]
-[_tb_end_text]
-
-[jump  storage="CO.ks"  target="*player_fake_CO"  ]
-*fake
-
-[iscript]
-var actorNum = parseInt(f.player);
-var claim2 = String(f.claim2).split(",");
-var idx = (actorNum-1)*2;
-claim2[idx] = parseInt(f.target);
-claim2[idx+1] = parseInt(f.result);
-f.claim2 = claim2.join(",");
-[endscript]
-
-*fake_end
-
-*player_death
-
-[call  storage="uranai.ks"  target="*uranai_randam"  ]
-*uranai_back
-
-[call  storage="uranai.ks"  target="*fake_CO2"  ]
 [jump  storage="night.ks"  target="*ai_wolf"  cond="f.role>5"  ]
 [jump  storage="night.ks"  target="*player_wolf"  ]
 *ai_wolf
