@@ -270,7 +270,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #山吹
-「[emb exp="f.name"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.display09"]は名乗り出るべきではないか？」[p]
 [_tb_end_tyrano_code]
 
 [return  ]

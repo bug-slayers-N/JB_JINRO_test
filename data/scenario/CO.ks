@@ -58,7 +58,7 @@ COの役職は？[p]
 
 [iscript]
 var result=parseInt(f.result);
-f.name=(result===1)?"占い師":"霊媒師";
+f.display09=(result===1)?"占い師":"霊媒師";
 [endscript]
 
 [call  storage="mafutsu.ks"  target="*pCO"  cond="f.ai_actor==1"  ]
@@ -101,17 +101,26 @@ f.jump = qualifies?1:0;
 var role=parseInt(f.role);
 var result=parseInt(f.result);
 var jmp=0;
-if(role===10)jmp=1;
-else if(role===11)jmp=2;
-else if(role<10&&result===1)jmp=3;
-else if(role<10&&result===2)jmp=4;
-if(parseInt(f.day)===1&&(jmp===2||jmp===4))jmp=5;
+
+if(role===10){
+	jmp=1;
+}else if(role===11){
+	jmp=2;
+}else{
+	if(result===1){
+		jmp=3;
+	}else if(result===2){
+		jmp=4;
+	}
+}
+
 f.jump=jmp;
-if(jmp!==5){
-var coVal=(jmp===1||jmp===3)?"1":"2";
-var coArr=String(f.co).split(",");
-coArr[parseInt(f.player)-1]=coVal;
-f.co=coArr.join(",");
+
+if(jmp!==0){
+	var coVal=(jmp===1||jmp===3)?"1":"2";
+	var coArr=String(f.co).split(",");
+	coArr[parseInt(f.player)-1]=coVal;
+	f.co=coArr.join(",");
 }
 [endscript]
 

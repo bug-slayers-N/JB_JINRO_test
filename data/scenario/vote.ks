@@ -305,6 +305,7 @@ var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹",
 f.name=names[parseInt(f.result)];
 [endscript]
 
+[tb_eval  exp="f.role2=f.result"  name="role2"  cmd="="  op="h"  val="result"  val_2="undefined"  ]
 [tb_start_text mode=1 ]
 投票の結果、[emb exp="f.name"]の処刑が決まりました。[p]
 [_tb_end_text]

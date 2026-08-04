@@ -281,7 +281,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [call  storage="kano.ks"  target="*show_ki"  ]
 [tb_start_tyrano_code]
 #叶
-「[emb exp="f.name"]が名乗り出た方が面白くない？」[p]
+「[emb exp="f.display09"]が名乗り出た方が面白くない？」[p]
 [_tb_end_tyrano_code]
 
 [return  ]

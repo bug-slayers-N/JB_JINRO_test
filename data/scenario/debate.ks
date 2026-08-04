@@ -152,11 +152,13 @@ f.display09="";
 
 [call  storage="system.ks"  target="*action"  ]
 [tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
-[iscript]
-var role=parseInt(f.role);
-if(role===10)f.result=1;
-else if(role===11)f.result=2;
-[endscript]
+[jump  storage="debate.ks"  target="*seer"  cond="f.role==11"  ]
+[tb_eval  exp="f.result=1"  name="result"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
+[jump  storage="debate.ks"  target="*psychic"  ]
+*seer
+
+[tb_eval  exp="f.result=2"  name="result"  cmd="="  op="t"  val="2"  val_2="undefined"  ]
+*psychic
 
 [jump  storage="CO.ks"  target="*player_CO"  ]
 *fake_CO

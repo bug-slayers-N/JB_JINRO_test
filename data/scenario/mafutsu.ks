@@ -218,7 +218,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [jump  storage="mafutsu.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #真経津
-「はいはーい！ボクが[emb exp="f.display09"！」[p]
+「はいはーい！ボクが[emb exp="f.display09"]！」[p]
 「[emb exp="f.name"]さんは[emb exp="f.name2"]だったよ！」[p]
 [_tb_end_tyrano_code]
 
@@ -264,7 +264,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [call  storage="mafutsu.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #真経津
-「そういえばって[emb exp="f.name"]って誰なの～？」[p]
+「そういえばって[emb exp="f.display09"]って誰なの～？」[p]
 [_tb_end_tyrano_code]
 
 [chara_hide_all  time="0"  wait="true"  ]

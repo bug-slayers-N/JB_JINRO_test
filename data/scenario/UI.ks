@@ -153,15 +153,12 @@ f.display06 = 0;
 [tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
 *A9_9_skip
 
-[jump  storage="UI.ks"  target="*A9_end"  cond="f.jump=='uranai'"  ]
-[jump  storage="UI.ks"  target="*A9_end"  cond="f.jump=='CO'"  ]
 [call  storage="UI.ks"  target="*back"  ]
 *A9_end
 
 [s  ]
 *listA_5
 
-[tb_eval  exp="f.display05=0"  name="display05"  cmd="="  op="t"  val="0"  ]
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A5_1_skip"  cond="f.display06==1"  ]
 [glink  color="black"  storage="UI.ks"  size="20"  text="真経津"  autopos="true"  target="*list_ma"  ]
@@ -187,8 +184,6 @@ f.display06 = 0;
 [glink  color="black"  storage="UI.ks"  size="20"  text="天堂"  autopos="true"  target="*list_te"  ]
 *A5_5_skip
 
-[jump  storage="UI.ks"  target="*A5_end"  cond="f.jump=='uranai'"  ]
-[jump  storage="UI.ks"  target="*A5_end"  cond="f.jump=='CO'"  ]
 [call  storage="UI.ks"  target="*back"  ]
 *A5_end
 
@@ -295,6 +290,7 @@ f.display06 = 0;
 *jump
 
 [jump  storage="CO.ks"  target="*CO_back"  cond="f.jump=='CO'"  ]
+[jump  storage="specialist.ks"  target="*seer_back"  cond="f.jump=='seer'"  ]
 [jump  storage="specialist.ks"  target="*fakeseer_back"  cond="f.jump=='fakeseer'"  ]
 [jump  storage="doubt.ks"  target="*list_back"  cond="f.jump=='doubt'"  ]
 [jump  storage="cover.ks"  target="*list_back"  cond="f.jump=='cover'"  ]

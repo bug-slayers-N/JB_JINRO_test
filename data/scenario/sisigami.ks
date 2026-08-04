@@ -271,7 +271,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 [call  storage="sisigami.ks"  target="*show_gimon"  ]
 [tb_start_tyrano_code]
 #獅子神
-「[emb exp="f.name"]が出てくれると助かるんだけどよ」[p]
+「[emb exp="f.display09"]が出てくれると助かるんだけどよ」[p]
 [_tb_end_tyrano_code]
 
 [return  ]

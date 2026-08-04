@@ -225,7 +225,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [jump  storage="shigure.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #時雨
-「おっとすいまん、私が[emb exp="f.display09"]です」[p]
+「おっとすいません、私が[emb exp="f.display09"]です」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
@@ -274,7 +274,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #時雨
-「[emb exp="f.name"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.display09"]は名乗り出るべきではないか？」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
