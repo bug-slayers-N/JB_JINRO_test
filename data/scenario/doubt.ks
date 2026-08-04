@@ -42,15 +42,8 @@ f.like = likes.join(",");
 [jump  storage="doubt.ks"  target="*push"  cond="f.win=='push'"  ]
 *push_back
 
-[jump  storage="mafutsu.ks"  target="*doubt2"  cond="f.player==1"  ]
-[jump  storage="sisigami.ks"  target="*doubt2"  cond="f.player==2"  ]
-[jump  storage="murasame.ks"  target="*doubt2"  cond="f.player==3"  ]
-[jump  storage="kano.ks"  target="*doubt2"  cond="f.player==4"  ]
-[jump  storage="tendo.ks"  target="*doubt2"  cond="f.player==5"  ]
-[jump  storage="shigure.ks"  target="*doubt2"  cond="f.player==6"  ]
-[jump  storage="yamabuki.ks"  target="*doubt2"  cond="f.player==7"  ]
-[jump  storage="gato.ks"  target="*doubt2"  cond="f.player==8"  ]
-[jump  storage="urushibara.ks"  target="*doubt2"  cond="f.player==9"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[jump  storage="doubt.ks"  target="*dispatch_doubt2"  ]
 *show
 
 [call  storage="mafutsu.ks"  target="*kuro"  cond="f.target==1"  ]
@@ -365,6 +358,8 @@ var likeIdx = gi(target, actorNum);
 lk[likeIdx] = parseInt(lk[likeIdx]) - 10;
 f.like = lk.join(",");
 [endscript]
+
+*dispatch_doubt2
 
 [jump  storage="mafutsu.ks"  target="*doubt2"  cond="f.ai_actor==1"  ]
 [jump  storage="sisigami.ks"  target="*doubt2"  cond="f.ai_actor==2"  ]

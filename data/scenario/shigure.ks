@@ -53,17 +53,25 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #時雨
-「え、人狼ゲームですか？またなんでそんな…」[p]
+「え、人狼ゲームですか？また何故に？」[p]
+「……」[p]
+
 [_tb_end_text]
 
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
-「千晴君も一緒なのですね」[p]
+「失敬、VIPの皆様との余興なのですね」[p]
+「それに千晴君も一緒とのことで」[p]
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+「またぞろ何をしでかすかわかりませんし」[p]
 [_tb_end_text]
 
 [call  storage="shigure.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
-「仕方ありません、行きましょう」[p]
+「ちゃんと見ててあげませんとね」[p]
 [_tb_end_text]
 
 [return  ]
@@ -172,7 +180,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *cover
 
 [tb_start_text mode=1 ]
-「誰なら信じられますかね？」[p]
+「誰を味方につけておきます？」[p]
 [_tb_end_text]
 
 [jump  storage="cover.ks"  target="*cover"  ]
@@ -204,7 +212,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #時雨
-「私だと？まったく、とんだマヌケ共め」[p]
+「警察に縄をかけるなんて、次は取調室で会いましょうね」[p]
 [_tb_end_text]
 
 [chara_hide_all  time="1000"  wait="true"  ]
@@ -217,11 +225,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [jump  storage="shigure.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #時雨
-「言っておく、私が[emb exp="f.display09"]だ」[p]
+「おっとすいまん、私が[emb exp="f.display09"]です」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
-[emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
+[emb exp="f.name"]は[emb exp="f.name2"]なようです。[p]
 [_tb_end_tyrano_code]
 
 [return  ]

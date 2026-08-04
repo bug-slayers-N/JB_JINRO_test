@@ -12,6 +12,26 @@
 [call  storage="specialist.ks"  target="*uranai_randam"  ]
 [call  storage="specialist.ks"  target="*game_start"  cond="f.role==10"  ]
 [iscript]
+// ===== 人狼の初期認識：人狼同士のliarを相互に確定(5)としてセット =====
+// モードに依存しない（5人モードは人狼が1人のため対象ペアが存在せず、ループは何もしない）
+(function(){
+var n=parseInt(f.gamemode);
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+var roles=String(f.character).split(",").map(Number);
+var wolves=[];
+for(var i=1;i<=n;i++){if(roles[i-1]<=5)wolves.push(i);}
+var lr=String(f.liar).split(",");
+for(var a=0;a<wolves.length;a++){
+for(var b=0;b<wolves.length;b++){
+if(a===b)continue;
+lr[gi(wolves[a],wolves[b])]="5";
+}
+}
+f.liar=lr.join(",");
+})();
+[endscript]
+
+[iscript]
 if(parseInt(f.gamemode)>=9&&parseInt(f.role)<=5){
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
 var charArr=String(f.character).split(",");
@@ -34,15 +54,7 @@ f.display01=wolfNames.join("、");
 
 *debate_dialogue
 
-[call  storage="mafutsu.ks"  target="*debate01"  cond="f.player==1"  ]
-[call  storage="sisigami.ks"  target="*debate01"  cond="f.player==2"  ]
-[call  storage="murasame.ks"  target="*debate01"  cond="f.player==3"  ]
-[call  storage="kano.ks"  target="*debate01"  cond="f.player==4"  ]
-[call  storage="tendo.ks"  target="*debate01"  cond="f.player==5"  ]
-[call  storage="shigure.ks"  target="*debate01"  cond="f.player==6"  ]
-[call  storage="yamabuki.ks"  target="*debate01"  cond="f.player==7"  ]
-[call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
-[call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
+[call  storage="debate.ks"  target="*char_dispatch_debate01"  ]
 [jump  storage="end.ks"  target="*turn_count"  ]
 *debate_top
 
@@ -244,6 +256,10 @@ f.result=coArr2.some(function(v){return v!=="0";})?0:1;
 *0CO
 
 [jump  storage="tutorial.ks"  target="*text"  cond="f.tutorial==1"  ]
+[call  storage="debate.ks"  target="*char_dispatch_debate01"  ]
+[jump  storage="debate.ks"  target="*debate_top"  ]
+*char_dispatch_debate01
+
 [call  storage="mafutsu.ks"  target="*debate01"  cond="f.player==1"  ]
 [call  storage="sisigami.ks"  target="*debate01"  cond="f.player==2"  ]
 [call  storage="murasame.ks"  target="*debate01"  cond="f.player==3"  ]
@@ -253,7 +269,7 @@ f.result=coArr2.some(function(v){return v!=="0";})?0:1;
 [call  storage="yamabuki.ks"  target="*debate01"  cond="f.player==7"  ]
 [call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
 [call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
-[jump  storage="debate.ks"  target="*debate_top"  ]
+[return  ]
 *CO_judge
 
 [tb_eval  exp="f.display01+=1"  name="display01"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]

@@ -34,15 +34,8 @@ lk[idx]=parseInt(lk[idx])+(murasame?30:20);
 f.like=lk.join(",");
 [endscript]
 
-[jump  storage="mafutsu.ks"  target="*cover2"  cond="f.player==1"  ]
-[jump  storage="sisigami.ks"  target="*cover2"  cond="f.player==2"  ]
-[jump  storage="murasame.ks"  target="*cover2"  cond="f.player==3"  ]
-[jump  storage="kano.ks"  target="*cover2"  cond="f.player==4"  ]
-[jump  storage="tendo.ks"  target="*cover2"  cond="f.player==5"  ]
-[jump  storage="shigure.ks"  target="*cover2"  cond="f.player==6"  ]
-[jump  storage="yamabuki.ks"  target="*cover2"  cond="f.player==7"  ]
-[jump  storage="gato.ks"  target="*cover2"  cond="f.player==8"  ]
-[jump  storage="urushibara.ks"  target="*cover2"  cond="f.player==9"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[jump  storage="cover.ks"  target="*dispatch_cover2"  ]
 *show
 
 [call  storage="mafutsu.ks"  target="*shiro"  cond="f.target==1"  ]
@@ -198,7 +191,6 @@ if(target===0){
 var pool=[];
 for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||hasCO(i)||reportedWolf(actorNum,i))continue;
-if(actorCO&&hasCO(i))continue;
 if(parseInt(lk[gi(i,actorNum)])>=0)pool.push(i);
 }
 if(pool.length>0){
@@ -306,6 +298,8 @@ lk[idx]=parseInt(lk[idx])+(murasame?30:20);
 }
 f.like=lk.join(",");
 [endscript]
+
+*dispatch_cover2
 
 [jump  storage="mafutsu.ks"  target="*cover2"  cond="f.ai_actor==1"  ]
 [jump  storage="sisigami.ks"  target="*cover2"  cond="f.ai_actor==2"  ]

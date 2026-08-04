@@ -449,6 +449,10 @@ f.name=names[parseInt(f.player)];
 [call  storage="murasame.ks"  target="*noisy"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*noisy"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*noisy"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*noisy"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*noisy"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*noisy"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*noisy"  cond="f.target==9"  ]
 [jump  storage="observe.ks"  target="*observe"  ]
 *quiet
 
