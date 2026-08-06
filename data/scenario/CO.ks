@@ -114,9 +114,11 @@ if(role===10){
 	}
 }
 
+if(parseInt(f.day)===1&&(jmp===2||jmp===4))jmp=5;
+
 f.jump=jmp;
 
-if(jmp!==0){
+if(jmp!==0&&jmp!==5){
 	var coVal=(jmp===1||jmp===3)?"1":"2";
 	var coArr=String(f.co).split(",");
 	coArr[parseInt(f.player)-1]=coVal;
@@ -271,10 +273,13 @@ var latest = mine[0];
 for(var k=1;k<mine.length;k++){
 if(mine[k][0] > latest[0]) latest = mine[k];
 }
+// latest[2]===0は「処刑が無かった日の霊媒報告（対象者0・結果0）」を指す特殊値
+f.jump=(latest[2]===0)?1:0;
 f.name = charNames[latest[2]];
 f.name2 = resultNames[latest[3]];
 [endscript]
 
+[jump  storage="CO.ks"  target="*CO_characall_none"  cond="f.jump==1"  ]
 *CO_dialogue
 
 [call  storage="mafutsu.ks"  target="*CO"  cond="f.ai_actor==1"  ]
@@ -286,6 +291,14 @@ f.name2 = resultNames[latest[3]];
 [call  storage="yamabuki.ks"  target="*CO"  cond="f.ai_actor==7"  ]
 [call  storage="gato.ks"  target="*CO"  cond="f.ai_actor==8"  ]
 [call  storage="urushibara.ks"  target="*CO"  cond="f.ai_actor==9"  ]
+[jump  storage="CO.ks"  target="*CO_characall_end"  ]
+*CO_characall_none
+
+[tb_start_tyrano_code]
+#システム
+処刑がなかったので報告はありませんでした[p]
+[_tb_end_tyrano_code]
+
 *CO_characall_end
 
 *vsCO

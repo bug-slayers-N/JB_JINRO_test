@@ -81,11 +81,13 @@ f.name = names[f.target];
 [iscript]
 function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
 var c = parseInt(f.display05);
-if(!isAlive(c) || c === parseInt(f.player)){
-f.display06 = 1;
-}else{
-f.display06 = 0;
+var hide = (!isAlive(c) || c === parseInt(f.player));
+if(!hide && f.jump==='wolf'){
+// 人狼の襲撃対象選択時のみ、仲間の人狼（役職番号5以下）を選択肢から除外する
+var role = parseInt(String(f.character).split(',')[c-1]);
+if(role <= 5) hide = true;
 }
+f.display06 = hide ? 1 : 0;
 [endscript]
 
 [return  ]

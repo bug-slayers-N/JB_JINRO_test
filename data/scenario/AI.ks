@@ -97,6 +97,17 @@ if(r < cum) return cmds[k][0];
 return cmds[cmds.length-1][0];
 }
 f.jump = pickCmd(cmds);
+if(f.jump===6){
+var canSeer=!coUsed1;
+var canMedium=gamemode9&&day>=2&&!coUsed2;
+if(canSeer&&canMedium){
+f.result=(Math.random()<0.5)?1:2;
+}else if(canSeer){
+f.result=1;
+}else if(canMedium){
+f.result=2;
+}
+}
 [endscript]
 
 [jump  storage="doubt.ks"  target="*doubt_ai"  cond="f.jump==1"  ]

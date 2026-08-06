@@ -124,45 +124,69 @@ f.display01=aliveNames.join("、");
 [_tb_end_text]
 
 [iscript]
+// 占い師(role10)の生存確認
+var n=parseInt(f.gamemode);
+var charArr0=String(f.character).split(',').map(Number);
+var aliveArr0=String(f.alive).split(',');
+var seerChar0=0;
+for(var i=1;i<=n;i++){if(charArr0[i-1]===10){seerChar0=i;break;}}
+f.jump=(seerChar0>0&&aliveArr0[seerChar0-1]==="1")?1:0;
+[endscript]
+
+[call  storage="specialist.ks"  target="*seer_CO"  cond="f.jump==1"  ]
+
+[iscript]
+// 霊媒師(role11)の生存確認
+var n=parseInt(f.gamemode);
+var charArr0=String(f.character).split(',').map(Number);
+var aliveArr0=String(f.alive).split(',');
+var psychicChar0=0;
+for(var i=1;i<=n;i++){if(charArr0[i-1]===11){psychicChar0=i;break;}}
+f.jump=(psychicChar0>0&&aliveArr0[psychicChar0-1]==="1")?1:0;
+[endscript]
+
+[call  storage="specialist.ks"  target="*psychic_CO"  cond="f.jump==1"  ]
+
+[iscript]
 var charNames=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var aliveArr=String(f.alive).split(',');
+var targetDay=parseInt(f.day)-1;
 
 // f.sclaim: 占い師申告ログ "day,reporter,target,result" 4値1セットの追記式ログ
+// day===targetDay(現在dayマイナス1)かつ報告者が生存している分だけ表示対象にする
 var sArr=String(f.sclaim).split(',');
-var sShown=parseInt(f.sclaim_shown);
-if(isNaN(sShown))sShown=-1;
-var sMaxDay=sShown;
 var sLines=[];
 for(var i=0;i+3<sArr.length;i+=4){
 var sDay=parseInt(sArr[i]);
 var sReporter=parseInt(sArr[i+1]);
 var sTarget=parseInt(sArr[i+2]);
 var sResult=parseInt(sArr[i+3]);
-if(sDay>sShown){
+if(sDay===targetDay&&aliveArr[sReporter-1]==="1"){
 sLines.push(charNames[sReporter]+"は"+charNames[sTarget]+"を"+(sResult===1?"人狼":"人間")+"と報告しました。");
-if(sDay>sMaxDay)sMaxDay=sDay;
 }
 }
 f.display01=sLines.length>0?("占い師の報告は次の通りです。"+sLines.join("")):"";
-f.sclaim_shown=sMaxDay;
 
 // f.pclaim: 霊媒師申告ログ 同じく"day,reporter,target,result"4値1セット
+// target===0は「その日は処刑が無かった」ことを表す特殊値。1件でも該当すればその日は全員target=0のはずなので、
+// 通常の一覧表示の代わりに専用テキストを1回だけ出す。
 var pArr=String(f.pclaim).split(',');
-var pShown=parseInt(f.pclaim_shown);
-if(isNaN(pShown))pShown=-1;
-var pMaxDay=pShown;
 var pLines=[];
+var pNoExecution=false;
 for(var i=0;i+3<pArr.length;i+=4){
 var pDay=parseInt(pArr[i]);
 var pReporter=parseInt(pArr[i+1]);
 var pTarget=parseInt(pArr[i+2]);
 var pResult=parseInt(pArr[i+3]);
-if(pDay>pShown){
+if(pDay===targetDay&&aliveArr[pReporter-1]==="1"){
+if(pTarget===0){
+pNoExecution=true;
+}else{
 pLines.push(charNames[pReporter]+"は"+charNames[pTarget]+"を"+(pResult===1?"人狼":"人間")+"と報告しました。");
-if(pDay>pMaxDay)pMaxDay=pDay;
 }
 }
-f.display02=pLines.length>0?("霊媒師の報告は次の通りです。"+pLines.join("")):"";
-f.pclaim_shown=pMaxDay;
+}
+f.display02=pNoExecution?"処刑がなかったので報告はありませんでした。":(pLines.length>0?("霊媒師の報告は次の通りです。"+pLines.join("")):"");
 
 f.jump=(f.display01===""&&f.display02==="")?"nothing":"";
 [endscript]
@@ -185,6 +209,7 @@ f.jump=(f.display01===""&&f.display02==="")?"nothing":"";
 *jinro_win
 
 [iscript]
+f.target=0;
 var n=parseInt(f.gamemode);
 var charArr=String(f.character).split(",");
 for(var i=1;i<=n;i++){
@@ -197,7 +222,35 @@ if(parseInt(charArr[i-1])===1){f.target=i;break;}
 [call  storage="murasame.ks"  target="*jinro_win"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*jinro_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*jinro_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*jinro_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*jinro_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*jinro_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*jinro_win"  cond="f.target==9"  ]
+
 [iscript]
+// 9人モードのみ：人狼はrole1とrole2の2人いるため、2人目(role2)も演出対象にする
+f.target=0;
+var n=parseInt(f.gamemode);
+if(n===9){
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===2){f.target=i;break;}
+}
+}
+[endscript]
+
+[call  storage="mafutsu.ks"  target="*jinro_win"  cond="f.target==1"  ]
+[call  storage="sisigami.ks"  target="*jinro_win"  cond="f.target==2"  ]
+[call  storage="murasame.ks"  target="*jinro_win"  cond="f.target==3"  ]
+[call  storage="kano.ks"  target="*jinro_win"  cond="f.target==4"  ]
+[call  storage="tendo.ks"  target="*jinro_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*jinro_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*jinro_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*jinro_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*jinro_win"  cond="f.target==9"  ]
+
+[iscript]
+f.target=0;
 var n=parseInt(f.gamemode);
 var charArr=String(f.character).split(",");
 for(var i=1;i<=n;i++){
@@ -210,10 +263,15 @@ if(parseInt(charArr[i-1])===9){f.target=i;break;}
 [call  storage="murasame.ks"  target="*jinro_win"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*jinro_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*jinro_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*jinro_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*jinro_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*jinro_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*jinro_win"  cond="f.target==9"  ]
 [jump  storage="scenario.ks"  target="*game_end"  ]
 *human_win
 
 [iscript]
+f.target=0;
 var n=parseInt(f.gamemode);
 var charArr=String(f.character).split(",");
 for(var i=1;i<=n;i++){
@@ -226,7 +284,57 @@ if(parseInt(charArr[i-1])===10){f.target=i;break;}
 [call  storage="murasame.ks"  target="*human_win"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*human_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*human_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*human_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*human_win"  cond="f.target==9"  ]
+
 [iscript]
+// 9人モードのみ：霊媒師(role11)も演出対象にする
+f.target=0;
+var n=parseInt(f.gamemode);
+if(n===9){
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===11){f.target=i;break;}
+}
+}
+[endscript]
+
+[call  storage="mafutsu.ks"  target="*human_win"  cond="f.target==1"  ]
+[call  storage="sisigami.ks"  target="*human_win"  cond="f.target==2"  ]
+[call  storage="murasame.ks"  target="*human_win"  cond="f.target==3"  ]
+[call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
+[call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*human_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*human_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*human_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*human_win"  cond="f.target==9"  ]
+
+[iscript]
+// 9人モードのみ：騎士(role12)も演出対象にする
+f.target=0;
+var n=parseInt(f.gamemode);
+if(n===9){
+var charArr=String(f.character).split(",");
+for(var i=1;i<=n;i++){
+if(parseInt(charArr[i-1])===12){f.target=i;break;}
+}
+}
+[endscript]
+
+[call  storage="mafutsu.ks"  target="*human_win"  cond="f.target==1"  ]
+[call  storage="sisigami.ks"  target="*human_win"  cond="f.target==2"  ]
+[call  storage="murasame.ks"  target="*human_win"  cond="f.target==3"  ]
+[call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
+[call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*human_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*human_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*human_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*human_win"  cond="f.target==9"  ]
+
+[iscript]
+f.target=0;
 var n=parseInt(f.gamemode);
 var charArr=String(f.character).split(",");
 for(var i=1;i<=n;i++){
@@ -239,11 +347,20 @@ if(parseInt(charArr[i-1])===15){f.target=i;break;}
 [call  storage="murasame.ks"  target="*human_win"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*human_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*human_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*human_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*human_win"  cond="f.target==9"  ]
+
 [iscript]
+// 5人モードのみ：9人モードは村人枠をrole15の1人だけに絞るため、role16はここでは対象外
+f.target=0;
 var n=parseInt(f.gamemode);
+if(n===5){
 var charArr=String(f.character).split(",");
 for(var i=1;i<=n;i++){
 if(parseInt(charArr[i-1])===16){f.target=i;break;}
+}
 }
 [endscript]
 
@@ -252,6 +369,10 @@ if(parseInt(charArr[i-1])===16){f.target=i;break;}
 [call  storage="murasame.ks"  target="*human_win"  cond="f.target==3"  ]
 [call  storage="kano.ks"  target="*human_win"  cond="f.target==4"  ]
 [call  storage="tendo.ks"  target="*human_win"  cond="f.target==5"  ]
+[call  storage="shigure.ks"  target="*human_win"  cond="f.target==6"  ]
+[call  storage="yamabuki.ks"  target="*human_win"  cond="f.target==7"  ]
+[call  storage="gato.ks"  target="*human_win"  cond="f.target==8"  ]
+[call  storage="urushibara.ks"  target="*human_win"  cond="f.target==9"  ]
 *game_end
 
 [jump  storage="tutorial.ks"  target="*text3"  cond="f.tutorial==1"  ]
@@ -273,6 +394,10 @@ else{f.win=1;}
 [call  storage="murasame.ks"  target="*win"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*win"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*win"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*win"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*win"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*win"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*win"  cond="f.player==9"  ]
 [jump  storage="scenario.ks"  target="*game_end2"  ]
 *lose
 
@@ -281,6 +406,10 @@ else{f.win=1;}
 [call  storage="murasame.ks"  target="*lose"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*lose"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*lose"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*lose"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*lose"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*lose"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*lose"  cond="f.player==9"  ]
 [jump  storage="scenario.ks"  target="*game_end2"  ]
 *win2
 
@@ -289,6 +418,10 @@ else{f.win=1;}
 [call  storage="murasame.ks"  target="*win2"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*win2"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*win2"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*win2"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*win2"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*win2"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*win2"  cond="f.player==9"  ]
 *game_end2
 
 [chara_hide_all  time="1000"  wait="true"  ]

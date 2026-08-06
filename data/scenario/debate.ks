@@ -105,6 +105,7 @@ f.display09="";
 
 [call  storage="debate.ks"  target="*CO_judge"  ]
 [jump  storage="debate.ks"  target="*fake_CO_list"  cond="f.display02==1"  ]
+[jump  storage="debate.ks"  target="*fake_CO_list"  cond="f.role>'9.5'"  ]
 [glink  color="btn_08_black"  storage="debate.ks"  size="20"  text="偽COする"  x="300"  y="125"  width="150"  height=""  _clickable_img=""  target="*fake_CO"  ]
 *fake_CO_list
 
