@@ -14,17 +14,16 @@ f.action=0;
 f.push=0;
 f.tutorial=0;
 f.calm_low=0;
-
+f.sclaim=0;
+f.pclaim=0;
 // ===== 役職（共通部分。f.characterはモード別initで設定） =====
 f.role=1;
 f.player=1;
-
 // ===== 占い師・霊媒師専用（本人限定の真実記録／公開申告ログ） =====
 f.seer_result="0";
 f.psychic_result="0";
 f.sclaim="0";
 f.pclaim="0";
-
 // ===== 投票関連（display系はここでのみ初期化。モード別initでは触らない） =====
 f.revote=0;
 f.display01=0;
@@ -44,20 +43,16 @@ f.display09=0;
 [iscript]
 // ===== モード確定 =====
 f.gamemode=5;
-
 // ===== 役職プール（5人分。role.ksでシャッフル・上書きされる） =====
 f.character="1,9,10,15,16";
-
 // ===== エンコード変数（5人サイズ：n=5、20値=n×(n-1)、10値=n×2） =====
 f.alive="1,1,1,1,1";
 f.co="0,0,0,0,0";
 f.liar="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 f.like="10,0,0,0,0,30,0,0,0,30,0,0,0,10,0,0,0,10,0,0";
 f.suspect="0,0,0,0,0,0,0,0,0,0";
-
 // ===== 平常心（5人分の基礎値） =====
 f.calm="100,80,110,100,120";
-
 // ===== 投票関連（5人分） =====
 f.votes="0,0,0,0,0";
 [endscript]
@@ -68,20 +63,16 @@ f.votes="0,0,0,0,0";
 [iscript]
 // ===== モード確定 =====
 f.gamemode=9;
-
 // ===== 役職プール（9人分。role.ksでシャッフル・上書きされる） =====
 f.character="1,2,9,10,11,12,15,16,17";
-
 // ===== エンコード変数（9人サイズ：n=9、72値=n×(n-1)、18値=n×2） =====
 f.alive="1,1,1,1,1,1,1,1,1";
 f.co="0,0,0,0,0,0,0,0,0";
-f.liar="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+f.liar="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 f.like="10,0,0,0,0,0,0,0,0,30,0,0,0,0,0,0,0,30,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,30,0,0,0,0,0,30,0,0,0,0,0,0,0,0,0,30,0,0,0,0,0,30,0,0,0";
 f.suspect="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
-
 // ===== 平常心（9人分の基礎値。6〜9も補正なしの基礎値、ペアバフは都度計算） =====
 f.calm="100,80,110,100,120,110,90,100,110";
-
 // ===== 投票関連（9人分） =====
 f.votes="0,0,0,0,0,0,0,0,0";
 [endscript]
@@ -120,9 +111,7 @@ return res;
 var sclaimArr=getSclaim();
 var pclaimArr=getPclaim();
 var claims=sclaimArr.concat(pclaimArr);
-
 // ※人狼視点は「人狼の初期認識」（役職確定直後）で完成済みのためここでは何もしない
-
 // ===== ②5人モード専用：処刑続行バレ =====
 if(n===5){
 var executed=parseInt(f.result);
@@ -139,7 +128,6 @@ setLiar(gi(obs,reporter),1);
 }
 }
 }
-
 // ===== ②5人モード専用：CO人数による正直確定（閾値3＝人狼1＋狂人1＋占い師1） =====
 if(n===5){
 var coCount=0;
@@ -155,7 +143,6 @@ setLiar(gi(obs,i),15);
 }
 }
 }
-
 // ===== ①モード共通：占いCO者が観測者自身（人狼）を人間と判定→確定狂人(9) =====
 for(var w=1;w<=n;w++){
 if(getRole(w)>5)continue; // 真の人狼のみ（狂人自身は初期認識を持たないため対象外）
@@ -166,7 +153,6 @@ if(reporter===w)continue;
 if(target===w&&result===0)setLiar(gi(w,reporter),9);
 }
 }
-
 // ===== ③9人モード専用：霊媒CO者が味方人狼（既知）を人間と判定→確定狂人(9) =====
 if(n===9){
 for(var w=1;w<=n;w++){
@@ -183,7 +169,6 @@ setLiar(gi(w,reporter),9);
 }
 }
 // ※9人モードの処刑続行バレ・CO人数閾値の再設計は未着手（引継書に明記のTODO）
-
 // ===== ①モード共通：死亡COチェーン（A黒B・B黒C→C確定人狼） =====
 for(var a=1;a<=n;a++){
 if(getCO(a)===0)continue;
@@ -211,7 +196,6 @@ f.liar=lr.join(',');
 }
 }
 }
-
 // ===== ①モード共通：伝播ループ（1→9変換／狂人確定→残り村人化／村人矛盾検出を収束するまで数回回す） =====
 for(var loop=0;loop<4;loop++){
 // 嘘つき(1)発見→無条件で狂人(9)
@@ -283,12 +267,10 @@ if(!(v===2||v>=10))return false;
 }
 return true;
 }
-
 // ===== 村人サイド視点（役職10以上：占い師・霊媒師・騎士・村人） =====
 for(var obs=1;obs<=n;obs++){
 if(getRole(obs)<10)continue;
 if(!isAlive(obs))continue;
-
 var tier5=[],tier9=[],tier1=[];
 for(var t=1;t<=n;t++){
 if(t===obs)continue;
@@ -301,7 +283,6 @@ tier5.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
 tier9.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
 tier1.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
 var picked=tier5.concat(tier9).concat(tier1).slice(0,2);
-
 if(picked.length<2){
 var fallback=[];
 for(var t=1;t<=n;t++){
@@ -317,16 +298,13 @@ while(picked.length<2&&fallback.length>0){
 picked.push(fallback.shift());
 }
 }
-
 setSuspect(obs,0,picked.length>0?picked[0]:0);
 setSuspect(obs,1,picked.length>1?picked[1]:0);
 }
-
 // ===== 人狼視点（役職5以下：真の人狼のみ／仮ロジック） =====
 for(var obs=1;obs<=n;obs++){
 if(getRole(obs)>5)continue;
 if(!isAlive(obs))continue;
-
 var pool=[];
 for(var t=1;t<=n;t++){
 if(t===obs)continue;
@@ -335,11 +313,9 @@ if(getLiar(obs,t)===5)continue; // 味方人狼を母集団から除外
 if(isPubliclyCleared(t))continue; // 全員一致で人間/村人確定済みは除外
 pool.push(t);
 }
-
 var coTier=pool.filter(function(t){return getCO(t)!==0;});
 coTier.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
 var picked=coTier.slice(0,2);
-
 if(picked.length<2){
 var fallback=pool.filter(function(t){return picked.indexOf(t)===-1;});
 fallback.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
@@ -347,7 +323,6 @@ while(picked.length<2&&fallback.length>0){
 picked.push(fallback.shift());
 }
 }
-
 setSuspect(obs,0,picked.length>0?picked[0]:0);
 setSuspect(obs,1,picked.length>1?picked[1]:0);
 }
