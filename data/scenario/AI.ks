@@ -53,6 +53,7 @@ var p = [0, 2, 0, 0, 2, 1, 1, 2, 2, 0][actor];
 function getRole(i){ return parseInt(String(f.character).split(",")[i-1]); }
 var role = getRole(actor);
 var coArr = String(f.co).split(",");
+var selfCoed = coArr[actor-1] !== "0";
 var coUsed1 = coArr.indexOf("1") !== -1;
 var coUsed2 = coArr.indexOf("2") !== -1;
 var sayUsed = parseInt(f.say_human) === 1;
@@ -82,9 +83,9 @@ var cmds = [];
 cmds.push([1, w[0]]);
 cmds.push([2, w[1]]);
 if(!sayUsed)                             cmds.push([4, w[2]]);
-if(coOpenForFake && (role <= 5 || role === 9)) cmds.push([6, w[3]]);
-if(!coUsed1 && role === 10)              cmds.push([5, w[3]]);
-if(!coUsed2 && role === 11)              cmds.push([5, w[3]]);
+if(coOpenForFake && !selfCoed && (role <= 5 || role === 9)) cmds.push([6, w[3]]);
+if(!coUsed1 && !selfCoed && role === 10)              cmds.push([5, w[3]]);
+if(!coUsed2 && !selfCoed && role === 11)              cmds.push([5, w[3]]);
 if(coOpenForFake)                        cmds.push([3, w[4]]);
 function pickCmd(cmds){
 var total = 0;

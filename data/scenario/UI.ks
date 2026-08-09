@@ -254,7 +254,6 @@ f.display06 = hide ? 1 : 0;
 *B9_9_skip
 
 [glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="状況確認"  x="600"  y="750"  target="*list_check"  ]
-
 [s  ]
 *listB_5
 
@@ -284,61 +283,55 @@ f.display06 = hide ? 1 : 0;
 [glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1050"  y="500"  target="*list_te"  ]
 *B5_5_skip
 
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="状況確認"  x="550"  y="600"  target="*list_check"  ]
-
+[glink  color="btn_01_red"  storage="UI.ks"  size="20"  text="・状況確認・"  x="561"  y="587"  target="*list_check"  width=""  height=""  _clickable_img=""  ]
 [s  ]
 *list_check
 
 [iscript]
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
-
 function getSclaim(){
-  if(String(f.sclaim)==="0")return [];
-  var arr=String(f.sclaim).split(',');
-  var res=[];
-  for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-  return res;
+if(String(f.sclaim)==="0")return [];
+var arr=String(f.sclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
 }
 function getPclaim(){
-  if(String(f.pclaim)==="0")return [];
-  var arr=String(f.pclaim).split(',');
-  var res=[];
-  for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-  return res;
+if(String(f.pclaim)==="0")return [];
+var arr=String(f.pclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
 }
-
 // day,reporter,target,resultの配列から、当日分・候補切れダミー(9,9)を除外し、
 // 報告者をキャラ番号順、各報告者内は対象者をday順に並べた表示用文字列を作る
 function buildReport(claims){
-  var today = parseInt(f.day);
-  var filtered = claims.filter(function(e){
-    return e[0] !== today && !(e[2]===9 && e[3]===9);
-  });
-  if(filtered.length===0) return "";
-
-  var byReporter = {};
-  var reporters = [];
-  for(var i=0;i<filtered.length;i++){
-    var e = filtered[i];
-    var r = e[1];
-    if(!byReporter[r]){byReporter[r]=[];reporters.push(r);}
-    byReporter[r].push(e);
-  }
-  reporters.sort(function(a,b){return a-b;});
-
-  var lines = [];
-  for(var j=0;j<reporters.length;j++){
-    var r = reporters[j];
-    var entries = byReporter[r].slice();
-    entries.sort(function(a,b){return a[0]-b[0];});
-    var parts = entries.map(function(e){
-      return names[e[2]] + ":" + (e[3]===1 ? "人狼" : "人間");
-    });
-    lines.push(names[r] + "→" + parts.join("、"));
-  }
-  return lines.join("\n");
+var today = parseInt(f.day);
+var filtered = claims.filter(function(e){
+return e[0] !== today && !(e[2]===9 && e[3]===9);
+});
+if(filtered.length===0) return "";
+var byReporter = {};
+var reporters = [];
+for(var i=0;i<filtered.length;i++){
+var e = filtered[i];
+var r = e[1];
+if(!byReporter[r]){byReporter[r]=[];reporters.push(r);}
+byReporter[r].push(e);
 }
-
+reporters.sort(function(a,b){return a-b;});
+var lines = [];
+for(var j=0;j<reporters.length;j++){
+var r = reporters[j];
+var entries = byReporter[r].slice();
+entries.sort(function(a,b){return a[0]-b[0];});
+var parts = entries.map(function(e){
+return names[e[2]] + ":" + (e[3]===1 ? "人狼" : "人間");
+});
+lines.push(names[r] + "→" + parts.join("、"));
+}
+return lines.join("\n");
+}
 f.display01 = buildReport(getSclaim());
 f.display02 = buildReport(getPclaim());
 f.result = (f.display01!=="" || f.display02!=="") ? 1 : 0;
@@ -346,20 +339,46 @@ f.result = (f.display01!=="" || f.display02!=="") ? 1 : 0;
 
 [tb_show_message_window  ]
 [jump  storage="UI.ks"  target="*check_seer_skip"  cond="f.display01==''"  ]
-【占い師CO報告】[r]
-&f.display01;[r]
+
+【占い師CO報告】[p]
+
+
+[r]
+
+
+&f.display01;[p]
+
+
+[r]
+
 *check_seer_skip
 
 [jump  storage="UI.ks"  target="*check_psychic_skip"  cond="f.display02==''"  ]
-【霊媒師CO報告】[r]
-&f.display02;[r]
+
+【霊媒師CO報告】[p]
+
+
+[r]
+
+
+&f.display02;[p]
+
+
+[r]
+
 *check_psychic_skip
 
 [jump  storage="UI.ks"  target="*check_body_end"  cond="f.result==1"  ]
-現在、公開されている報告はありません。[r]
+
+現在、公開されている報告はありません。[p]
+
+
+[r]
+
 *check_body_end
 
 [p]
+
 [tb_hide_message_window  ]
 [jump  storage="UI.ks"  target="*listB_9"  cond="f.gamemode==9"  ]
 [jump  storage="UI.ks"  target="*listB_5"  ]

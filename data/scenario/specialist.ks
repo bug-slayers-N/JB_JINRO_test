@@ -408,42 +408,48 @@ f.display01=res;
 var actor=parseInt(f.ai_actor);
 var day=parseInt(f.day);
 var mainDay=day-1; // 今回発表するメインの報告のday
+
 function getPsychicResults(){
-if(String(f.psychic_result)==="0")return [];
-var arr=String(f.psychic_result).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
-return res;
+  if(String(f.psychic_result)==="0")return [];
+  var arr=String(f.psychic_result).split(',');
+  var res=[];
+  for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
+  return res;
 }
 function getPclaim(){
-if(String(f.pclaim)==="0")return [];
-var arr=String(f.pclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
+  if(String(f.pclaim)==="0")return [];
+  var arr=String(f.pclaim).split(',');
+  var res=[];
+  for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+  return res;
 }
 function addPclaimRaw(d,reporter,target,result){
-var entry=d+","+reporter+","+target+","+result;
-if(String(f.pclaim)==="0"){f.pclaim=entry;}
-else{f.pclaim=f.pclaim+","+entry;}
+  var entry=d+","+reporter+","+target+","+result;
+  if(String(f.pclaim)==="0"){f.pclaim=entry;}
+  else{f.pclaim=f.pclaim+","+entry;}
 }
+
+var presults=getPsychicResults();
+
 var pclaimArr=getPclaim();
 var hasPrior=false;
 for(var i=0;i<pclaimArr.length;i++){
-if(pclaimArr[i][1]===actor){hasPrior=true;break;}
+  if(pclaimArr[i][1]===actor){hasPrior=true;break;}
 }
 if(!hasPrior){
-// 初回CO：day0〜(mainDay-1)を過去データとして埋める
-// バックフィル方式(b)：対象はpsychic_resultの実際の対象をそのまま借用し、結果はランダムに決める(嘘をつく余地を残す)
-// ただしその日が処刑無し(target<=0)だった場合は結果も0で揃える
-var presults=getPsychicResults();
-for(var d=0;d<mainDay;d++){
-var pastTarget=(d>=1&&presults[d-1])?presults[d-1][0]:0; // pclaimのday=dに対応するpsychic_result添字はd-1(day0は執行が存在しないので常にtarget=0)
-var pastResult=(pastTarget>0)?Math.floor(Math.random()*2):0;
-addPclaimRaw(d,actor,pastTarget,pastResult);
+  // 初回CO：day0〜(mainDay-1)を過去データとしてバックフィル
+  // 対象はpsychic_resultの実際の処刑対象をそのまま借用、結果はランダム(処刑無しの日は0)
+  for(var d=0;d<mainDay;d++){
+    var pastTarget=(d>=1 && presults[d-1]) ? presults[d-1][0] : 0;
+    var pastResult=(pastTarget>0) ? Math.floor(Math.random()*2) : 0;
+    addPclaimRaw(d,actor,pastTarget,pastResult);
+  }
 }
-}
-addPclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.display01));
+
+// 今回分(mainDay)：対象者はpsychic_resultの実際の処刑対象から取得
+// 結果はf.display01(既に決定済みの人間/人狼の偽結果)をそのまま転記
+var mainTarget=(mainDay>=1 && presults[mainDay-1]) ? presults[mainDay-1][0] : 0;
+addPclaimRaw(mainDay, actor, mainTarget, parseInt(f.display01));
 [endscript]
 
 [return  ]
@@ -580,7 +586,6 @@ f.result=(res===1)?"人狼":"人間";
 [return  ]
 *fake_seer_night
 
-; ai_actorは0の状態で突入してくる想定
 [iscript]
 var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
@@ -596,7 +601,6 @@ f.jump=(coArr[playerNum-1]==="1"&&roles[playerNum-1]!==10&&aliveArr[playerNum-1]
 [call  storage="specialist.ks"  target="*fake_seer_player"  ]
 *fake_seer_night_ai_loop
 
-; ここでai_actorを0に戻し、AI探索をキャラ1番から再スタートする
 [iscript]
 f.ai_actor=0;
 [endscript]
@@ -627,7 +631,6 @@ f.ai_actor=found;
 [return  ]
 *fake_psychic_night
 
-; ai_actorは0の状態で突入してくる想定
 [iscript]
 var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
@@ -643,7 +646,6 @@ f.jump=(coArr[playerNum-1]==="2"&&roles[playerNum-1]!==11&&aliveArr[playerNum-1]
 [call  storage="specialist.ks"  target="*fake_psychic"  ]
 *fake_psychic_night_ai_loop
 
-; ここでai_actorを0に戻し、AI探索をキャラ1番から再スタートする
 [iscript]
 f.ai_actor=0;
 [endscript]
@@ -674,11 +676,10 @@ f.ai_actor=found;
 [return  ]
 *night
 
-; 夜間処理をまとめて実行するエントリーポイント。呼び出し元(night.ks等)は*nightを1回callするだけでよい。
-; 各xxx_nightは内部で個別に[return]するが、ここでは[call]で呼んでいるためnight.ksからは一度の呼び出し・一度の返却で完結する。
 [call  storage="specialist.ks"  target="*seer_night"  ]
 [call  storage="specialist.ks"  target="*psychic_night"  ]
+[tb_eval  exp="f.ai_actor=0"  name="ai_actor"  cmd="="  op="t"  val="0"  ]
 [call  storage="specialist.ks"  target="*fake_seer_night"  ]
+[tb_eval  exp="f.ai_actor=0"  name="ai_actor"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [call  storage="specialist.ks"  target="*fake_psychic_night"  ]
-
 [return  ]

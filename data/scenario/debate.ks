@@ -67,6 +67,10 @@ f.display01=wolfNames.join("、");
 *debate_top
 
 [iscript]
+f.player_death = (String(f.alive).split(',')[parseInt(f.player)-1] === '1') ? 0 : 1;
+[endscript]
+
+[iscript]
 f.jump=0;
 f.result=0;
 f.target=0;
@@ -210,25 +214,31 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-var slots=["","","","","","","","",""];
-// 占い報告：day日目 → スロット(2*day-1)（1日目→01、2日目→03、3日目→05…）
-// day=0（ゲーム開始時のランダム占い）は1日目と同じスロット01に集約表示する
+// 占い・霊媒の全申告を報告者ごとにまとめる：[[day,target,result],...]
 var sclaims=getSclaim();
+var pclaims=getPclaim();
+var byReporter={};
 for(var i=0;i<sclaims.length;i++){
 var day=sclaims[i][0],reporter=sclaims[i][1],target=sclaims[i][2],result=sclaims[i][3];
-var slot=(day===0)?1:2*day-1;
-if(slot>=1&&slot<=9){
-slots[slot-1]+=charNames[reporter]+" → "+charNames[target]+"："+resultNames[result]+"、";
+if(!byReporter[reporter])byReporter[reporter]=[];
+byReporter[reporter].push([day,target,result]);
 }
-}
-// 霊媒報告：day日目 → スロット(2*day-2)（2日目→02、3日目→04、4日目→06、5日目→08）
-var pclaims=getPclaim();
 for(var j=0;j<pclaims.length;j++){
 var pday=pclaims[j][0],preporter=pclaims[j][1],ptarget=pclaims[j][2],presult=pclaims[j][3];
-var pslot=2*pday-2;
-if(pslot>=1&&pslot<=9){
-slots[pslot-1]+=charNames[preporter]+" → "+charNames[ptarget]+"："+resultNames[presult]+"、";
+if(!byReporter[preporter])byReporter[preporter]=[];
+byReporter[preporter].push([pday,ptarget,presult]);
 }
+// 報告者はキャラ番号順、各報告者内の対象はday順に整列
+var reporters=Object.keys(byReporter).map(Number).sort(function(a,b){return a-b;});
+var slots=["","","","","","","","",""];
+for(var r=0;r<reporters.length&&r<9;r++){
+var reporter=reporters[r];
+var claims=byReporter[reporter].slice().sort(function(a,b){return a[0]-b[0];});
+var parts=[];
+for(var k=0;k<claims.length;k++){
+parts.push(charNames[claims[k][1]]+"："+resultNames[claims[k][2]]);
+}
+slots[r]=charNames[reporter]+"→"+parts.join("、")+"、";
 }
 f.display01=slots[0];
 f.display02=slots[1];
