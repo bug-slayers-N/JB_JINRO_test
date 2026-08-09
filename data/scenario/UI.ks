@@ -196,8 +196,6 @@ f.display06 = hide ? 1 : 0;
 [tb_hide_message_window  ]
 [tb_ptext_hide  time="0"  ]
 [tb_image_hide  time="0"  ]
-[jump  storage="UI.ks"  target="*vote"  cond="f.jump=='vote'"  ]
-[jump  storage="UI.ks"  target="*vote"  cond="f.jump=='wolf'"  ]
 [jump  storage="UI.ks"  target="*9mode_pic"  cond="f.gamemode==9"  ]
 *5mode_pic
 
@@ -255,6 +253,8 @@ f.display06 = hide ? 1 : 0;
 [glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="漆原伊月にする"  x="944"  y="589"  target="*list_urushibara"  ]
 *B9_9_skip
 
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="状況確認"  x="600"  y="750"  target="*list_check"  ]
+
 [s  ]
 *listB_5
 
@@ -284,7 +284,85 @@ f.display06 = hide ? 1 : 0;
 [glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1050"  y="500"  target="*list_te"  ]
 *B5_5_skip
 
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="状況確認"  x="550"  y="600"  target="*list_check"  ]
+
 [s  ]
+*list_check
+
+[iscript]
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+
+function getSclaim(){
+  if(String(f.sclaim)==="0")return [];
+  var arr=String(f.sclaim).split(',');
+  var res=[];
+  for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+  return res;
+}
+function getPclaim(){
+  if(String(f.pclaim)==="0")return [];
+  var arr=String(f.pclaim).split(',');
+  var res=[];
+  for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+  return res;
+}
+
+// day,reporter,target,resultの配列から、当日分・候補切れダミー(9,9)を除外し、
+// 報告者をキャラ番号順、各報告者内は対象者をday順に並べた表示用文字列を作る
+function buildReport(claims){
+  var today = parseInt(f.day);
+  var filtered = claims.filter(function(e){
+    return e[0] !== today && !(e[2]===9 && e[3]===9);
+  });
+  if(filtered.length===0) return "";
+
+  var byReporter = {};
+  var reporters = [];
+  for(var i=0;i<filtered.length;i++){
+    var e = filtered[i];
+    var r = e[1];
+    if(!byReporter[r]){byReporter[r]=[];reporters.push(r);}
+    byReporter[r].push(e);
+  }
+  reporters.sort(function(a,b){return a-b;});
+
+  var lines = [];
+  for(var j=0;j<reporters.length;j++){
+    var r = reporters[j];
+    var entries = byReporter[r].slice();
+    entries.sort(function(a,b){return a[0]-b[0];});
+    var parts = entries.map(function(e){
+      return names[e[2]] + ":" + (e[3]===1 ? "人狼" : "人間");
+    });
+    lines.push(names[r] + "→" + parts.join("、"));
+  }
+  return lines.join("\n");
+}
+
+f.display01 = buildReport(getSclaim());
+f.display02 = buildReport(getPclaim());
+f.result = (f.display01!=="" || f.display02!=="") ? 1 : 0;
+[endscript]
+
+[tb_show_message_window  ]
+[jump  storage="UI.ks"  target="*check_seer_skip"  cond="f.display01==''"  ]
+【占い師CO報告】[r]
+&f.display01;[r]
+*check_seer_skip
+
+[jump  storage="UI.ks"  target="*check_psychic_skip"  cond="f.display02==''"  ]
+【霊媒師CO報告】[r]
+&f.display02;[r]
+*check_psychic_skip
+
+[jump  storage="UI.ks"  target="*check_body_end"  cond="f.result==1"  ]
+現在、公開されている報告はありません。[r]
+*check_body_end
+
+[p]
+[tb_hide_message_window  ]
+[jump  storage="UI.ks"  target="*listB_9"  cond="f.gamemode==9"  ]
+[jump  storage="UI.ks"  target="*listB_5"  ]
 *back
 
 [glink  color="black"  storage="UI.ks"  size="20"  text="戻る"  target="*back_top"  ]
@@ -302,41 +380,3 @@ f.display06 = hide ? 1 : 0;
 
 [tb_eval  exp="f.action-=1"  name="action"  cmd="-="  op="t"  val="1"  val_2="undefined"  ]
 [jump  storage="debate.ks"  target="*debate_top"  ]
-*vote
-
-[bg  time="1000"  method="crossfade"  storage="BG_selectChara_noText.png"  ]
-[iscript]
-var charNames=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
-var resultNames=["人間","人狼"];
-function getSclaim(){
-if(String(f.sclaim)==="0")return [];
-var arr=String(f.sclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
-}
-function getPclaim(){
-if(String(f.pclaim)==="0")return [];
-var arr=String(f.pclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
-}
-var disps=[];
-var sclaims=getSclaim();
-for(var i=0;i<sclaims.length;i++){
-var reporter=sclaims[i][1],target=sclaims[i][2],result=sclaims[i][3];
-disps.push(charNames[reporter]+" → "+charNames[target]+"："+resultNames[result]+"、");
-}
-var pdisps=[];
-var pclaims=getPclaim();
-for(var j=0;j<pclaims.length;j++){
-var preporter=pclaims[j][1],ptarget=pclaims[j][2],presult=pclaims[j][3];
-pdisps.push(charNames[preporter]+" → "+charNames[ptarget]+"："+resultNames[presult]+"、");
-}
-f.result="占い報告："+disps.join("")+(pdisps.length>0?"　霊媒報告："+pdisps.join(""):"");
-[endscript]
-
-[tb_ptext_show  x="43"  y="35"  size="20"  color="0x000000"  time="0"  text="&f.result;"  anim="false"  face="fantasy"  edge="undefined"  shadow="undefined"  ]
-[jump  storage="UI.ks"  target="*listB_9"  cond="f.gamemode==9"  ]
-[jump  storage="UI.ks"  target="*listB_5"  ]

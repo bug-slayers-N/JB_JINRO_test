@@ -39,7 +39,7 @@ if(candidates.length===0) candidates=fallback;
 f.target=candidates.length>0?candidates[Math.floor(Math.random()*candidates.length)]:0;
 [endscript]
 
-*uranai
+*seer_result
 
 [iscript]
 var roles=String(f.character).split(",").map(Number);
@@ -78,7 +78,7 @@ f.result=(latest[1]===1)?"人狼":"人間";
 [_tb_end_tyrano_code]
 
 [return  ]
-*seer_CO
+*seer_add_sclaim
 
 [iscript]
 // 占い師（character配列でrole=10のキャラ）を探す
@@ -126,7 +126,7 @@ else{f.sclaim=f.sclaim+","+entry;}
 [endscript]
 
 [return  ]
-*psychic_CO
+*psychic_add_pclaim
 
 [iscript]
 // 霊媒師（character配列でrole=11のキャラ）を探す
@@ -173,58 +173,13 @@ else{f.pclaim=f.pclaim+","+entry;}
 [endscript]
 
 [return  ]
-*fake_CO_seer
-
-[tb_eval  exp="f.display02=''"  name="display02"  cmd="="  op="t"  val=""  val_2="undefined"  ]
-[jump  storage="specialist.ks"  target="*fake_seer_dispatch"  ]
-*fake_CO_seer_write
+*fake_seer
 
 [iscript]
-var actor=parseInt(f.ai_actor);
-var day=parseInt(f.day);
-var mainDay=day-1; // 今回発表するメインの報告のday
-function getSclaim(){
-if(String(f.sclaim)==="0")return [];
-var arr=String(f.sclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
-}
-function addSclaimRaw(d,reporter,target,result){
-var entry=d+","+reporter+","+target+","+result;
-if(String(f.sclaim)==="0"){f.sclaim=entry;}
-else{f.sclaim=f.sclaim+","+entry;}
-}
-var sclaimArr=getSclaim();
-var hasPrior=false;
-for(var i=0;i<sclaimArr.length;i++){
-if(sclaimArr[i][1]===actor){hasPrior=true;break;}
-}
-if(!hasPrior){
-// 初回CO：day0〜(mainDay-1)を過去データとしてランダム生成して埋める
-// character変数で11以上(霊媒師・村人等)のキャラを生存死亡問わずランダムに選び、人間と報告
-var n=parseInt(f.gamemode);
-var roles=String(f.character).split(",").map(Number);
-var safeCands=[];
-for(var i=1;i<=n;i++){
-if(roles[i-1]>=11)safeCands.push(i);
-}
-for(var d=0;d<mainDay;d++){
-var bt=safeCands.length>0?safeCands[Math.floor(Math.random()*safeCands.length)]:actor;
-addSclaimRaw(d,actor,bt,0);
-}
-}
-addSclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.display01));
+f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 [endscript]
 
-[return  ]
-*fake_seer_dispatch
-
-[iscript]
-f.jump=(parseInt(f.ai_actor)===parseInt(f.player))?1:2;
-[endscript]
-
-[jump  storage="specialist.ks"  target="*fake_seer_ai"  cond="f.jump==2"  ]
+[jump  storage="specialist.ks"  target="*fake_seer_AI"  cond="f.display01==0"  ]
 *fake_seer_player
 
 [tb_start_text mode=1 ]
@@ -247,280 +202,12 @@ f.jump=(parseInt(f.ai_actor)===parseInt(f.player))?1:2;
 *fake_seer_player_human
 
 [tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-[jump  storage="specialist.ks"  target="*fake_seer_player_route"  ]
+[jump  storage="specialist.ks"  target="*fake_seer_end"  ]
 *fake_seer_player_wolf
 
 [tb_eval  exp="f.display01=1"  name="display01"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
-*fake_seer_player_route
-
-[jump  storage="specialist.ks"  target="*fake_seer_night_write"  cond="f.display02=='night'"  ]
-[jump  storage="specialist.ks"  target="*fake_CO_seer_write"  ]
-*fake_CO_psychic
-
-; 対象は本物霊媒師と同じく「直近に処刑されたキャラ」＝f.role2をそのまま参照する
-; （f.psychic_resultは本物霊媒師が生存している晩にしか記録されないため、
-; 　本物が早期に死亡しているとデータが欠落し参照できなくなるので使用しない）
-; 処刑が無かった日(f.target<=0)も選択UIは出さず、対象者0・結果0でpclaimに記入する
-[iscript]
-f.target=parseInt(f.role2);
-f.jump=(f.target<=0)?3:((parseInt(f.ai_actor)===parseInt(f.player))?1:2);
-[endscript]
-
-[jump  storage="specialist.ks"  target="*fake_CO_psychic_none"  cond="f.jump==3"  ]
-[jump  storage="specialist.ks"  target="*fake_CO_psychic_ai"  cond="f.jump==2"  ]
-*fake_CO_psychic_player
-
-[tb_start_text mode=1 ]
-#システム
-結果はどちらにしますか？[p]
-[_tb_end_text]
-
-[glink  color="black"  storage="specialist.ks"  size="20"  autopos="true"  text="人間"  target="*fake_CO_psychic_player_human"  ]
-[glink  color="black"  storage="specialist.ks"  size="20"  autopos="true"  text="人狼"  target="*fake_CO_psychic_player_wolf"  ]
-[s  ]
-*fake_CO_psychic_player_human
-
-[tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-[jump  storage="specialist.ks"  target="*fake_CO_psychic_write"  ]
-*fake_CO_psychic_player_wolf
-
-[tb_eval  exp="f.display01=1"  name="display01"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
-[jump  storage="specialist.ks"  target="*fake_CO_psychic_write"  ]
-*fake_CO_psychic_none
-
-[iscript]
-f.display01=0;
-[endscript]
-
-[jump  storage="specialist.ks"  target="*fake_CO_psychic_write"  ]
-*fake_CO_psychic_ai
-
-[iscript]
-var actor=parseInt(f.ai_actor);
-var n=parseInt(f.gamemode);
-var roles=String(f.character).split(",").map(Number);
-var liarArr=String(f.liar).split(",").map(Number);
-var aliveArr=String(f.alive).split(",").map(Number);
-var suspectArr=(String(f.suspect)==="0")?[]:String(f.suspect).split(",").map(Number);
-var actorRole=roles[actor-1];
-var dead=parseInt(f.target);
-function getPclaim(){
-if(String(f.pclaim)==="0")return [];
-var arr=String(f.pclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
-}
-var pclaimArr=getPclaim();
-// これまでにこのactorが「人狼」と報告した回数（上限チェック用）
-var wolfReportsSoFar=0;
-for(var i=0;i<pclaimArr.length;i++){
-if(pclaimArr[i][1]===actor && pclaimArr[i][3]===1) wolfReportsSoFar++;
-}
-// 上限チェックが有効な状況か（偽霊媒師=人狼・9人モード限定）
-var aliveWolfCount=0,aliveTotal=0;
-for(var i=1;i<=n;i++){
-if(aliveArr[i-1]===1){
-aliveTotal++;
-if(roles[i-1]<=5) aliveWolfCount++;
-}
-}
-var capActive=(actorRole<=5 && n===9 &&
-((aliveWolfCount===2 && aliveTotal>=7)||(aliveWolfCount===1 && aliveTotal>=5)));
-// 結果判定：①liar15→人間 ②liar5→人狼 ③suspect在籍→人狼、それ以外→人間
-// 上限チェックに引っかかる場合は人狼判定を人間に差し替える
-var tLiar=liarArr[dead-1];
-var res;
-if(tLiar===15){res=0;}
-else if(tLiar===5){res=1;}
-else{
-var s0=suspectArr[(actor-1)*2];
-var s1=suspectArr[(actor-1)*2+1];
-res=(s0===dead||s1===dead)?1:0;
-}
-if(res===1 && capActive && wolfReportsSoFar>=1){res=0;}
-f.display01=res;
-[endscript]
-
-*fake_CO_psychic_write
-
-[iscript]
-var actor=parseInt(f.ai_actor);
-var mainDay=parseInt(f.day)-1; // 今回発表するメインの報告のday
-function addPclaimRaw(d,reporter,target,result){
-var entry=d+","+reporter+","+target+","+result;
-if(String(f.pclaim)==="0"){f.pclaim=entry;}
-else{f.pclaim=f.pclaim+","+entry;}
-}
-addPclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.display01));
-[endscript]
-
-*fake_CO_psychic_end
-
-[return  ]
-*seer_night
-
-[iscript]
-var roles=String(f.character).split(",").map(Number);
-var n=parseInt(f.gamemode);
-var aliveArr=String(f.alive).split(",");
-var seerNum=0;
-for(var i=1;i<=n;i++){if(roles[i-1]===10){seerNum=i;break;}}
-if(seerNum===0||aliveArr[seerNum-1]==="0"){
-f.jump=0; // 占い師が死亡している（そもそも不在は5/9人モードとも無いが念のため）
-}else{
-f.jump=(seerNum===parseInt(f.player))?1:2;
-}
-[endscript]
-
-[jump  storage="specialist.ks"  target="*seer_night_end"  cond="f.jump==0"  ]
-[jump  storage="specialist.ks"  target="*seer_night_ai"  cond="f.jump==2"  ]
-*seer_night_player
-
-[tb_start_text mode=1 ]
-#システム
-占い対象を選んでください。[p]
-[_tb_end_text]
-
-[tb_eval  exp="f.jump='seer'"  name="jump"  cmd="="  op="t"  val="seer"  val_2="undefined"  ]
-[jump  storage="UI.ks"  target="*listA"  ]
-*seer_back
-
-[tb_show_message_window  ]
-[jump  storage="specialist.ks"  target="*seer_night_write"  ]
-*seer_night_ai
-
-[iscript]
-var roles=String(f.character).split(",").map(Number);
-var n=parseInt(f.gamemode);
-var seerNum=0;
-for(var i=1;i<=n;i++){if(roles[i-1]===10){seerNum=i;break;}}
-var aliveArr=String(f.alive).split(",");
-function getSeerResults(){
-if(String(f.seer_result)==="0")return [];
-var arr=String(f.seer_result).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
-return res;
-}
-var alreadyPicked=getSeerResults().map(function(r){return r[0];});
-var cands=[];
-for(var i=1;i<=n;i++){
-if(i===seerNum)continue;
-if(aliveArr[i-1]==="0")continue;
-if(alreadyPicked.indexOf(i)>=0)continue;
-cands.push(i);
-}
-f.target=cands.length>0?cands[Math.floor(Math.random()*cands.length)]:0;
-[endscript]
-
-*seer_night_write
-
-[iscript]
-var roles=String(f.character).split(",").map(Number);
-var n=parseInt(f.gamemode);
-var seerNum=0;
-for(var i=1;i<=n;i++){if(roles[i-1]===10){seerNum=i;break;}}
-var isPlayer=(seerNum===parseInt(f.player));
-var tgt=parseInt(f.target);
-function addSeerResult(target,result){
-if(String(f.seer_result)==="0"){f.seer_result=target+","+result;}
-else{f.seer_result=f.seer_result+","+target+","+result;}
-}
-var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
-var res=0;
-if(tgt>0){
-res=(roles[tgt-1]<=5)?1:0;
-addSeerResult(tgt,res);
-}
-f.jump=isPlayer?1:0;
-f.name=(tgt>0)?names[tgt]:"";
-f.result=(res===1)?"人狼":"人間";
-[endscript]
-
-[jump  storage="specialist.ks"  target="*seer_night_end"  cond="f.jump==0"  ]
-[tb_start_tyrano_code]
-#システム
-占いの結果：[emb exp="f.name"]は[emb exp="f.result"]です[p]
-[_tb_end_tyrano_code]
-
-*seer_night_end
-
-[return  ]
-*psychic_night
-
-[iscript]
-var roles=String(f.character).split(",").map(Number);
-var n=parseInt(f.gamemode);
-var aliveArr=String(f.alive).split(",");
-var psychicNum=0;
-for(var i=1;i<=n;i++){if(roles[i-1]===11){psychicNum=i;break;}}
-var psychicOk=(psychicNum>0&&aliveArr[psychicNum-1]==="1"); // 5人モードはそもそも不在、死亡時も不在扱い
-var isPlayer=(psychicNum===parseInt(f.player));
-var dead=parseInt(f.role2);
-var hasExecution=(dead>0);
-function addPsychicResult(target,result){
-if(String(f.psychic_result)==="0"){f.psychic_result=target+","+result;}
-else{f.psychic_result=f.psychic_result+","+target+","+result;}
-}
-var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
-var res=0;
-if(psychicOk){
-// 処刑が無かった晩も対象者0・結果0で記録する（psychic_resultの添字とdayを常に一致させるため）
-res=hasExecution?((roles[dead-1]<=5)?1:0):0;
-addPsychicResult(hasExecution?dead:0,res);
-}
-f.jump=(!psychicOk||!isPlayer)?0:(hasExecution?1:2);
-f.name=hasExecution?names[dead]:"";
-f.result=(res===1)?"人狼":"人間";
-[endscript]
-
-[jump  storage="specialist.ks"  target="*psychic_night_end"  cond="f.jump==0"  ]
-[jump  storage="specialist.ks"  target="*psychic_night_none"  cond="f.jump==2"  ]
-[tb_start_tyrano_code]
-#システム
-昨晩の霊媒結果が出ました。[emb exp="f.name"]は[emb exp="f.result"]です[p]
-[_tb_end_tyrano_code]
-
-[jump  storage="specialist.ks"  target="*psychic_night_end"  ]
-*psychic_night_none
-
-[tb_start_tyrano_code]
-#システム
-処刑がなかったので結果はありません[p]
-[_tb_end_tyrano_code]
-
-*psychic_night_end
-
-[return  ]
-*fake_seer_night
-
-[tb_eval  exp="f.display03=0"  name="display03"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-*fake_seer_night_loop
-
-[iscript]
-var n=parseInt(f.gamemode);
-var roles=String(f.character).split(",").map(Number);
-var coArr=String(f.co).split(",");
-var aliveArr=String(f.alive).split(",");
-var start=parseInt(f.display03)+1;
-var found=0;
-// f.coで占いCO(=1)しているが実際の役職は本物占い師(10)ではない、生存中のキャラを順番に探す
-for(var i=start;i<=n;i++){
-if(coArr[i-1]==="1"&&roles[i-1]!==10&&aliveArr[i-1]==="1"){found=i;break;}
-}
-f.display03=(found>0)?found:n; // 次回の探索再開位置
-f.ai_actor=found;
-[endscript]
-
-[jump  storage="specialist.ks"  target="*fake_seer_night_end"  cond="f.ai_actor==0"  ]
-[tb_eval  exp="f.display02='night'"  name="display02"  cmd="="  op="t"  val="night"  val_2="undefined"  ]
-[call  storage="specialist.ks"  target="*fake_seer_dispatch"  ]
-[jump  storage="specialist.ks"  target="*fake_seer_night_loop"  ]
-*fake_seer_night_end
-
-[return  ]
-*fake_seer_ai
+[jump  storage="specialist.ks"  target="*fake_seer_end"  ]
+*fake_seer_AI
 
 [iscript]
 var n=parseInt(f.gamemode);
@@ -583,88 +270,90 @@ f.target=t;
 f.display01=res;
 [endscript]
 
-[jump  storage="specialist.ks"  target="*fake_seer_night_write"  cond="f.display02=='night'"  ]
-[jump  storage="specialist.ks"  target="*fake_CO_seer_write"  ]
-*fake_seer_night_write
+*fake_seer_end
 
 [iscript]
 var actor=parseInt(f.ai_actor);
 var day=parseInt(f.day);
+var mainDay=day-1; // 今回発表するメインの報告のday
+function getSclaim(){
+if(String(f.sclaim)==="0")return [];
+var arr=String(f.sclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
+}
 function addSclaimRaw(d,reporter,target,result){
 var entry=d+","+reporter+","+target+","+result;
 if(String(f.sclaim)==="0"){f.sclaim=entry;}
 else{f.sclaim=f.sclaim+","+entry;}
 }
-addSclaimRaw(day,actor,parseInt(f.target),parseInt(f.display01));
-[endscript]
-
-[return  ]
-*fake_psychic_night
-
-
-;人狼・狂人で霊媒CO済み(f.co="2")の者が毎晩発動。対象は真霊媒師と同じくf.role2(本日死亡したキャラ)で固定、結果のみ選ぶ/決める。f.pclaimに直接書き込む
-;複数人が霊媒CO済みの場合は全員分を順番に処理する
-;処刑が無かった晩(f.role2<=0)も対象者0・結果0で記入するが、選択UIは出さない（*fake_psychic_dispatch側で分岐）
-
-
-[tb_eval  exp="f.display03=0"  name="display03"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-*fake_psychic_night_loop
-
-[iscript]
+var sclaimArr=getSclaim();
+var hasPrior=false;
+for(var i=0;i<sclaimArr.length;i++){
+if(sclaimArr[i][1]===actor){hasPrior=true;break;}
+}
+if(!hasPrior){
+// 初回CO：day0〜(mainDay-1)を過去データとしてランダム生成して埋める
+// character変数で11以上(霊媒師・村人等)のキャラを生存死亡問わずランダムに選び、人間と報告
 var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
-var coArr=String(f.co).split(",");
-var aliveArr=String(f.alive).split(",");
-var start=parseInt(f.display03)+1;
-var found=0;
-// f.coで霊媒CO(=2)しているが実際の役職は本物霊媒師(11)ではない、生存中のキャラを順番に探す
-for(var i=start;i<=n;i++){
-if(coArr[i-1]==="2"&&roles[i-1]!==11&&aliveArr[i-1]==="1"){found=i;break;}
+var safeCands=[];
+for(var i=1;i<=n;i++){
+if(roles[i-1]>=11)safeCands.push(i);
 }
-f.display03=(found>0)?found:n;
-f.ai_actor=found;
+for(var d=0;d<mainDay;d++){
+var bt=safeCands.length>0?safeCands[Math.floor(Math.random()*safeCands.length)]:actor;
+addSclaimRaw(d,actor,bt,0);
+}
+}
+addSclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.display01));
 [endscript]
-
-[jump  storage="specialist.ks"  target="*fake_psychic_night_end"  cond="f.ai_actor==0"  ]
-[call  storage="specialist.ks"  target="*fake_psychic_dispatch"  ]
-[jump  storage="specialist.ks"  target="*fake_psychic_night_loop"  ]
-*fake_psychic_night_end
 
 [return  ]
-*fake_psychic_dispatch
+*fake_psychic
 
 [iscript]
-f.jump=(parseInt(f.role2)<=0)?3:((parseInt(f.ai_actor)===parseInt(f.player))?1:2);
+var day=parseInt(f.day);
+var mainDay=day-1; // 今回発表するメインの報告のday
+function getPsychicResults(){
+if(String(f.psychic_result)==="0")return [];
+var arr=String(f.psychic_result).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
+return res;
+}
+var presults=getPsychicResults();
+var todays=presults[mainDay-1]; // psychic_resultは添字0=day1なので、pclaimのmainDay(=f.day-1)に対応する添字はmainDay-1
+f.target=todays?todays[0]:0;
+f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 [endscript]
 
-[jump  storage="specialist.ks"  target="*fake_psychic_night_none"  cond="f.jump==3"  ]
-[jump  storage="specialist.ks"  target="*fake_psychic_night_ai"  cond="f.jump==2"  ]
-*fake_psychic_night_player
+[jump  storage="specialist.ks"  target="*fake_psychic_none"  cond="f.target<=0"  ]
+[jump  storage="specialist.ks"  target="*fake_psychic_AI"  cond="f.display01==0"  ]
+*fake_psychic_player
 
 [tb_start_text mode=1 ]
 #システム
-結果はどちらにしますか？[p]
+前回の処刑結果はどうされますか？[p]
 [_tb_end_text]
 
-[glink  color="black"  storage="specialist.ks"  size="20"  autopos="true"  text="人間"  target="*fake_psychic_night_player_human"  ]
-[glink  color="black"  storage="specialist.ks"  size="20"  autopos="true"  text="人狼"  target="*fake_psychic_night_player_wolf"  ]
+[glink  color="black"  storage="specialist.ks"  size="20"  autopos="true"  text="人間"  target="*fake_psychic_player_human"  ]
+[glink  color="black"  storage="specialist.ks"  size="20"  autopos="true"  text="人狼"  target="*fake_psychic_player_wolf"  ]
 [s  ]
-*fake_psychic_night_player_human
+*fake_psychic_player_human
 
 [tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
-[jump  storage="specialist.ks"  target="*fake_psychic_night_write"  ]
-*fake_psychic_night_player_wolf
+[jump  storage="specialist.ks"  target="*fake_psychic_end"  ]
+*fake_psychic_player_wolf
 
 [tb_eval  exp="f.display01=1"  name="display01"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
-[jump  storage="specialist.ks"  target="*fake_psychic_night_write"  ]
-*fake_psychic_night_none
+[jump  storage="specialist.ks"  target="*fake_psychic_end"  ]
+*fake_psychic_none
 
-[iscript]
-f.display01=0;
-[endscript]
-
-[jump  storage="specialist.ks"  target="*fake_psychic_night_write"  ]
-*fake_psychic_night_ai
+[tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[jump  storage="specialist.ks"  target="*fake_psychic_end"  ]
+*fake_psychic_AI
 
 [iscript]
 var actor=parseInt(f.ai_actor);
@@ -674,7 +363,7 @@ var liarArr=String(f.liar).split(",").map(Number);
 var aliveArr=String(f.alive).split(",").map(Number);
 var suspectArr=(String(f.suspect)==="0")?[]:String(f.suspect).split(",").map(Number);
 var actorRole=roles[actor-1];
-var dead=parseInt(f.role2);
+var dead=parseInt(f.target);
 function getPclaim(){
 if(String(f.pclaim)==="0")return [];
 var arr=String(f.pclaim).split(',');
@@ -683,10 +372,12 @@ for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),par
 return res;
 }
 var pclaimArr=getPclaim();
+// これまでにこのactorが「人狼」と報告した回数（上限チェック用）
 var wolfReportsSoFar=0;
 for(var i=0;i<pclaimArr.length;i++){
 if(pclaimArr[i][1]===actor && pclaimArr[i][3]===1) wolfReportsSoFar++;
 }
+// 上限チェックが有効な状況か（偽霊媒師=人狼・9人モード限定）
 var aliveWolfCount=0,aliveTotal=0;
 for(var i=1;i<=n;i++){
 if(aliveArr[i-1]===1){
@@ -696,6 +387,8 @@ if(roles[i-1]<=5) aliveWolfCount++;
 }
 var capActive=(actorRole<=5 && n===9 &&
 ((aliveWolfCount===2 && aliveTotal>=7)||(aliveWolfCount===1 && aliveTotal>=5)));
+// 結果判定：①liar15→人間 ②liar5→人狼 ③suspect在籍→人狼、それ以外→人間
+// 上限チェックに引っかかる場合は人狼判定を人間に差し替える
 var tLiar=liarArr[dead-1];
 var res;
 if(tLiar===15){res=0;}
@@ -709,18 +402,283 @@ if(res===1 && capActive && wolfReportsSoFar>=1){res=0;}
 f.display01=res;
 [endscript]
 
-*fake_psychic_night_write
+*fake_psychic_end
 
 [iscript]
 var actor=parseInt(f.ai_actor);
 var day=parseInt(f.day);
-var dead=parseInt(f.role2);
+var mainDay=day-1; // 今回発表するメインの報告のday
+function getPsychicResults(){
+if(String(f.psychic_result)==="0")return [];
+var arr=String(f.psychic_result).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
+return res;
+}
+function getPclaim(){
+if(String(f.pclaim)==="0")return [];
+var arr=String(f.pclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
+}
 function addPclaimRaw(d,reporter,target,result){
 var entry=d+","+reporter+","+target+","+result;
 if(String(f.pclaim)==="0"){f.pclaim=entry;}
 else{f.pclaim=f.pclaim+","+entry;}
 }
-addPclaimRaw(day,actor,dead,parseInt(f.display01));
+var pclaimArr=getPclaim();
+var hasPrior=false;
+for(var i=0;i<pclaimArr.length;i++){
+if(pclaimArr[i][1]===actor){hasPrior=true;break;}
+}
+if(!hasPrior){
+// 初回CO：day0〜(mainDay-1)を過去データとして埋める
+// バックフィル方式(b)：対象はpsychic_resultの実際の対象をそのまま借用し、結果はランダムに決める(嘘をつく余地を残す)
+// ただしその日が処刑無し(target<=0)だった場合は結果も0で揃える
+var presults=getPsychicResults();
+for(var d=0;d<mainDay;d++){
+var pastTarget=(d>=1&&presults[d-1])?presults[d-1][0]:0; // pclaimのday=dに対応するpsychic_result添字はd-1(day0は執行が存在しないので常にtarget=0)
+var pastResult=(pastTarget>0)?Math.floor(Math.random()*2):0;
+addPclaimRaw(d,actor,pastTarget,pastResult);
+}
+}
+addPclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.display01));
 [endscript]
+
+[return  ]
+*seer_night
+
+[iscript]
+var roles=String(f.character).split(",").map(Number);
+var n=parseInt(f.gamemode);
+var aliveArr=String(f.alive).split(",");
+var seerNum=0;
+for(var i=1;i<=n;i++){if(roles[i-1]===10){seerNum=i;break;}}
+if(seerNum===0||aliveArr[seerNum-1]==="0"){
+f.jump=0; // 占い師が死亡している（不在は5/9人モードとも無いが念のため）→即リターン
+}else{
+f.jump=(parseInt(f.role)===10)?1:2;
+}
+[endscript]
+
+[jump  storage="specialist.ks"  target="*seer_night_end"  cond="f.jump==0"  ]
+[jump  storage="specialist.ks"  target="*seer_night_ai"  cond="f.jump==2"  ]
+*seer_night_player
+
+[tb_start_text mode=1 ]
+#システム
+占い対象を選んでください。[p]
+[_tb_end_text]
+
+[tb_eval  exp="f.jump='seer'"  name="jump"  cmd="="  op="t"  val="seer"  val_2="undefined"  ]
+[jump  storage="UI.ks"  target="*listA"  ]
+*seer_back
+
+[tb_show_message_window  ]
+[jump  storage="specialist.ks"  target="*seer_night_write"  ]
+*seer_night_ai
+
+[iscript]
+var roles=String(f.character).split(",").map(Number);
+var n=parseInt(f.gamemode);
+var seerNum=0;
+for(var i=1;i<=n;i++){if(roles[i-1]===10){seerNum=i;break;}}
+var aliveArr=String(f.alive).split(",");
+function getSeerResults(){
+if(String(f.seer_result)==="0")return [];
+var arr=String(f.seer_result).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
+return res;
+}
+var alreadyPicked=getSeerResults().map(function(r){return r[0];});
+var cands=[];
+for(var i=1;i<=n;i++){
+if(i===seerNum)continue;
+if(aliveArr[i-1]==="0")continue;
+if(alreadyPicked.indexOf(i)>=0)continue;
+cands.push(i);
+}
+f.target=cands.length>0?cands[Math.floor(Math.random()*cands.length)]:0;
+[endscript]
+
+*seer_night_write
+
+[call  storage="specialist.ks"  target="*seer_result"  ]
+[jump  storage="specialist.ks"  target="*seer_night_end"  cond="f.role!=10"  ]
+[iscript]
+var roles=String(f.character).split(",").map(Number);
+var tgt=parseInt(f.target);
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+f.name=(tgt>0)?names[tgt]:"";
+f.result=(tgt>0)?((roles[tgt-1]<=5)?"人狼":"人間"):"";
+[endscript]
+
+[jump  storage="specialist.ks"  target="*seer_night_end"  cond="f.target<=0"  ]
+[tb_start_tyrano_code]
+#システム
+占いの結果：[emb exp="f.name"]は[emb exp="f.result"]です[p]
+[_tb_end_tyrano_code]
+
+*seer_night_end
+
+[return  ]
+*psychic_night
+
+[iscript]
+var roles=String(f.character).split(",").map(Number);
+var n=parseInt(f.gamemode);
+var aliveArr=String(f.alive).split(",");
+var psychicNum=0;
+for(var i=1;i<=n;i++){if(roles[i-1]===11){psychicNum=i;break;}}
+var dead=parseInt(f.role2);
+var hasExecution=(dead>0);
+function addPsychicResult(target,result){
+if(String(f.psychic_result)==="0"){f.psychic_result=target+","+result;}
+else{f.psychic_result=f.psychic_result+","+target+","+result;}
+}
+var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var res=0;
+if(psychicNum>0){
+// 本物霊媒師の生死に関わらず毎晩記録を続ける（処刑が無かった晩も対象者0・結果0で記録し、添字とdayを常に一致させる）
+res=hasExecution?((roles[dead-1]<=5)?1:0):0;
+addPsychicResult(hasExecution?dead:0,res);
+}
+// jump: 0=このモードに霊媒師不在／3=記帳直後だが本人死亡につき即終了／0=生存だがplayerが霊媒師でない／1=表示あり／2=処刑無しの表示
+if(psychicNum===0){
+f.jump=0;
+}else if(aliveArr[psychicNum-1]==="0"){
+f.jump=3;
+}else if(parseInt(f.role)!==11){
+f.jump=0;
+}else{
+f.jump=hasExecution?1:2;
+}
+f.name=hasExecution?names[dead]:"";
+f.result=(res===1)?"人狼":"人間";
+[endscript]
+
+[jump  storage="specialist.ks"  target="*psychic_night_end"  cond="f.jump==0"  ]
+[jump  storage="specialist.ks"  target="*psychic_night_end"  cond="f.jump==3"  ]
+[jump  storage="specialist.ks"  target="*psychic_night_none"  cond="f.jump==2"  ]
+[tb_start_tyrano_code]
+#システム
+昨夜の霊媒結果が出ました。[emb exp="f.name"]は[emb exp="f.result"]です[p]
+[_tb_end_tyrano_code]
+
+[jump  storage="specialist.ks"  target="*psychic_night_end"  ]
+*psychic_night_none
+
+[tb_start_tyrano_code]
+#システム
+処刑がなかったので結果はありません[p]
+[_tb_end_tyrano_code]
+
+*psychic_night_end
+
+[return  ]
+*fake_seer_night
+
+; ai_actorは0の状態で突入してくる想定
+[iscript]
+var n=parseInt(f.gamemode);
+var roles=String(f.character).split(",").map(Number);
+var coArr=String(f.co).split(",");
+var aliveArr=String(f.alive).split(",");
+var playerNum=parseInt(f.player);
+// プレイヤー自身が生存中の偽占い師(co='1'だがrole!=10)かどうかを判定
+f.jump=(coArr[playerNum-1]==="1"&&roles[playerNum-1]!==10&&aliveArr[playerNum-1]==="1")?1:0;
+[endscript]
+
+[jump  storage="specialist.ks"  target="*fake_seer_night_ai_loop"  cond="f.jump==0"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="t"  val="player"  val_2="undefined"  ]
+[call  storage="specialist.ks"  target="*fake_seer_player"  ]
+*fake_seer_night_ai_loop
+
+; ここでai_actorを0に戻し、AI探索をキャラ1番から再スタートする
+[iscript]
+f.ai_actor=0;
+[endscript]
+
+*fake_seer_night_ai_search
+
+[iscript]
+var n=parseInt(f.gamemode);
+var roles=String(f.character).split(",").map(Number);
+var coArr=String(f.co).split(",");
+var aliveArr=String(f.alive).split(",");
+var playerNum=parseInt(f.player);
+var start=parseInt(f.ai_actor)+1;
+var found=0;
+// ai_actorより大きいキャラ番号の中で、一番小さい「生存中のAI偽占い師」を探す（プレイヤーは既に処理済みなので除外）
+for(var i=start;i<=n;i++){
+if(i===playerNum)continue;
+if(coArr[i-1]==="1"&&roles[i-1]!==10&&aliveArr[i-1]==="1"){found=i;break;}
+}
+f.ai_actor=found;
+[endscript]
+
+[jump  storage="specialist.ks"  target="*fake_seer_night_end"  cond="f.ai_actor==0"  ]
+[call  storage="specialist.ks"  target="*fake_seer_AI"  ]
+[jump  storage="specialist.ks"  target="*fake_seer_night_ai_search"  ]
+*fake_seer_night_end
+
+[return  ]
+*fake_psychic_night
+
+; ai_actorは0の状態で突入してくる想定
+[iscript]
+var n=parseInt(f.gamemode);
+var roles=String(f.character).split(",").map(Number);
+var coArr=String(f.co).split(",");
+var aliveArr=String(f.alive).split(",");
+var playerNum=parseInt(f.player);
+// プレイヤー自身が生存中の偽霊媒師(co='2'だがrole!=11)かどうかを判定
+f.jump=(coArr[playerNum-1]==="2"&&roles[playerNum-1]!==11&&aliveArr[playerNum-1]==="1")?1:0;
+[endscript]
+
+[jump  storage="specialist.ks"  target="*fake_psychic_night_ai_loop"  cond="f.jump==0"  ]
+[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="t"  val="player"  val_2="undefined"  ]
+[call  storage="specialist.ks"  target="*fake_psychic"  ]
+*fake_psychic_night_ai_loop
+
+; ここでai_actorを0に戻し、AI探索をキャラ1番から再スタートする
+[iscript]
+f.ai_actor=0;
+[endscript]
+
+*fake_psychic_night_ai_search
+
+[iscript]
+var n=parseInt(f.gamemode);
+var roles=String(f.character).split(",").map(Number);
+var coArr=String(f.co).split(",");
+var aliveArr=String(f.alive).split(",");
+var playerNum=parseInt(f.player);
+var start=parseInt(f.ai_actor)+1;
+var found=0;
+// ai_actorより大きいキャラ番号の中で、一番小さい「生存中のAI偽霊媒師」を探す（プレイヤーは既に処理済みなので除外）
+for(var i=start;i<=n;i++){
+if(i===playerNum)continue;
+if(coArr[i-1]==="2"&&roles[i-1]!==11&&aliveArr[i-1]==="1"){found=i;break;}
+}
+f.ai_actor=found;
+[endscript]
+
+[jump  storage="specialist.ks"  target="*fake_psychic_night_end"  cond="f.ai_actor==0"  ]
+[call  storage="specialist.ks"  target="*fake_psychic"  ]
+[jump  storage="specialist.ks"  target="*fake_psychic_night_ai_search"  ]
+*fake_psychic_night_end
+
+[return  ]
+*night
+
+; 夜間処理をまとめて実行するエントリーポイント。呼び出し元(night.ks等)は*nightを1回callするだけでよい。
+; 各xxx_nightは内部で個別に[return]するが、ここでは[call]で呼んでいるためnight.ksからは一度の呼び出し・一度の返却で完結する。
+[call  storage="specialist.ks"  target="*seer_night"  ]
+[call  storage="specialist.ks"  target="*psychic_night"  ]
+[call  storage="specialist.ks"  target="*fake_seer_night"  ]
+[call  storage="specialist.ks"  target="*fake_psychic_night"  ]
 
 [return  ]

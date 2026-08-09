@@ -54,14 +54,17 @@ f.display01=wolfNames.join("、");
 
 *debate_dialogue
 
-[call  storage="debate.ks"  target="*char_dispatch_debate01"  ]
+[call  storage="mafutsu.ks"  target="*debate01"  cond="f.player==1"  ]
+[call  storage="sisigami.ks"  target="*debate01"  cond="f.player==2"  ]
+[call  storage="murasame.ks"  target="*debate01"  cond="f.player==3"  ]
+[call  storage="kano.ks"  target="*debate01"  cond="f.player==4"  ]
+[call  storage="tendo.ks"  target="*debate01"  cond="f.player==5"  ]
+[call  storage="shigure.ks"  target="*debate01"  cond="f.player==6"  ]
+[call  storage="yamabuki.ks"  target="*debate01"  cond="f.player==7"  ]
+[call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
+[call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
 [jump  storage="end.ks"  target="*turn_count"  ]
 *debate_top
-
-[iscript]
-var aliveArr = String(f.alive).split(",");
-if(aliveArr[parseInt(f.player)-1] === "0") f.player_death = 1;
-[endscript]
 
 [iscript]
 f.jump=0;
@@ -259,19 +262,12 @@ f.result=coArr2.some(function(v){return v!=="0";})?0:1;
 *0CO
 
 [jump  storage="tutorial.ks"  target="*text"  cond="f.tutorial==1"  ]
-[call  storage="debate.ks"  target="*char_dispatch_debate01"  ]
 [jump  storage="debate.ks"  target="*debate_top"  ]
-*char_dispatch_debate01
-
 [call  storage="mafutsu.ks"  target="*debate01"  cond="f.player==1"  ]
 [call  storage="sisigami.ks"  target="*debate01"  cond="f.player==2"  ]
 [call  storage="murasame.ks"  target="*debate01"  cond="f.player==3"  ]
 [call  storage="kano.ks"  target="*debate01"  cond="f.player==4"  ]
 [call  storage="tendo.ks"  target="*debate01"  cond="f.player==5"  ]
-[call  storage="shigure.ks"  target="*debate01"  cond="f.player==6"  ]
-[call  storage="yamabuki.ks"  target="*debate01"  cond="f.player==7"  ]
-[call  storage="gato.ks"  target="*debate01"  cond="f.player==8"  ]
-[call  storage="urushibara.ks"  target="*debate01"  cond="f.player==9"  ]
 [return  ]
 *CO_judge
 

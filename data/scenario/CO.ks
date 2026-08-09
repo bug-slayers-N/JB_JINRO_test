@@ -85,8 +85,8 @@ f.jump = qualifies?1:0;
 [endscript]
 
 [jump  storage="CO.ks"  target="*AI_lottery"  cond="f.jump==0"  ]
-[glink  color="btn_08_blue"  storage="CO.ks"  size="20"  text="COする"  x="250"  y="150"  width="150"  height=""  _clickable_img=""  target="*player_CO_yes"  ]
-[glink  color="btn_08_black"  storage="CO.ks"  size="20"  text="COしない"  x="250"  y="220"  width="150"  height=""  _clickable_img=""  target="*player_CO_no"  ]
+[glink  color="black"  storage="CO.ks"  size="20"  text="COする"  target="*player_CO_yes"  autopos="true"  ]
+[glink  color="black"  storage="CO.ks"  size="20"  text="COしない"  autopos="true"  target="*player_CO_no"  ]
 [s  ]
 *player_CO_yes
 
@@ -101,36 +101,34 @@ f.jump = qualifies?1:0;
 var role=parseInt(f.role);
 var result=parseInt(f.result);
 var jmp=0;
-
 if(role===10){
-	jmp=1;
+jmp=1;
 }else if(role===11){
-	jmp=2;
+jmp=2;
 }else{
-	if(result===1){
-		jmp=3;
-	}else if(result===2){
-		jmp=4;
-	}
+if(result===1){
+jmp=3;
+}else if(result===2){
+jmp=4;
 }
-
-if(parseInt(f.day)===1&&(jmp===2||jmp===4))jmp=5;
-
+}
+var aliveArr=String(f.alive).split(",");
+var allAlive=aliveArr.indexOf("0")===-1;
+if(allAlive&&(jmp===2||jmp===4))jmp=5;
 f.jump=jmp;
-
-if(jmp!==0&&jmp!==5){
-	var coVal=(jmp===1||jmp===3)?"1":"2";
-	var coArr=String(f.co).split(",");
-	coArr[parseInt(f.player)-1]=coVal;
-	f.co=coArr.join(",");
+if(jmp!==0){
+var coVal=(jmp===1||jmp===3)?"1":"2";
+var coArr=String(f.co).split(",");
+coArr[parseInt(f.player)-1]=coVal;
+f.co=coArr.join(",");
 }
 [endscript]
 
 [jump  storage="CO.ks"  target="*psychic_day1"  cond="f.jump==5"  ]
-[call  storage="specialist.ks"  target="*seer_CO"  cond="f.jump==1"  ]
-[call  storage="specialist.ks"  target="*psychic_CO"  cond="f.jump==2"  ]
-[call  storage="specialist.ks"  target="*fake_CO_seer"  cond="f.jump==3"  ]
-[call  storage="specialist.ks"  target="*fake_CO_psychic"  cond="f.jump==4"  ]
+[call  storage="specialist.ks"  target="*seer_add_sclaim"  cond="f.jump==1"  ]
+[call  storage="specialist.ks"  target="*psychic_add_pclaim"  cond="f.jump==2"  ]
+[call  storage="specialist.ks"  target="*fake_seer_player"  cond="f.jump==3"  ]
+[call  storage="specialist.ks"  target="*fake_psychic_player"  cond="f.jump==4"  ]
 *player_CO_end
 
 [jump  storage="CO.ks"  target="*CO_characall"  ]
@@ -221,9 +219,11 @@ var jmp=0;
 if(role===10)jmp=1;
 else if(role===11)jmp=2;
 else if(role<=5||role===9)jmp=(result===1)?3:4;
-if(parseInt(f.day)===1&&(jmp===2||jmp===4))jmp=5;
+var aliveArr=String(f.alive).split(",");
+var allAlive=aliveArr.indexOf("0")===-1;
+if(allAlive&&(jmp===2||jmp===4))jmp=5;
 f.jump=jmp;
-if(jmp!==5){
+if(jmp!==0){
 var coVal=(jmp===1||jmp===3)?"1":"2";
 var coArr=String(f.co).split(",");
 coArr[actor-1]=coVal;
@@ -232,17 +232,17 @@ f.co=coArr.join(",");
 [endscript]
 
 [jump  storage="CO.ks"  target="*psychic_day1"  cond="f.jump==5"  ]
-[call  storage="specialist.ks"  target="*seer_CO"  cond="f.jump==1"  ]
-[call  storage="specialist.ks"  target="*psychic_CO"  cond="f.jump==2"  ]
-[call  storage="specialist.ks"  target="*fake_CO_seer"  cond="f.jump==3"  ]
-[call  storage="specialist.ks"  target="*fake_CO_psychic"  cond="f.jump==4"  ]
+[call  storage="specialist.ks"  target="*seer_add_sclaim"  cond="f.jump==1"  ]
+[call  storage="specialist.ks"  target="*psychic_add_pclaim"  cond="f.jump==2"  ]
+[call  storage="specialist.ks"  target="*fake_seer_AI"  cond="f.jump==3"  ]
+[call  storage="specialist.ks"  target="*fake_psychic_AI"  cond="f.jump==4"  ]
 *AI_CO_end
 
 *CO_characall
 
 [iscript]
 var result=parseInt(f.result);
-f.display01=(result===1)?"占い師":"霊媒師";
+f.display09=(result===1)?"占い師":"霊媒師";
 var charNames = ["", "真経津", "獅子神", "村雨", "叶", "天堂", "時雨", "山吹", "牙頭", "漆原"];
 var resultNames = ["人間", "人狼"];
 function getSclaim(){
@@ -260,26 +260,16 @@ for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),par
 return res;
 }
 var actor = parseInt(f.ai_actor);
+var claims = (result===1)?getSclaim():getPclaim();
 var mine = [];
-var sclaims = getSclaim();
-var pclaims = getPclaim();
-for(var i=0;i<sclaims.length;i++){
-if(sclaims[i][1] === actor) mine.push(sclaims[i]);
+for(var i=0;i<claims.length;i++){
+if(claims[i][1] === actor) mine.push(claims[i]);
 }
-for(var j=0;j<pclaims.length;j++){
-if(pclaims[j][1] === actor) mine.push(pclaims[j]);
-}
-var latest = mine[0];
-for(var k=1;k<mine.length;k++){
-if(mine[k][0] > latest[0]) latest = mine[k];
-}
-// latest[2]===0は「処刑が無かった日の霊媒報告（対象者0・結果0）」を指す特殊値
-f.jump=(latest[2]===0)?1:0;
+var latest = mine[mine.length-1];
 f.name = charNames[latest[2]];
 f.name2 = resultNames[latest[3]];
 [endscript]
 
-[jump  storage="CO.ks"  target="*CO_characall_none"  cond="f.jump==1"  ]
 *CO_dialogue
 
 [call  storage="mafutsu.ks"  target="*CO"  cond="f.ai_actor==1"  ]
@@ -291,14 +281,6 @@ f.name2 = resultNames[latest[3]];
 [call  storage="yamabuki.ks"  target="*CO"  cond="f.ai_actor==7"  ]
 [call  storage="gato.ks"  target="*CO"  cond="f.ai_actor==8"  ]
 [call  storage="urushibara.ks"  target="*CO"  cond="f.ai_actor==9"  ]
-[jump  storage="CO.ks"  target="*CO_characall_end"  ]
-*CO_characall_none
-
-[tb_start_tyrano_code]
-#システム
-処刑がなかったので報告はありませんでした[p]
-[_tb_end_tyrano_code]
-
 *CO_characall_end
 
 *vsCO

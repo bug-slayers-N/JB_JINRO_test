@@ -97,6 +97,10 @@ if(r < cum) return cmds[k][0];
 return cmds[cmds.length-1][0];
 }
 f.jump = pickCmd(cmds);
+if(f.jump===5){
+if(role===10) f.result=1;
+else if(role===11) f.result=2;
+}
 if(f.jump===6){
 var canSeer=!coUsed1;
 var canMedium=gamemode9&&day>=2&&!coUsed2;

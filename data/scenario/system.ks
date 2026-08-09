@@ -360,7 +360,7 @@ f.win=aliveWolf===0?1:aliveWolf>=aliveHuman?2:0;
 
 [jump  storage="end.ks"  target="*game_set"  cond="f.win!=0"  ]
 [jump  storage="night.ks"  target="*night"  cond="f.jump=='vote'"  ]
-[jump  storage="scenario.ks"  target="*morning"  cond="f.jump=='wolf'"  ]
+[jump  storage="night.ks"  target="*morning"  cond="f.jump=='wolf'"  ]
 *alive
 
 [iscript]

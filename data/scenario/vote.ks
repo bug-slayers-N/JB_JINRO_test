@@ -265,7 +265,6 @@ for(var i=2;i<=n;i++){f.like=si(f.like,gi(i,1),getEl(f.like,gi(i,1))-20);}
 
 *text
 
-[tb_ptext_hide  time="0"  ]
 [tb_start_text mode=1 ]
 投票結果が集計されました。[p]
 [_tb_end_text]
