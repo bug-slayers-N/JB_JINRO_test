@@ -133,7 +133,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
+[jump  storage="tendo.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="tendo.ks"  target="*show"  ]
+*doubt3
+
 [call  storage="UI.ks"  target="*name_change"  ]
 [call  storage="tendo.ks"  target="*tendo_namechange"  ]
 [tb_start_tyrano_code]
@@ -190,7 +193,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
+[jump  storage="tendo.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="tendo.ks"  target="*show"  ]
+*cover3
+
 [call  storage="UI.ks"  target="*name_change"  ]
 [call  storage="tendo.ks"  target="*tendo_namechange"  ]
 [tb_start_tyrano_code]
@@ -400,3 +406,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [_tb_end_text]
 
 [return  ]
+*add
+
+[call  storage="tendo.ks"  target="*show2"  ]
+[call  storage="tendo.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+#天堂
+「私からも神託を授けよう」[p]
+[_tb_end_text]
+
+[jump  storage="tendo.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
+[jump  storage="tendo.ks"  target="*cover3"  ]

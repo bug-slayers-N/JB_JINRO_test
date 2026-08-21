@@ -50,11 +50,12 @@ f.alive="1,1,1,1,1";
 f.co="0,0,0,0,0";
 f.liar="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 f.like="10,0,0,0,0,30,0,0,0,30,0,0,0,10,0,0,0,10,0,0";
-f.suspect="0,0,0,0,0,0,0,0,0,0";
 // ===== 平常心（5人分の基礎値） =====
 f.calm="100,80,110,100,120";
 // ===== 投票関連（5人分） =====
 f.votes="0,0,0,0,0";
+// ===== 様子を見るでai_actorに選ばれた回数（5人分） =====
+f.count="0,0,0,0,0";
 [endscript]
 
 [return  ]
@@ -70,11 +71,12 @@ f.alive="1,1,1,1,1,1,1,1,1";
 f.co="0,0,0,0,0,0,0,0,0";
 f.liar="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 f.like="10,0,0,0,0,0,0,0,0,30,0,0,0,0,0,0,0,30,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,30,0,0,0,0,0,30,0,0,0,0,0,0,0,0,0,30,0,0,0,0,0,30,0,0,0";
-f.suspect="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 // ===== 平常心（9人分の基礎値。6〜9も補正なしの基礎値、ペアバフは都度計算） =====
 f.calm="100,80,110,100,120,110,90,100,110";
 // ===== 投票関連（9人分） =====
 f.votes="0,0,0,0,0,0,0,0,0";
+// ===== 様子を見るでai_actorに選ばれた回数（9人分） =====
+f.count="0,0,0,0,0,0,0,0,0";
 [endscript]
 
 [return  ]
@@ -87,12 +89,24 @@ function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
 function getCO(c){return parseInt(String(f.co).split(',')[c-1]);}
 function getRole(i){return parseInt(String(f.character).split(',')[i-1]);}
 function getLiar(a,b){return parseInt(String(f.liar).split(',')[gi(a,b)]);}
+// liar書き込み：5以上（人狼5・狂人9・占い師10・霊媒師11・村人15…）は確定値として何があっても上書き禁止
 function setLiar(idx,val){
 var lr=String(f.liar).split(',');
 var cur=parseInt(lr[idx]);
-if(cur===5||cur===9||cur===10||cur===11||cur===15)return;
+if(cur>=5)return;
 lr[idx]=String(val);
 f.liar=lr.join(',');
+}
+// 知覚平常心（PC＝ペアバフ込み平常心＋観測者からの好感度、観測者視点つき）
+function getPC(a,b){
+var calmArr2=String(f.calm).split(',');
+var v=parseFloat(calmArr2[b-1]);
+var al2=String(f.alive).split(',');
+if(b===6&&al2[6]==='1')v*=1.1;
+if(b===7&&al2[5]==='1')v*=1.1;
+if(b===9&&al2[7]==='1')v*=1.4;
+var lk2=String(f.like).split(',');
+return v+parseFloat(lk2[gi(a,b)]);
 }
 function getSclaim(){
 if(String(f.sclaim)==="0")return [];
@@ -112,64 +126,25 @@ var sclaimArr=getSclaim();
 var pclaimArr=getPclaim();
 var claims=sclaimArr.concat(pclaimArr);
 // ※人狼視点は「人狼の初期認識」（役職確定直後）で完成済みのためここでは何もしない
-// ===== ②5人モード専用：処刑続行バレ =====
-if(n===5){
-var executed=parseInt(f.result);
-if(executed>0){
-for(var c=0;c<claims.length;c++){
-var reporter=claims[c][1],target=claims[c][2],result=claims[c][3];
-if(target===executed&&result===1){
-for(var obs=1;obs<=n;obs++){
-if(obs===reporter)continue;
-if(!isAlive(obs))continue;
-setLiar(gi(obs,reporter),1);
-}
-}
-}
-}
-}
-// ===== ②5人モード専用：CO人数による正直確定（閾値3＝人狼1＋狂人1＋占い師1） =====
-if(n===5){
+// ※liar変数は生死に関わらず更新する（観測者側のisAlive判定は行わない）
+// ===================================================
+// フェーズ1：全体ライアー（客観・視点によらずブロードキャスト型）
+// ===================================================
+// ---CO人数による正直確定（モード共通：gm5=3CO／gm9=5COで閾値到達→未CO者を村人(15)確定）---
+var coThreshold=(n===5)?3:5;
 var coCount=0;
 for(var i=1;i<=n;i++){if(getCO(i)!==0)coCount++;}
-if(coCount>=3){
+if(coCount>=coThreshold){
 for(var i=1;i<=n;i++){
 if(getCO(i)!==0)continue;
 for(var obs=1;obs<=n;obs++){
 if(obs===i)continue;
-if(!isAlive(obs))continue;
 setLiar(gi(obs,i),15);
 }
 }
 }
-}
-// ===== ①モード共通：占いCO者が観測者自身（人狼）を人間と判定→確定狂人(9) =====
-for(var w=1;w<=n;w++){
-if(getRole(w)>5)continue; // 真の人狼のみ（狂人自身は初期認識を持たないため対象外）
-if(!isAlive(w))continue;
-for(var c=0;c<sclaimArr.length;c++){
-var reporter=sclaimArr[c][1],target=sclaimArr[c][2],result=sclaimArr[c][3];
-if(reporter===w)continue;
-if(target===w&&result===0)setLiar(gi(w,reporter),9);
-}
-}
-// ===== ③9人モード専用：霊媒CO者が味方人狼（既知）を人間と判定→確定狂人(9) =====
-if(n===9){
-for(var w=1;w<=n;w++){
-if(getRole(w)>5)continue;
-if(!isAlive(w))continue;
-for(var c=0;c<pclaimArr.length;c++){
-var reporter=pclaimArr[c][1],target=pclaimArr[c][2],result=pclaimArr[c][3];
-if(reporter===w)continue;
-if(target===w)continue;
-if(result!==0)continue;
-if(getLiar(w,target)!==5)continue; // 初期認識済みの味方人狼のみ対象
-setLiar(gi(w,reporter),9);
-}
-}
-}
-// ※9人モードの処刑続行バレ・CO人数閾値の再設計は未着手（引継書に明記のTODO）
-// ===== ①モード共通：死亡COチェーン（A黒B・B黒C→C確定人狼） =====
+// ---死亡COチェーン（5人モード専用）：A黒B・B黒C→Cを人狼(5)確定---
+if(n===5){
 for(var a=1;a<=n;a++){
 if(getCO(a)===0)continue;
 if(isAlive(a))continue;
@@ -189,26 +164,31 @@ if(claims[c][1]===b&&claims[c][3]===1){cTarget=claims[c][2];break;}
 if(cTarget===0)continue;
 for(var obs=1;obs<=n;obs++){
 if(obs===cTarget)continue;
-if(!isAlive(obs))continue;
-var lr=String(f.liar).split(',');
-lr[gi(obs,cTarget)]='5';
-f.liar=lr.join(',');
+setLiar(gi(obs,cTarget),5);
 }
 }
 }
-// ===== ①モード共通：伝播ループ（1→9変換／狂人確定→残り村人化／村人矛盾検出を収束するまで数回回す） =====
-for(var loop=0;loop<4;loop++){
-// 嘘つき(1)発見→無条件で狂人(9)
+}
+// ---sclaim/pclaim全員視点チェック：全員一致で正直(2)以上が確定している人物を「人狼」と報告した申告者は嘘つき(1)確定---
+function isPubliclyCleared(t){
+for(var i=1;i<=n;i++){
+if(i===t)continue;
+var v=getLiar(i,t);
+if(!(v===2||v>=10))return false;
+}
+return true;
+}
+for(var c=0;c<claims.length;c++){
+var reporter=claims[c][1],target=claims[c][2],result=claims[c][3];
+if(result!==1)continue;
+if(!isPubliclyCleared(target))continue;
 for(var obs=1;obs<=n;obs++){
-if(!isAlive(obs))continue;
-for(var t=1;t<=n;t++){
-if(t===obs)continue;
-if(getLiar(obs,t)===1)setLiar(gi(obs,t),9);
+if(obs===reporter)continue;
+setLiar(gi(obs,reporter),1);
 }
 }
-// 狂人(9)確定→残りの未確定者(0,1,2)を村人(15)に変換
+// ---狂人(9)発見済み→残りの嘘つき(1)は人狼(5)へ自動昇格---
 for(var obs=1;obs<=n;obs++){
-if(!isAlive(obs))continue;
 var hasMad=false;
 for(var t=1;t<=n;t++){
 if(t===obs)continue;
@@ -217,13 +197,76 @@ if(getLiar(obs,t)===9){hasMad=true;break;}
 if(!hasMad)continue;
 for(var t=1;t<=n;t++){
 if(t===obs)continue;
+if(getLiar(obs,t)===1)setLiar(gi(obs,t),5);
+}
+}
+// ---陣営人数確定による残りメンバーの人間確定：1・5・9の合計がgm5=2/gm9=3に到達したら、残りの0/2/3を2に（4以上は不可侵）---
+var campCountTarget=(n===5)?2:3;
+for(var obs=1;obs<=n;obs++){
+var campCount=0;
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
+var v=getLiar(obs,t);
+if(v===1||v===5||v===9)campCount++;
+}
+if(campCount<campCountTarget)continue;
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
+var v=getLiar(obs,t);
+if(v===0||v===2||v===3)setLiar(gi(obs,t),2);
+}
+}
+// ===================================================
+// フェーズ2：個別ライアー（主観・観測者ごと）
+// ===================================================
+// ---占いCO者が人狼自身(w)を人間と判定→その人狼視点でliar=9確定---
+for(var w=1;w<=n;w++){
+if(getRole(w)>5)continue; // 真の人狼のみ（狂人自身は初期認識を持たないため対象外）
+for(var c=0;c<sclaimArr.length;c++){
+var reporter=sclaimArr[c][1],target=sclaimArr[c][2],result=sclaimArr[c][3];
+if(reporter===w)continue;
+if(target===w&&result===0)setLiar(gi(w,reporter),9);
+}
+}
+// ---（9人専用）霊媒CO者が既知の味方人狼を人間と判定→その人狼視点でliar=9確定---
+if(n===9){
+for(var w=1;w<=n;w++){
+if(getRole(w)>5)continue;
+for(var c=0;c<pclaimArr.length;c++){
+var reporter=pclaimArr[c][1],target=pclaimArr[c][2],result=pclaimArr[c][3];
+if(reporter===w)continue;
+if(target===w)continue;
+if(result!==0)continue;
+if(getLiar(w,target)!==5)continue; // 初期認識済みの味方人狼のみ対象
+setLiar(gi(w,reporter),9);
+}
+}
+}
+// ---収束ループ（観測者ごとの主観推論を4回まわして収束させる）---
+for(var loop=0;loop<4;loop++){
+// 嘘つき(1)発見→無条件で狂人(9)
+for(var obs=1;obs<=n;obs++){
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
+if(getLiar(obs,t)===1)setLiar(gi(obs,t),9);
+}
+}
+// 狂人(9)確定→残りの未確定者(0,1,2)を村人(15)に変換
+for(var obs=1;obs<=n;obs++){
+var hasMad2=false;
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
+if(getLiar(obs,t)===9){hasMad2=true;break;}
+}
+if(!hasMad2)continue;
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
 var v=getLiar(obs,t);
 if(v===0||v===1||v===2)setLiar(gi(obs,t),15);
 }
 }
 // 村人確定者(15)を人狼と申告したCO者は矛盾＝嘘つき(1)
 for(var obs=1;obs<=n;obs++){
-if(!isAlive(obs))continue;
 for(var c=0;c<claims.length;c++){
 var reporter=claims[c][1],target=claims[c][2],result=claims[c][3];
 if(reporter===obs)continue;
@@ -232,99 +275,133 @@ if(result===1&&getLiar(obs,target)===15)setLiar(gi(obs,reporter),1);
 }
 }
 }
-[endscript]
-
-*suspect
-
-[iscript]
-var n=parseInt(f.gamemode);
-function gi(a,b){var nn=parseInt(f.gamemode);var o=(a-1)*(nn-1);var t=[];for(var i=1;i<=nn;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
-function getRole(i){return parseInt(String(f.character).split(',')[i-1]);}
-function getCO(i){return parseInt(String(f.co).split(',')[i-1]);}
-function getLiar(a,b){return parseInt(String(f.liar).split(',')[gi(a,b)]);}
-function getCalm(i){
-var v=parseFloat(String(f.calm).split(',')[i-1]);
-if(i===6&&isAlive(7))v*=1.1;
-if(i===7&&isAlive(6))v*=1.1;
-if(i===9&&isAlive(8))v*=1.4;
-return v;
-}
-function getLike(a,b){return parseInt(String(f.like).split(',')[gi(a,b)]);}
-function getPC(actor,tgt){return getCalm(tgt)+getLike(actor,tgt);}
-function setSuspect(i,slot,val){
-var arr=String(f.suspect).split(',');
-arr[(i-1)*2+slot]=String(val);
-f.suspect=arr.join(',');
-}
-// tが「t以外の生存キャラ全員」から見て人間確定(2)または特殊役職・村人確定(10以上)か
-function isPubliclyCleared(t){
-for(var i=1;i<=n;i++){
-if(i===t)continue;
-if(!isAlive(i))continue;
-var v=getLiar(i,t);
-if(!(v===2||v>=10))return false;
-}
-return true;
-}
-// ===== 村人サイド視点（役職10以上：占い師・霊媒師・騎士・村人） =====
-for(var obs=1;obs<=n;obs++){
-if(getRole(obs)<10)continue;
-if(!isAlive(obs))continue;
-var tier5=[],tier9=[],tier1=[];
+// ---狂人セクション：狂人自身の視点でのライアー更新---
+for(var m=1;m<=n;m++){
+if(getRole(m)!==9)continue;
+// ①1(嘘つき)があれば無条件で5(人狼)に自動昇格
 for(var t=1;t<=n;t++){
-if(t===obs)continue;
-var lv=getLiar(obs,t);
-if(lv===5)tier5.push(t);
-else if(lv===9)tier9.push(t);
-else if(lv===1)tier1.push(t);
+if(t===m)continue;
+if(getLiar(m,t)===1)setLiar(gi(m,t),5);
 }
-tier5.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
-tier9.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
-tier1.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
-var picked=tier5.concat(tier9).concat(tier1).slice(0,2);
-if(picked.length<2){
-var fallback=[];
+// ②自分が占い師COしている場合、自分以外の占い師CO者を4(囮)に
+if(getCO(m)===1){
+for(var c=1;c<=n;c++){
+if(c===m)continue;
+if(getCO(c)===1)setLiar(gi(m,c),4);
+}
+}
+// ③自分が霊媒師COしている場合、自分以外の霊媒師CO者を4(囮)に
+if(getCO(m)===2){
+for(var c=1;c<=n;c++){
+if(c===m)continue;
+if(getCO(c)===2)setLiar(gi(m,c),4);
+}
+}
+// ④⑤liar=5(人狼確定)の相手が占い師/霊媒師COしている場合、それ以外の同役職CO者を4(囮)に
+for(var w2=1;w2<=n;w2++){
+if(w2===m)continue;
+if(getLiar(m,w2)!==5)continue;
+if(getCO(w2)===1){
+for(var c=1;c<=n;c++){
+if(c===m||c===w2)continue;
+if(getCO(c)===1)setLiar(gi(m,c),4);
+}
+}
+if(getCO(w2)===2){
+for(var c=1;c<=n;c++){
+if(c===m||c===w2)continue;
+if(getCO(c)===2)setLiar(gi(m,c),4);
+}
+}
+}
+}
+// ---人狼セクション：占い師CO人狼→他の占い師CO者(自分以外)を無条件で4(囮)に---
+for(var w3=1;w3<=n;w3++){
+if(getRole(w3)>5)continue;
+if(getCO(w3)!==1)continue;
+for(var c=1;c<=n;c++){
+if(c===w3)continue;
+if(getCO(c)===1)setLiar(gi(w3,c),4);
+}
+}
+// ---人狼セクション：霊媒師CO人狼→他の霊媒師CO者(自分以外)を無条件で4(囮)に---
+for(var w4=1;w4<=n;w4++){
+if(getRole(w4)>5)continue;
+if(getCO(w4)!==2)continue;
+for(var c=1;c<=n;c++){
+if(c===w4)continue;
+if(getCO(c)===2)setLiar(gi(w4,c),4);
+}
+}
+// ---人狼＋狂人：最終整合性（liar=4の個数をgm5=2／gm9=3個に揃える）---
+var quotaTarget=(n===5)?2:3;
+for(var obs2=1;obs2<=n;obs2++){
+if(!(getRole(obs2)<=5||getRole(obs2)===9))continue;
+var fourList=[];
 for(var t=1;t<=n;t++){
-if(t===obs)continue;
-if(picked.indexOf(t)!==-1)continue;
-if(!isAlive(t))continue;
-var lv=getLiar(obs,t);
-if(lv===2||lv===15)continue;
-fallback.push(t);
+if(t===obs2)continue;
+if(getLiar(obs2,t)===4)fourList.push(t);
 }
-fallback.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
-while(picked.length<2&&fallback.length>0){
-picked.push(fallback.shift());
-}
-}
-setSuspect(obs,0,picked.length>0?picked[0]:0);
-setSuspect(obs,1,picked.length>1?picked[1]:0);
-}
-// ===== 人狼視点（役職5以下：真の人狼のみ／仮ロジック） =====
-for(var obs=1;obs<=n;obs++){
-if(getRole(obs)>5)continue;
-if(!isAlive(obs))continue;
+if(fourList.length<quotaTarget){
+// 不足：現在生存中・liar値0〜3のキャラから知覚平常心が低い順に補充
+var need=quotaTarget-fourList.length;
 var pool=[];
 for(var t=1;t<=n;t++){
-if(t===obs)continue;
+if(t===obs2)continue;
 if(!isAlive(t))continue;
-if(getLiar(obs,t)===5)continue; // 味方人狼を母集団から除外
-if(isPubliclyCleared(t))continue; // 全員一致で人間/村人確定済みは除外
+var v=getLiar(obs2,t);
+if(v<0||v>3)continue;
 pool.push(t);
 }
-var coTier=pool.filter(function(t){return getCO(t)!==0;});
-coTier.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
-var picked=coTier.slice(0,2);
-if(picked.length<2){
-var fallback=pool.filter(function(t){return picked.indexOf(t)===-1;});
-fallback.sort(function(a,b){return getPC(obs,a)-getPC(obs,b);});
-while(picked.length<2&&fallback.length>0){
-picked.push(fallback.shift());
+pool.sort(function(x,y){return getPC(obs2,x)-getPC(obs2,y);});
+for(var k=0;k<need&&k<pool.length;k++){
+setLiar(gi(obs2,pool[k]),4);
+}
+}else if(fourList.length>quotaTarget){
+// 過多：4かつ未COのキャラから知覚平常心が高い順に0へ降格
+var excess=fourList.length-quotaTarget;
+var demotePool=fourList.filter(function(t){return getCO(t)===0;});
+demotePool.sort(function(x,y){return getPC(obs2,y)-getPC(obs2,x);});
+for(var k=0;k<excess&&k<demotePool.length;k++){
+var didx=gi(obs2,demotePool[k]);
+var dlr=String(f.liar).split(',');
+dlr[didx]="0";
+f.liar=dlr.join(',');
 }
 }
-setSuspect(obs,0,picked.length>0?picked[0]:0);
-setSuspect(obs,1,picked.length>1?picked[1]:0);
+}
+// ---生存者4人以下の例外：4の対象が全員生存中なら最高PCを0へ降格し、死亡者のliar=0からランダムに1人4へ---
+var aliveTotal=0;
+for(var i=1;i<=n;i++){if(isAlive(i))aliveTotal++;}
+if(aliveTotal<=4){
+for(var obs3=1;obs3<=n;obs3++){
+if(!(getRole(obs3)<=5||getRole(obs3)===9))continue;
+var fourList2=[];
+for(var t=1;t<=n;t++){
+if(t===obs3)continue;
+if(getLiar(obs3,t)===4)fourList2.push(t);
+}
+if(fourList2.length!==quotaTarget)continue;
+var allAliveFour=true;
+for(var k=0;k<fourList2.length;k++){if(!isAlive(fourList2[k])){allAliveFour=false;break;}}
+if(!allAliveFour)continue;
+var highest=fourList2[0];
+for(var k=1;k<fourList2.length;k++){if(getPC(obs3,fourList2[k])>getPC(obs3,highest))highest=fourList2[k];}
+var hidx=gi(obs3,highest);
+var hlr=String(f.liar).split(',');
+hlr[hidx]="0";
+f.liar=hlr.join(',');
+var deadZero=[];
+for(var t=1;t<=n;t++){
+if(t===obs3)continue;
+if(isAlive(t))continue;
+if(getLiar(obs3,t)===0)deadZero.push(t);
+}
+if(deadZero.length>0){
+var pick=deadZero[Math.floor(Math.random()*deadZero.length)];
+setLiar(gi(obs3,pick),4);
+}
+}
 }
 [endscript]
 

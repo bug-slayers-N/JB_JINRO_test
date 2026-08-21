@@ -126,7 +126,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
+[jump  storage="murasame.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="murasame.ks"  target="*show"  ]
+*doubt3
+
 [call  storage="murasame.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -182,8 +185,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
+[jump  storage="murasame.ks"  target="*add"  cond="f.display08=='add'"  ]
 [chara_hide_all  time="0"  wait="true"  ]
 [call  storage="murasame.ks"  target="*show"  ]
+*cover3
+
 [call  storage="murasame.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -225,7 +231,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
-[emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
+[emb exp="f.name"]を診断した。結果は[emb exp="f.name2"]だ。[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -396,3 +402,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [_tb_end_text]
 
 [return  ]
+*add
+
+[call  storage="murasame.ks"  target="*show2"  ]
+[call  storage="murasame.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+#村雨
+「私からも言わせてもらおう」[p]
+[_tb_end_text]
+
+[jump  storage="murasame.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
+[jump  storage="murasame.ks"  target="*cover3"  ]

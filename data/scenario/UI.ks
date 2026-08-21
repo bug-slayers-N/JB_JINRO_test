@@ -394,6 +394,7 @@ f.result = (f.display01!=="" || f.display02!=="") ? 1 : 0;
 [jump  storage="doubt.ks"  target="*list_back"  cond="f.jump=='doubt'"  ]
 [jump  storage="cover.ks"  target="*list_back"  cond="f.jump=='cover'"  ]
 [jump  storage="vote.ks"  target="*player_vote_back"  cond="f.jump=='vote'"  ]
+[jump  storage="night.ks"  target="*knight_back"  cond="f.jump=='knight'"  ]
 [jump  storage="night.ks"  target="*wolf_end"  cond="f.jump=='wolf'"  ]
 *back_top
 

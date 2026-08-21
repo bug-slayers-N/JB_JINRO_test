@@ -130,7 +130,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
+[jump  storage="shigure.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="shigure.ks"  target="*show"  ]
+*doubt3
+
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -186,8 +189,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
+[jump  storage="shigure.ks"  target="*add"  cond="f.display08=='add'"  ]
 [chara_hide_all  time="0"  wait="true"  ]
 [call  storage="shigure.ks"  target="*show"  ]
+*cover3
+
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -246,7 +252,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #時雨
-「待て」[p]
+「待ってください」[p]
 [_tb_end_text]
 
 [return  ]
@@ -256,7 +262,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #時雨
-「この中に嘘つきがいる、という訳だ」[p]
+「この中に嘘つきがいますねぇ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -264,7 +270,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 
 [tb_start_text mode=1 ]
 #時雨
-「対抗するか？」[p]
+「対抗します？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -274,7 +280,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #時雨
-「[emb exp="f.display09"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.display09"]は素直に名乗りでた方がいいですよ」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -284,7 +290,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #時雨
-「情報に乏しい今、一度全員が村人だと宣言したらどうか？」[p]
+「人間だって言ってみてください。それで見分けます」[p]
 [_tb_end_text]
 
 [return  ]
@@ -294,7 +300,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #時雨
-「当然、村人陣営だ」[p]
+「当然、村人ですが」[p]
 [_tb_end_text]
 
 [jump  storage="say_human.ks"  target="*say_human_reply"  ]
@@ -304,8 +310,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_ai"  ]
 [tb_start_tyrano_code]
 #時雨
-「[emb exp="f.name"]、さすがに騒々しすぎる」[p]
-「何か必死に誘導したいのか？かえって怪しいが」[p]
+「[emb exp="f.name"]、騒々しいですよ」[p]
+「嘘つき程、多弁になったりしますけどね」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -314,8 +320,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show2"  ]
 [tb_start_tyrano_code]
 #時雨
-「[emb exp="f.name2"]、それは違う」[p]
-「少し黙った方がいいのでは？」[p]
+「[emb exp="f.name2"]、それはおかしいのでは？」[p]
+「少し黙ってください」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="observe.ks"  target="*observe"  ]
@@ -400,3 +406,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [_tb_end_text]
 
 [return  ]
+*add
+
+[call  storage="shigure.ks"  target="*show2"  ]
+[call  storage="shigure.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+#時雨
+「私からも一言よろしいですか」[p]
+[_tb_end_text]
+
+[jump  storage="shigure.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
+[jump  storage="shigure.ks"  target="*cover3"  ]

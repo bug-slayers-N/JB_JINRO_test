@@ -126,7 +126,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
+[jump  storage="urushibara.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="urushibara.ks"  target="*show"  ]
+*doubt3
+
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -182,8 +185,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
+[jump  storage="urushibara.ks"  target="*add"  cond="f.display08=='add'"  ]
 [chara_hide_all  time="0"  wait="true"  ]
 [call  storage="urushibara.ks"  target="*show"  ]
+*cover3
+
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -396,3 +402,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [_tb_end_text]
 
 [return  ]
+*add
+
+[call  storage="urushibara.ks"  target="*show2"  ]
+[call  storage="urushibara.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+#漆原
+「私からも意見を挟もうかな」[p]
+[_tb_end_text]
+
+[jump  storage="urushibara.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
+[jump  storage="urushibara.ks"  target="*cover3"  ]

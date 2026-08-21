@@ -46,6 +46,14 @@ f.like = likes.join(",");
 [jump  storage="doubt.ks"  target="*dispatch_doubt2"  ]
 *show
 
+[jump  storage="doubt.ks"  target="*reaction_only"  cond="f.display07==1"  ]
+[jump  storage="addition.ks"  target="*addition"  ]
+*reaction_only
+
+[iscript]
+f.display07=0;
+[endscript]
+
 [call  storage="mafutsu.ks"  target="*kuro"  cond="f.target==1"  ]
 [call  storage="sisigami.ks"  target="*kuro"  cond="f.target==2"  ]
 [call  storage="murasame.ks"  target="*kuro"  cond="f.target==3"  ]

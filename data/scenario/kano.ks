@@ -135,7 +135,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
+[jump  storage="kano.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="kano.ks"  target="*show"  ]
+*doubt3
+
 [call  storage="UI.ks"  target="*name_change"  ]
 [call  storage="kano.ks"  target="*kano_namechange"  ]
 [tb_start_tyrano_code]
@@ -195,7 +198,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
+[jump  storage="kano.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="kano.ks"  target="*show"  ]
+*cover3
+
 [call  storage="UI.ks"  target="*name_change"  ]
 [call  storage="kano.ks"  target="*kano_namechange"  ]
 [call  storage="kano.ks"  target="*show_ki"  ]
@@ -422,3 +428,14 @@ if(nameMap[f.name2]!==undefined) f.name2=nameMap[f.name2];
 [_tb_end_text]
 
 [return  ]
+*add
+
+[call  storage="kano.ks"  target="*show2"  ]
+[call  storage="kano.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
+#叶
+「オレからもいい？」[p]
+[_tb_end_text]
+
+[jump  storage="kano.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
+[jump  storage="kano.ks"  target="*cover3"  ]

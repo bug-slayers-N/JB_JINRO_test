@@ -38,6 +38,14 @@ f.like=lk.join(",");
 [jump  storage="cover.ks"  target="*dispatch_cover2"  ]
 *show
 
+[jump  storage="cover.ks"  target="*reaction_only"  cond="f.display07==1"  ]
+[jump  storage="addition.ks"  target="*addition"  ]
+*reaction_only
+
+[iscript]
+f.display07=0;
+[endscript]
+
 [call  storage="mafutsu.ks"  target="*shiro"  cond="f.target==1"  ]
 [call  storage="sisigami.ks"  target="*shiro"  cond="f.target==2"  ]
 [call  storage="murasame.ks"  target="*shiro"  cond="f.target==3"  ]

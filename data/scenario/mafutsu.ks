@@ -124,7 +124,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
+[jump  storage="mafutsu.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="mafutsu.ks"  target="*show"  ]
+*doubt3
+
 [call  storage="mafutsu.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -180,7 +183,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
+[jump  storage="mafutsu.ks"  target="*add"  cond="f.display08=='add'"  ]
 [call  storage="mafutsu.ks"  target="*show"  ]
+*cover3
+
 [call  storage="mafutsu.ks"  target="*show_raku"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
@@ -401,3 +407,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 [_tb_end_text]
 
 [return  ]
+*add
+
+[call  storage="mafutsu.ks"  target="*show2"  ]
+[call  storage="mafutsu.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+#真経津
+「自分もいいかな？」[p]
+[_tb_end_text]
+
+[jump  storage="mafutsu.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
+[jump  storage="mafutsu.ks"  target="*cover3"  ]

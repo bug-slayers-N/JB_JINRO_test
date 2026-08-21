@@ -15,10 +15,11 @@ f.ai_result=0;
 f.target=0;
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isWolfTeam(role){return role<10;}
-function setLiar(idx,val){
+function setLiar(idx){
 var cur=parseInt(lr[idx]);
-if(cur===5||cur===9||cur===10||cur===11||cur===15)return;
-lr[idx]=String(val);
+if(cur===0){lr[idx]="1";}
+else if(cur===3){lr[idx]="9";}
+// それ以外の値はここでは更新しない
 }
 function getCalm(i){
 var v=parseFloat(calmArr[i-1]);
@@ -56,7 +57,7 @@ var tr=parseInt(charArr[tg-1]);
 if(!isWolfTeam(tr)){lk[li2]=parseInt(lk[li2])+10;continue;}
 var rt=(df/2+pw/5)/100;
 if(Math.random()<rt){
-setLiar(li2,1);
+setLiar(li2);
 dt=true;
 if(ob===playerNum){f.target=tg;f.ai_result=1;}
 }else{lk[li2]=parseInt(lk[li2])+10;}

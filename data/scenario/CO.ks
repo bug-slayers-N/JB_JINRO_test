@@ -197,6 +197,12 @@ else if(parts[pIdx]==="B")winner=rollPool(poolB,rateB);
 else if(parts[pIdx]==="C")winner=rollPool(poolC,rateC);
 }
 f.ai_actor=winner;
+// ===== COを求めるに応えてai_actorに選ばれた回数を+1 =====
+if(winner>0){
+var countArr=String(f.count).split(',');
+countArr[winner-1]=String(parseInt(countArr[winner-1],10)+1);
+f.count=countArr.join(',');
+}
 [endscript]
 
 [jump  storage="CO.ks"  target="*AI_CO"  cond="f.ai_actor>0"  ]
@@ -387,6 +393,10 @@ else if(parts[pIdx]==="C")winner=rollPool(poolC,rateC);
 if(winner>0){
 f.ai_actor=winner;
 f.role2="co";
+// ===== 対抗COでai_actorに選ばれた回数を+1 =====
+var countArr=String(f.count).split(',');
+countArr[winner-1]=String(parseInt(countArr[winner-1],10)+1);
+f.count=countArr.join(',');
 }else{
 f.ai_actor=0;
 }
@@ -407,6 +417,52 @@ if(coCount>=2)f.jump="CO3";
 *CO3_back
 
 [call  storage="system.ks"  target="*liar"  ]
+[iscript]
+// ===== 人狼陣営：今回CO確定した役職に人狼がいた場合、残りの人狼が確率でrivalに4(囮)を入れる（gm9以上限定） =====
+// ・確率抽選をする本人は「今回その役職をCOした当人以外の人狼」。当人自身の視点は既にsystem.ks側の無条件ルールで反映済み。
+// ・対象は「仲間人狼以外」で、今回の役職(f.result)にCO済みの全キャラ。
+// ・確率は抽選者本人の性格(積極的85%/普通70%/消極的40%)。特殊ペア(2⇔3, 6⇔7, 8⇔9)は100%。
+var n=parseInt(f.gamemode);
+if(n>=9){
+var result=parseInt(f.result); // 1=占い師CO中、2=霊媒師CO中
+var roles=String(f.character).split(",").map(Number);
+var coArr=String(f.co).split(",");
+var wolfCoed=0;
+for(var i=1;i<=n;i++){
+if(roles[i-1]<=5&&parseInt(coArr[i-1])===result){wolfCoed=i;break;}
+}
+if(wolfCoed>0){
+var personality={1:"active",4:"active",7:"active",8:"active",5:"normal",6:"normal",2:"passive",3:"passive",9:"passive"};
+var rateTbl={active:0.85,normal:0.70,passive:0.40};
+var specialPairs=[[2,3],[6,7],[8,9]];
+function isSpecialPair(a,b){
+for(var p=0;p<specialPairs.length;p++){
+if((specialPairs[p][0]===a&&specialPairs[p][1]===b)||(specialPairs[p][0]===b&&specialPairs[p][1]===a))return true;
+}
+return false;
+}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function setLiar4(idx){
+var lr=String(f.liar).split(',');
+if(parseInt(lr[idx])>=5)return;
+lr[idx]="4";
+f.liar=lr.join(',');
+}
+for(var r=1;r<=n;r++){
+if(roles[r-1]>5)continue; // 人狼のみが抽選者
+if(r===wolfCoed)continue; // 今回CO済みの当人は対象外
+for(var c=1;c<=n;c++){
+if(c===r)continue;
+if(roles[c-1]<=5)continue; // 仲間人狼は対象外
+if(parseInt(coArr[c-1])!==result)continue; // 今回の役職をCOしている相手のみ
+var rate=isSpecialPair(r,c)?1.0:rateTbl[personality[r]];
+if(Math.random()<rate)setLiar4(gi(r,c));
+}
+}
+}
+}
+[endscript]
+
 [jump  storage="end.ks"  target="*turn_set"  ]
 *CO3
 

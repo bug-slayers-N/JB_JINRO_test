@@ -42,15 +42,33 @@ f.target=candidates.length>0?candidates[Math.floor(Math.random()*candidates.leng
 *seer_result
 
 [iscript]
+var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
 var tgt=parseInt(f.target);
+var seerNum=0;
+for(var i=1;i<=n;i++){if(roles[i-1]===10){seerNum=i;break;}}
 function addSeerResult(target,result){
 if(String(f.seer_result)==="0"){f.seer_result=target+","+result;}
 else{f.seer_result=f.seer_result+","+target+","+result;}
 }
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 if(tgt>0){ // 候補が居ない(target===0)場合は不正データを記録しない
 var res=(roles[tgt-1]<=5)?1:0;
 addSeerResult(tgt,res);
+if(seerNum>0){
+// 本人視点のliarを更新：人狼結果は一律5、人間結果は0→3・1→9、2以上は更新しない
+var lr=String(f.liar).split(",");
+var idx=gi(seerNum,tgt);
+var cur=parseInt(lr[idx]);
+if(res===1){
+lr[idx]="5";
+}else if(cur===0){
+lr[idx]="3";
+}else if(cur===1){
+lr[idx]="9";
+}
+f.liar=lr.join(",");
+}
 }
 [endscript]
 
@@ -216,6 +234,8 @@ var roles=String(f.character).split(",").map(Number);
 var actorRole=roles[actorNum-1];
 var aliveArr=String(f.alive).split(",");
 var coArr=String(f.co).split(",");
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function getLiar(a,b){return parseInt(String(f.liar).split(',')[gi(a,b)]);}
 function getSclaim(){
 if(String(f.sclaim)==="0")return [];
 var arr=String(f.sclaim).split(',');
@@ -232,20 +252,32 @@ if(sclaimArr[i][1]===actorNum) alreadyPicked.push(sclaimArr[i][2]);
 }
 var t=0,res=0;
 if(actorRole<=5){
-// 人狼：未CO・生存・自分以外・未占い済みからランダムに1人選び、人間と申告
+// 人狼：未CO・生存・自分以外・未占い済みからランダムに1人選ぶ。自分視点でliar=4(囮指定)の相手は通常プールから除外する
 var cands=[];
+var coExcluded=[]; // CO済み、またはliar=4(囮指定)につき通常プールからは除外した相手
 for(var i=1;i<=n;i++){
 if(i===actorNum)continue;
-if(coArr[i-1]!=="0")continue;
 if(aliveArr[i-1]==="0")continue;
 if(alreadyPicked.indexOf(i)>=0)continue;
+if(coArr[i-1]!=="0"||getLiar(actorNum,i)===4){coExcluded.push(i);continue;}
 cands.push(i);
 }
 if(cands.length>0){
+// 通常プールから選出：人間と申告
 t=cands[Math.floor(Math.random()*cands.length)];
 res=0;
+}else if(coExcluded.length>0){
+// 通常プール切れ：coExcluded内にliar=4(囮指定)の相手がいればそこから優先的に選び人狼と申告、いなければ人間と申告
+var decoyPool=coExcluded.filter(function(c){return getLiar(actorNum,c)===4;});
+if(decoyPool.length>0){
+t=decoyPool[Math.floor(Math.random()*decoyPool.length)];
+res=1;
 }else{
-// 候補切れ：無効値の9,9センチネルをそのままsclaimに書き込む
+t=coExcluded[Math.floor(Math.random()*coExcluded.length)];
+res=0;
+}
+}else{
+// 復帰後も候補切れ：無効値の9,9センチネルをそのままsclaimに書き込む
 t=9;
 res=9;
 }
@@ -276,6 +308,8 @@ f.display01=res;
 var actor=parseInt(f.ai_actor);
 var day=parseInt(f.day);
 var mainDay=day-1; // 今回発表するメインの報告のday
+var n=parseInt(f.gamemode);
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function getSclaim(){
 if(String(f.sclaim)==="0")return [];
 var arr=String(f.sclaim).split(',');
@@ -287,6 +321,15 @@ function addSclaimRaw(d,reporter,target,result){
 var entry=d+","+reporter+","+target+","+result;
 if(String(f.sclaim)==="0"){f.sclaim=entry;}
 else{f.sclaim=f.sclaim+","+entry;}
+// 追加時点でreporter視点のtargetライアーを更新：人間報告→3、人狼報告→4（5以上は上書き禁止）
+if(target>0&&target!==reporter){
+var lr=String(f.liar).split(',');
+var idx=gi(reporter,target);
+if(parseInt(lr[idx])<5){
+lr[idx]=(result===1)?"4":"3";
+f.liar=lr.join(',');
+}
+}
 }
 var sclaimArr=getSclaim();
 var hasPrior=false;
@@ -296,7 +339,6 @@ if(sclaimArr[i][1]===actor){hasPrior=true;break;}
 if(!hasPrior){
 // 初回CO：day0〜(mainDay-1)を過去データとしてランダム生成して埋める
 // character変数で11以上(霊媒師・村人等)のキャラを生存死亡問わずランダムに選び、人間と報告
-var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
 var safeCands=[];
 for(var i=1;i<=n;i++){
@@ -359,11 +401,12 @@ f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 var actor=parseInt(f.ai_actor);
 var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
-var liarArr=String(f.liar).split(",").map(Number);
-var aliveArr=String(f.alive).split(",").map(Number);
-var suspectArr=(String(f.suspect)==="0")?[]:String(f.suspect).split(",").map(Number);
 var actorRole=roles[actor-1];
 var dead=parseInt(f.target);
+var day=parseInt(f.day);
+var mainDay=day-1; // 今回発表するメインの報告のday
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function getLiar(a,b){return parseInt(String(f.liar).split(',')[gi(a,b)]);}
 function getPclaim(){
 if(String(f.pclaim)==="0")return [];
 var arr=String(f.pclaim).split(',');
@@ -372,33 +415,49 @@ for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),par
 return res;
 }
 var pclaimArr=getPclaim();
-// これまでにこのactorが「人狼」と報告した回数（上限チェック用）
+// これまでにこのactorが「人狼」と報告した回数（上限チェック用・人狼側のみ使用）
 var wolfReportsSoFar=0;
 for(var i=0;i<pclaimArr.length;i++){
 if(pclaimArr[i][1]===actor && pclaimArr[i][3]===1) wolfReportsSoFar++;
 }
-// 上限チェックが有効な状況か（偽霊媒師=人狼・9人モード限定）
-var aliveWolfCount=0,aliveTotal=0;
-for(var i=1;i<=n;i++){
-if(aliveArr[i-1]===1){
-aliveTotal++;
-if(roles[i-1]<=5) aliveWolfCount++;
+function getSclaim(){
+if(String(f.sclaim)==="0")return [];
+var arr=String(f.sclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
 }
-}
-var capActive=(actorRole<=5 && n===9 &&
-((aliveWolfCount===2 && aliveTotal>=7)||(aliveWolfCount===1 && aliveTotal>=5)));
-// 結果判定：①liar15→人間 ②liar5→人狼 ③suspect在籍→人狼、それ以外→人間
-// 上限チェックに引っかかる場合は人狼判定を人間に差し替える
-var tLiar=liarArr[dead-1];
+var coArr=String(f.co).split(",");
 var res;
-if(tLiar===15){res=0;}
-else if(tLiar===5){res=1;}
-else{
-var s0=suspectArr[(actor-1)*2];
-var s1=suspectArr[(actor-1)*2+1];
-res=(s0===dead||s1===dead)?1:0;
+if(actorRole<=5){
+// 人狼：①1度でも人狼報告済みなら以後は人間固定 ②未報告かつ仲間の人狼が死んだら素直に人狼
+// ③未報告かつ初日処刑者の報告でsclaim未登場・CO数少なめなら人狼、それ以外は人間
+if(wolfReportsSoFar>=1){
+// ①人狼を1度でも報告済みなら、以後は問答無用で人間報告
+res=0;
+}else if(roles[dead-1]<=5){
+// ②未報告かつ死んだキャラが仲間の人狼(role<=5)なら、素直に人狼報告
+res=1;
+}else if(mainDay===1){
+// 未報告かつ初日処刑者の報告：sclaimに未登場 かつ 占い師CO2人以下・霊媒師CO2人以下 なら人狼報告
+var sclaimArr=getSclaim();
+var inSclaim=false;
+for(var i=0;i<sclaimArr.length;i++){
+if(sclaimArr[i][2]===dead){inSclaim=true;break;}
 }
-if(res===1 && capActive && wolfReportsSoFar>=1){res=0;}
+var seerCoCount=0,psychicCoCount=0;
+for(var i=0;i<coArr.length;i++){
+if(coArr[i]==="1")seerCoCount++;
+if(coArr[i]==="2")psychicCoCount++;
+}
+res=(!inSclaim && seerCoCount<=2 && psychicCoCount<=2)?1:0;
+}else{
+res=0;
+}
+}else{
+// 狂人：キャップなし。自分視点でliar=4(囮指定)なら人狼、それ以外は人間
+res=(getLiar(actor,dead)===4)?1:0;
+}
 f.display01=res;
 [endscript]
 
@@ -408,6 +467,8 @@ f.display01=res;
 var actor=parseInt(f.ai_actor);
 var day=parseInt(f.day);
 var mainDay=day-1; // 今回発表するメインの報告のday
+var n=parseInt(f.gamemode);
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 
 function getPsychicResults(){
   if(String(f.psychic_result)==="0")return [];
@@ -427,6 +488,15 @@ function addPclaimRaw(d,reporter,target,result){
   var entry=d+","+reporter+","+target+","+result;
   if(String(f.pclaim)==="0"){f.pclaim=entry;}
   else{f.pclaim=f.pclaim+","+entry;}
+  // 追加時点でreporter視点のtargetライアーを更新：人間報告→3、人狼報告→4（5以上は上書き禁止）
+  if(target>0&&target!==reporter){
+    var lr=String(f.liar).split(',');
+    var idx=gi(reporter,target);
+    if(parseInt(lr[idx])<5){
+      lr[idx]=(result===1)?"4":"3";
+      f.liar=lr.join(',');
+    }
+  }
 }
 
 var presults=getPsychicResults();
@@ -544,12 +614,27 @@ function addPsychicResult(target,result){
 if(String(f.psychic_result)==="0"){f.psychic_result=target+","+result;}
 else{f.psychic_result=f.psychic_result+","+target+","+result;}
 }
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
 var res=0;
 if(psychicNum>0){
 // 本物霊媒師の生死に関わらず毎晩記録を続ける（処刑が無かった晩も対象者0・結果0で記録し、添字とdayを常に一致させる）
 res=hasExecution?((roles[dead-1]<=5)?1:0):0;
 addPsychicResult(hasExecution?dead:0,res);
+if(hasExecution){
+// 本人視点のliarを更新：人狼結果は一律5、人間結果は0→3・1→9、2以上は更新しない
+var lr=String(f.liar).split(",");
+var idx=gi(psychicNum,dead);
+var cur=parseInt(lr[idx]);
+if(res===1){
+lr[idx]="5";
+}else if(cur===0){
+lr[idx]="3";
+}else if(cur===1){
+lr[idx]="9";
+}
+f.liar=lr.join(",");
+}
 }
 // jump: 0=このモードに霊媒師不在／3=記帳直後だが本人死亡につき即終了／0=生存だがplayerが霊媒師でない／1=表示あり／2=処刑無しの表示
 if(psychicNum===0){
