@@ -24,16 +24,16 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [return  ]
 *show_normal2
 
-[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_normal_2.png"  ]
+[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_aseri.png"  ]
 [return  ]
 *show_ki
 
-[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_ki.png"  ]
+[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_normal.png"  ]
 [return  ]
 *show_do
 
 [jump  storage="yamabuki.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_do.png"  ]
+[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_aseri.png"  ]
 [return  ]
 *show_ai
 
@@ -53,21 +53,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
-「VIP共の小間使いとしてゲームに参加しろと？」[p]
-「マヌケに巻き込まれて敗北するくらいなら、この試合は降りさせてもらう」[p]
-「…」[p]
+「はぁ？人狼ゲームゥ？なんでそんなもん参加しねぇーといけないんだ？」[p]
+「え、相棒もいんの？」[p]
+「あ～、それなら行くか」[p]
 [_tb_end_text]
 
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
-「…なんだ、対戦相手は獅子神達なのか」[p]
-「それなら問題ない、私が勝つ」[p]
-[_tb_end_text]
-
-[call  storage="yamabuki.ks"  target="*show_ki"  ]
-[tb_start_text mode=1 ]
-「なんせ、マヌケを導くのはこの私が1番上手いのだからな」[p]
-「とっとと会場に向かおう」[p]
+「まぁ、暇つぶしにはなんだろ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -77,14 +70,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [jump  storage="yamabuki.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #山吹
-「昼の議論ターンの開始だ」[p]
+「議論ターンはじまってんぞ」[p]
 [_tb_end_text]
 
 *first
 
 [tb_start_text mode=1 ]
 #山吹
-「さて、どうする？」[p]
+「あんたはどうすんだ？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -103,7 +96,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
-「なにを根拠に疑うというか。まぬけめ」[p]
+「証拠も無しに疑うなんてひでーな。まるで悪人だ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -113,14 +106,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #山吹
-「悪くない判断だ、あなたが人間だとしても人狼だとしても」[p]
+「もっとそう言ってくれてもいいんだぜ」[p]
 [_tb_end_text]
 
 [return  ]
 *doubt
 
 [tb_start_text mode=1 ]
-「誰を疑う？」[p]
+「誰を疑うんだ？」[p]
 [_tb_end_text]
 
 [jump  storage="doubt.ks"  target="*doubt"  ]
@@ -134,7 +127,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #山吹
-「[emb exp="f.name"]が怪しい」[p]
+「[emb exp="f.name"]が怪し～んだよな」[p]
 [_tb_end_tyrano_code]
 
 [call  storage="yamabuki.ks"  target="*push"  cond="f.win=='d1'"  ]
@@ -144,14 +137,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *push
 
 [tb_start_text mode=1 ]
-「論理ではまだ証明は出来ない、勘の段階だ」[p]
+「ま、刑事の勘ってヤツ？」[p]
 [_tb_end_text]
 
 [return  ]
 *push2
 
 [tb_start_text mode=1 ]
-「瞳孔の開き、脈拍、見るべきところはいくらでもある。嘘つきだだ」[p]
+「お前が嘘つきだってもうバレってから。刑事の取り調べ舐めんなよ」[p]
 [_tb_end_text]
 
 [jump  storage="doubt.ks"  target="*push_act"  cond="f.result==1"  ]
@@ -160,8 +153,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 
 [call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_tyrano_code]
-「[emb exp="f.name"]は人狼、論理的に考えてそうだ」[p]
-「ここからどう覆すというのだ？」[p]
+「[emb exp="f.name"]は人狼、それ以外にありえねぇーんだよ」[p]
+「悪人は黙ってボコられてな」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="doubt.ks"  target="*push_act"  cond="f.result==1"  ]
@@ -172,14 +165,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_jinro"  ]
 [tb_start_tyrano_code]
 #山吹
-(間違いない、[emb exp="f.name"]は嘘をついている)[p]
+(あ～、[emb exp="f.name"]は嘘つきだな)[p]
 [_tb_end_tyrano_code]
 
 [return  ]
 *cover
 
 [tb_start_text mode=1 ]
-「誰なら信じれるか？」[p]
+「誰なら信じれんだ？」[p]
 [_tb_end_text]
 
 [jump  storage="cover.ks"  target="*cover"  ]
@@ -194,7 +187,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #山吹
-「[emb exp="f.name"]は人間である可能性が高い」[p]
+「[emb exp="f.name"]は限りなくシロだと思うぜ～」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="cover.ks"  target="*show"  ]
@@ -203,7 +196,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [mask_off  time="500"  effect="fadeOut"  ]
 [tb_start_text mode=1 ]
 #山吹
-「投票の時間か」[p]
+「投票の時間だ」[p]
 「誰に投票する？」[p]
 [_tb_end_text]
 
@@ -214,7 +207,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
-「私だと？まったく、とんだマヌケ共め」[p]
+「ざけんな！そのニヤけ面のまま帰れると思うなよ！」[p]
 [_tb_end_text]
 
 [chara_hide_all  time="1000"  wait="true"  ]
@@ -227,11 +220,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [jump  storage="yamabuki.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #山吹
-「言っておく、私が[emb exp="f.display09"]だ」[p]
+「俺が[emb exp="f.display09"]だぜ」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
-[emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
+[emb exp="f.name"]は[emb exp="f.name2"]、だ。よく覚えとけよ。[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -239,7 +232,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 
 [tb_start_text mode=1 ]
 #山吹
-「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+「霊媒師は俺だけど、結果は明日のお楽しみだな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -248,7 +241,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #山吹
-「待て」[p]
+「あ？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -258,7 +251,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #山吹
-「この中に嘘つきがいる、という訳だ」[p]
+「この中に悪い奴がいんのか、楽しくなってきたな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -276,7 +269,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #山吹
-「[emb exp="f.display09"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.display09"]はとっと名乗り出ろよ」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -286,7 +279,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #山吹
-「情報に乏しい今、一度全員が村人だと宣言したらどうか？」[p]
+「村人だと宣言しろ、それで俺と相棒は見抜ける」[p]
 [_tb_end_text]
 
 [return  ]
@@ -306,8 +299,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_ai"  ]
 [tb_start_tyrano_code]
 #山吹
-「[emb exp="f.name"]、さすがに騒々しすぎる」[p]
-「何か必死に誘導したいのか？かえって怪しいが」[p]
+「ぎゃーぎゃーうるせぇよ、[emb exp="f.name"]」[p]
+「隠し事があるヤツは、いつもうるせぇーんだ」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -316,8 +309,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show2"  ]
 [tb_start_tyrano_code]
 #山吹
-「[emb exp="f.name2"]、それは違う」[p]
-「少し黙った方がいいのでは？」[p]
+「ちげーだろ、[emb exp="f.name2"]」[p]
+「少し黙っとけ」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="observe.ks"  target="*observe"  ]
@@ -327,8 +320,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_jinro"  ]
 [tb_start_text mode=1 ]
 #山吹
-「マヌケめ、私達が嘘つきだ」[p]
-「手軽なゲームだろうと私が強い」[p]
+「ざんねぇーん！ヒーローは嘘つかないと思ったか？」[p]
+「悪い奴をボコれるなら、何やってもいいんだよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -337,7 +330,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show2"  ]
 [tb_start_text mode=1 ]
 #山吹
-「当然、村人陣営の勝利だ」[p]
+「正義は勝つ！村人陣営の勝利だ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -346,9 +339,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #山吹
-「当然の勝利だ」[p]
-「ふんっ、マヌケにしてはまだマシな方だったということだな」[p]
-「私は帰らせてもらう」[p]
+「ヒーローが勝つのは当然だろォ？」[p]
+「もっと賞賛してくれていいんだぜ？」[p]
+「それじゃ、エンタメショーはこれで終わりだ」[p]
+「あばよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -357,16 +351,15 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #山吹
-「当然の勝利だ」[p]
-「ふんっ、マヌケにしてはまだマシな方だったということだな」[p]
-
+「ヒーローが勝つのは当然だろォ？」[p]
+「もっと賞賛してくれていいんだぜ？」[p]
 [_tb_end_text]
 
 [mask  time="200"  effect="fadeIn"  color="0x000000"  ]
 [call  storage="yamabuki.ks"  target="*show_jinro2"  ]
 [mask_off  time="200"  effect="fadeOut"  ]
 [tb_start_text mode=1 ]
-「否、あなたは自分の可能性に気が付いていないのかも知れないな」[p]
+「ま、お前も悪くなかったぜ。いつでもこっち来いよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -376,10 +369,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #山吹
-「負けたか」[p]
-「仕方あるまい、私には決定権がなかったのだ」[p]
-「どれだけの名医でも、言うことの聞かない患者に出来ることはない」[p]
-「私は帰らせてもらう」[p]
+「チッ、負けかよ」[p]
+「遊びだっつっても気分悪ィわ」[p]
+「あ～あ、帰りに犯罪者でもぶん殴ってすっきりすっか」[p]
+「じゃあな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -408,7 +401,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #山吹
-「私からも一言いいか」[p]
+「俺の意見も聞けよ」[p]
 [_tb_end_text]
 
 [jump  storage="yamabuki.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]

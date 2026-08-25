@@ -1,6 +1,4 @@
 [preload  storage="./data/fgimage/chara/7/shigure_normal.png"  ]
-[preload  storage="./data/fgimage/chara/7/shigure_normal2.png"  ]
-[preload  storage="./data/fgimage/chara/7/shigure_ki.png"  ]
-[preload  storage="./data/fgimage/chara/7/shigure_do.png"  ]
+[preload  storage="./data/fgimage/chara/7/shigure_aseri.png"  ]
 [preload  storage="./data/fgimage/chara/7/shigure_insane.png"  ]
 [return]

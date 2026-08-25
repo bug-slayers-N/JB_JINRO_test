@@ -449,9 +449,11 @@ addPclaim(psychicChar,pr[q][0],pr[q][1]);
 [endscript]
 
 [iscript]
-// 本日付でsclaim/pclaimに追加された全エントリを「報告者→対象:結果」形式のテキストに再形成
+// CO済み・生存中のキャラごとに、そのキャラの最新のsclaim/pclaimをテキスト化する
+// （dayタグでの絞り込みはしない。占い師=f.co1、霊媒師=f.co2、両方とも本物・偽物を問わずCO済み生存者全員が対象）
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
 function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
+function getCO(c){return parseInt(String(f.co).split(',')[c-1]);}
 function getSclaim(){
 if(String(f.sclaim)==="0")return [];
 var arr=String(f.sclaim).split(',');
@@ -466,26 +468,38 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-var today=parseInt(f.day);
+// claimArrの中からreporterの最新（最後尾）エントリを1件返す。無ければnull
+function latestByReporter(claimArr,reporter){
+var latest=null;
+for(var i=0;i<claimArr.length;i++){
+if(claimArr[i][1]===reporter)latest=claimArr[i];
+}
+return latest;
+}
+// 1件のclaimをテキスト行に整形。候補切れダミー(target=9,result=9)は対象部分を「対象者なし」にする
+function formatClaimLine(reporterName,claim){
+if(claim[2]===9&&claim[3]===9){
+return reporterName+"→対象者なし";
+}
+var resText=claim[3]===1?"人狼":"人間";
+return reporterName+"→"+names[claim[2]]+":"+resText;
+}
+var n=parseInt(f.gamemode);
 var sclaimArr=getSclaim();
+var pclaimArr=getPclaim();
 var seerLines=[];
-for(var j=0;j<sclaimArr.length;j++){
-var e=sclaimArr[j];
-if(e[0]===today&&isAlive(e[1])){
-var resText=e[3]===1?"人狼":"人間";
-seerLines.push(names[e[1]]+"→"+names[e[2]]+":"+resText);
+var psychicLines=[];
+for(var i=1;i<=n;i++){
+if(getCO(i)===1&&isAlive(i)){
+var e=latestByReporter(sclaimArr,i);
+if(e)seerLines.push(formatClaimLine(names[i],e));
+}
+if(getCO(i)===2&&isAlive(i)){
+var e2=latestByReporter(pclaimArr,i);
+if(e2)psychicLines.push(formatClaimLine(names[i],e2));
 }
 }
 f.display01=seerLines.join("\n");
-var pclaimArr=getPclaim();
-var psychicLines=[];
-for(var k=0;k<pclaimArr.length;k++){
-var e2=pclaimArr[k];
-if(e2[0]===today&&isAlive(e2[1])){
-var resText2=e2[3]===1?"人狼":"人間";
-psychicLines.push(names[e2[1]]+"→"+names[e2[2]]+":"+resText2);
-}
-}
 f.display02=psychicLines.join("\n");
 [endscript]
 

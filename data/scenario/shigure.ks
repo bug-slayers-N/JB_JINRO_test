@@ -24,16 +24,16 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [return  ]
 *show_normal2
 
-[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_normal2.png"  ]
+[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_aseri.png"  ]
 [return  ]
 *show_ki
 
-[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_ki.png"  ]
+[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_normal.png"  ]
 [return  ]
 *show_do
 
 [jump  storage="shigure.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_do.png"  ]
+[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_aseri.png"  ]
 [return  ]
 *show_ai
 
@@ -243,7 +243,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 
 [tb_start_text mode=1 ]
 #時雨
-「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+「霊媒師は私ですけど、結果は明日のお楽しみですね」[p]
 [_tb_end_text]
 
 [return  ]
@@ -290,7 +290,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #時雨
-「人間だって言ってみてください。それで見分けます」[p]
+「人間だと言ってみてください。それで見分けます」[p]
 [_tb_end_text]
 
 [return  ]
@@ -331,8 +331,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_jinro"  ]
 [tb_start_text mode=1 ]
 #時雨
-「マヌケめ、私達が嘘つきだ」[p]
-「手軽なゲームだろうと私が強い」[p]
+「私達が嘘つきでした。気付いていましたか？」[p]
+「嘘つきの癖を知ってるからこそ、逆に隠すことも出来るんですよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -341,7 +341,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show2"  ]
 [tb_start_text mode=1 ]
 #時雨
-「当然、村人陣営の勝利だ」[p]
+「村人陣営の勝利、と。まぁ私達がいるんですから当然ですよね」[p]
 [_tb_end_text]
 
 [return  ]
@@ -350,9 +350,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #時雨
-「当然の勝利だ」[p]
-「ふんっ、マヌケにしてはまだマシな方だったということだな」[p]
-「私は帰らせてもらう」[p]
+「さてさて、お楽しみいただけましたかね？」[p]
+「私は千晴君がまたぞろやらかさないか冷や冷やしてましたが」[p]
+「まぁ、全て杞憂に終わったんですけどね」[p]
+「それでは、お暇させてもらいます」[p]
 [_tb_end_text]
 
 [return  ]
@@ -361,8 +362,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #時雨
-「当然の勝利だ」[p]
-「ふんっ、マヌケにしてはまだマシな方だったということだな」[p]
+「さてさて、お楽しみいただけましたかね？」[p]
+「私は千晴君がまたぞろやらかさないか冷や冷やしてましたが」[p]
 
 [_tb_end_text]
 
@@ -370,7 +371,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_jinro2"  ]
 [mask_off  time="200"  effect="fadeOut"  ]
 [tb_start_text mode=1 ]
-「否、あなたは自分の可能性に気が付いていないのかも知れないな」[p]
+「むしろあなたの才能にヒヤッとさせられましたよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -380,10 +381,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #時雨
-「負けたか」[p]
-「仕方あるまい、私には決定権がなかったのだ」[p]
-「どれだけの名医でも、言うことの聞かない患者に出来ることはない」[p]
-「私は帰らせてもらう」[p]
+「負けてしまいました。申し訳ございません」[p]
+「さすがに暴れ馬をコントロールするのは、千晴君1人で精いっぱいみたいです」[p]
+「ふふ、これ以上昇進したくないものですね」[p]
+「それでは」[p]
 [_tb_end_text]
 
 [return  ]

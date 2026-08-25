@@ -85,6 +85,7 @@ f.jump = qualifies?1:0;
 [endscript]
 
 [jump  storage="CO.ks"  target="*AI_lottery"  cond="f.jump==0"  ]
+[jump  storage="CO.ks"  target="*AI_lottery"  cond="f.player_death==1"  ]
 [glink  color="black"  storage="CO.ks"  size="20"  text="COする"  target="*player_CO_yes"  autopos="true"  ]
 [glink  color="black"  storage="CO.ks"  size="20"  text="COしない"  autopos="true"  target="*player_CO_no"  ]
 [s  ]
@@ -309,6 +310,7 @@ f.jump=qualifies?100:0;
 [endscript]
 
 [jump  storage="CO.ks"  target="*AI_vsCO"  cond="f.jump!=100"  ]
+[jump  storage="CO.ks"  target="*AI_vsCO"  cond="f.player_death==1"  ]
 [glink  color="black"  storage="CO.ks"  size="20"  text="対抗COする"  target="*player_vsCO_yes"  autopos="true"  ]
 [glink  color="black"  storage="CO.ks"  size="20"  text="対抗COしない"  target="*player_vsCO_no"  autopos="true"  ]
 [s  ]
