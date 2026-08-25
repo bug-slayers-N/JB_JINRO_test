@@ -236,7 +236,12 @@ var reporter=reporters[r];
 var claims=byReporter[reporter].slice().sort(function(a,b){return a[0]-b[0];});
 var parts=[];
 for(var k=0;k<claims.length;k++){
-parts.push(charNames[claims[k][1]]+"："+resultNames[claims[k][2]]);
+var tgt=claims[k][1],res=claims[k][2];
+if(tgt===9&&res===9){
+parts.push("対象者無し");
+}else{
+parts.push(charNames[tgt]+"："+resultNames[res]);
+}
 }
 slots[r]=charNames[reporter]+"→"+parts.join("、")+"、";
 }

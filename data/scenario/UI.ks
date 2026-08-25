@@ -288,7 +288,8 @@ f.display06 = hide ? 1 : 0;
 *list_check
 
 [iscript]
-var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var charNames=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
+var resultNames=["人間","人狼"];
 function getSclaim(){
 if(String(f.sclaim)==="0")return [];
 var arr=String(f.sclaim).split(',');
@@ -303,72 +304,63 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-// day,reporter,target,resultの配列から、当日分・候補切れダミー(9,9)を除外し、
-// 報告者をキャラ番号順、各報告者内は対象者をday順に並べた表示用文字列を作る
-function buildReport(claims){
-var today = parseInt(f.day);
-var filtered = claims.filter(function(e){
-return e[0] !== today && !(e[2]===9 && e[3]===9);
-});
-if(filtered.length===0) return "";
-var byReporter = {};
-var reporters = [];
-for(var i=0;i<filtered.length;i++){
-var e = filtered[i];
-var r = e[1];
-if(!byReporter[r]){byReporter[r]=[];reporters.push(r);}
-byReporter[r].push(e);
+// 占い・霊媒の全申告を報告者ごとにまとめる：[[day,target,result],...]
+// UI.ksの状況確認は当日(f.day)分の申告は表示しない
+var today=parseInt(f.day);
+var sclaims=getSclaim();
+var pclaims=getPclaim();
+var byReporter={};
+for(var i=0;i<sclaims.length;i++){
+var day=sclaims[i][0],reporter=sclaims[i][1],target=sclaims[i][2],result=sclaims[i][3];
+if(day===today)continue;
+if(!byReporter[reporter])byReporter[reporter]=[];
+byReporter[reporter].push([day,target,result]);
 }
-reporters.sort(function(a,b){return a-b;});
-var lines = [];
-for(var j=0;j<reporters.length;j++){
-var r = reporters[j];
-var entries = byReporter[r].slice();
-entries.sort(function(a,b){return a[0]-b[0];});
-var parts = entries.map(function(e){
-return names[e[2]] + ":" + (e[3]===1 ? "人狼" : "人間");
-});
-lines.push(names[r] + "→" + parts.join("、"));
+for(var j=0;j<pclaims.length;j++){
+var pday=pclaims[j][0],preporter=pclaims[j][1],ptarget=pclaims[j][2],presult=pclaims[j][3];
+if(pday===today)continue;
+if(!byReporter[preporter])byReporter[preporter]=[];
+byReporter[preporter].push([pday,ptarget,presult]);
 }
-return lines.join("\n");
+// 報告者はキャラ番号順、各報告者内の対象はday順に整列
+var reporters=Object.keys(byReporter).map(Number).sort(function(a,b){return a-b;});
+var slots=["","","","","","","","",""];
+for(var r=0;r<reporters.length&&r<9;r++){
+var reporter=reporters[r];
+var claims=byReporter[reporter].slice().sort(function(a,b){return a[0]-b[0];});
+var parts=[];
+for(var k=0;k<claims.length;k++){
+var tgt=claims[k][1],res=claims[k][2];
+if(tgt===9&&res===9){
+parts.push("対象者無し");
+}else{
+parts.push(charNames[tgt]+"："+resultNames[res]);
 }
-f.display01 = buildReport(getSclaim());
-f.display02 = buildReport(getPclaim());
-f.result = (f.display01!=="" || f.display02!=="") ? 1 : 0;
+}
+slots[r]=charNames[reporter]+"→"+parts.join("、")+"、";
+}
+f.display01=slots[0];
+f.display02=slots[1];
+f.display03=slots[2];
+f.display04=slots[3];
+f.display05=slots[4];
+f.display06=slots[5];
+f.display07=slots[6];
+f.display08=slots[7];
+f.display09=slots[8];
+f.result=(slots[0]!==""||slots[1]!==""||slots[2]!==""||slots[3]!==""||slots[4]!==""||slots[5]!==""||slots[6]!==""||slots[7]!==""||slots[8]!=="")?1:0;
 [endscript]
 
 [tb_show_message_window  ]
-[jump  storage="UI.ks"  target="*check_seer_skip"  cond="f.display01==''"  ]
+[jump  storage="UI.ks"  target="*check_report_skip"  cond="f.result==0"  ]
 
-【占い師CO報告】[p]
-
-
-[r]
-
-
-&f.display01;[p]
+占い師・霊媒師の報告は[emb exp="f.display01"][emb exp="f.display02"][emb exp="f.display03"][emb exp="f.display04"][emb exp="f.display05"][emb exp="f.display06"][emb exp="f.display07"][emb exp="f.display08"][emb exp="f.display09"]です。[p]
 
 
 [r]
 
-*check_seer_skip
-
-[jump  storage="UI.ks"  target="*check_psychic_skip"  cond="f.display02==''"  ]
-
-【霊媒師CO報告】[p]
-
-
-[r]
-
-
-&f.display02;[p]
-
-
-[r]
-
-*check_psychic_skip
-
-[jump  storage="UI.ks"  target="*check_body_end"  cond="f.result==1"  ]
+[jump  storage="UI.ks"  target="*check_body_end"  ]
+*check_report_skip
 
 現在、公開されている報告はありません。[p]
 

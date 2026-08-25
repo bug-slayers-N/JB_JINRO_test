@@ -393,10 +393,10 @@ var pushText={
 3:"「強く推すその理由は？」",
 4:"「何を理由に強く推すんだ？」",
 5:"「強く推すには理由がいる」",
-6:"「強く推すポイントは？間違ったこと言うとむしろ恥ずかしい思いをするよ」",
-7:"「強く推すポイントは？間違ったこと言うとむしろ恥ずかしい思いをするよ」",
-8:"「強く推すポイントは？間違ったこと言うとむしろ恥ずかしい思いをするよ」",
-9:"「強く推すポイントは？間違ったこと言うとむしろ恥ずかしい思いをするよ」"
+6:"「根拠は揃ってるんですか？」",
+7:"「あ～？理由はなんなんだよ」",
+8:"「さすがに理由はあった方がいい」",
+9:"「うん、しっかり根拠を示そうか」"
 };
 var pushChoice={
 1:["直感だけどね","声のトーンが違うくない？","鏡の中に君を助ける答えはない"],
@@ -404,10 +404,10 @@ var pushChoice={
 3:["理論はない、医者の勘","生体反応を見ろ","論理的に考えて人狼"],
 4:["観測者の勘","嘘をついている反応","誰の目に観ても人狼"],
 5:["神の直感","神の目からは逃れられない","哀れな咎人に神罰を下そう"],
-6:["直感だけどね","声のトーンが違うくない？","鏡の中に君を助ける答えはない"],
-7:["直感だけどね","声のトーンが違うくない？","鏡の中に君を助ける答えはない"],
-8:["直感だけどね","声のトーンが違うくない？","鏡の中に君を助ける答えはない"],
-9:["直感だけどね","声のトーンが違うくない？","鏡の中に君を助ける答えはない"]
+6:["刑事の勘","嘘つきなのはバレてますよ","人狼である証拠はあがってる"],
+7:["刑事の勘","嘘つきってバレってから","証拠はもう揃ってんだよ"],
+8:["直感は馬鹿に出来ない","嘘つきなのは確か","鏡の中に君を助ける答えはない"],
+9:["私的な直感","声のトーンが違うくない？","鏡の中に君を助ける答えはない"]
 };
 f.name2 = names[p];
 f.pushline1 = pushText[p];
@@ -480,7 +480,7 @@ var targetNum=parseInt(f.target);
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 var lr=String(f.liar).split(",");
 var lv=parseInt(lr[gi(playerNum,targetNum)]);
-f.result=(lv===1||lv===3||lv===4)?0:1;
+f.result=(lv===1||lv===4||lv===5||lv===9)?0:1;
 [endscript]
 
 [jump  storage="doubt.ks"  target="*push_damage"  cond="f.result==0"  ]
@@ -490,21 +490,12 @@ f.result=(lv===1||lv===3||lv===4)?0:1;
 [iscript]
 var playerNum=parseInt(f.player);
 var targetNum=parseInt(f.target);
-var aliveArr=String(f.alive).split(",");
-var lr=String(f.liar).split(",");
 var n=parseInt(f.gamemode);
-var charArr=String(f.character).split(",");
+var lr=String(f.liar).split(",");
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-// ① 全員のライアーに3が入ってるか
-var allThree=true;
-for(var i=1;i<=n;i++){
-if(i===targetNum)continue;
-if(aliveArr[i-1]==="0")continue;
-if(parseInt(lr[gi(i,targetNum)])!==3){allThree=false;break;}
-}
-// ② プレイヤーが本物占い師でライアーに3が入ってるか
-var seerThree=parseInt(charArr[playerNum-1])===10&&parseInt(lr[gi(playerNum,targetNum)])===3;
-f.result=(allThree||seerThree)?0:1;
+// プレイヤー視点のライアーが5（確定）のときのみ成功
+var lv=parseInt(lr[gi(playerNum,targetNum)]);
+f.result=(lv===5)?0:1;
 [endscript]
 
 [jump  storage="doubt.ks"  target="*push_damage"  cond="f.result==0"  ]
