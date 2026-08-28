@@ -53,21 +53,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「VIP共の小間使いとしてゲームに参加しろと？」[p]
-「マヌケに巻き込まれて敗北するくらいなら、この試合は降りさせてもらう」[p]
-「…」[p]
-[_tb_end_text]
-
-[call  storage="gato.ks"  target="*show_normal"  ]
-[tb_start_text mode=1 ]
-「…なんだ、対戦相手は獅子神達なのか」[p]
-「それなら問題ない、私が勝つ」[p]
-[_tb_end_text]
-
-[call  storage="gato.ks"  target="*show_ki"  ]
-[tb_start_text mode=1 ]
-「なんせ、マヌケを導くのはこの私が1番上手いのだからな」[p]
-「とっとと会場に向かおう」[p]
+「もうギャンブルは辞めたんだよ。伊月ともそう約束した」[p]
+「……ただのパーティーゲーム？」[p]
+「は、たまには息抜きも悪くはねぇか」[p]
+「勿論、伊月もいんだろ？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -77,14 +66,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [jump  storage="gato.ks"  target="*first"  cond="f.turn!=0"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「昼の議論ターンの開始だ」[p]
+「昼の議論ターンだな」[p]
 [_tb_end_text]
 
 *first
 
 [tb_start_text mode=1 ]
 #牙頭
-「さて、どうする？」[p]
+「どうすんだ？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -103,7 +92,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「なにを根拠に疑うというか。まぬけめ」[p]
+「こういうやっかみを受けるのは慣れてんだよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -113,14 +102,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「悪くない判断だ、あなたが人間だとしても人狼だとしても」[p]
+「媚びてもオレの考えは変わらないぜ」[p]
 [_tb_end_text]
 
 [return  ]
 *doubt
 
 [tb_start_text mode=1 ]
-「誰を疑う？」[p]
+「誰が怪しい？」[p]
 [_tb_end_text]
 
 [jump  storage="doubt.ks"  target="*doubt"  ]
@@ -134,7 +123,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
-「[emb exp="f.name"]が怪しい」[p]
+「オレは[emb exp="f.name"]が怪しいって思ってっから」[p]
 [_tb_end_tyrano_code]
 
 [call  storage="gato.ks"  target="*push"  cond="f.win=='d1'"  ]
@@ -144,14 +133,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *push
 
 [tb_start_text mode=1 ]
-「論理ではまだ証明は出来ない、勘の段階だ」[p]
+「ま、勘なんだけどよ。オレの勘は外れねぇ」[p]
 [_tb_end_text]
 
 [return  ]
 *push2
 
 [tb_start_text mode=1 ]
-「瞳孔の開き、脈拍、見るべきところはいくらでもある。嘘つきだだ」[p]
+「嘘ついてんのはわかってんだよ。問題は人狼か狂人か」[p]
 [_tb_end_text]
 
 [jump  storage="doubt.ks"  target="*push_act"  cond="f.result==1"  ]
@@ -160,8 +149,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 
 [call  storage="gato.ks"  target="*show_ki"  ]
 [tb_start_tyrano_code]
-「[emb exp="f.name"]は人狼、論理的に考えてそうだ」[p]
-「ここからどう覆すというのだ？」[p]
+「[emb exp="f.name"]は人狼で決まりだ」[p]
+「負け犬程ゴチャゴチャうるせぇ」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="doubt.ks"  target="*push_act"  cond="f.result==1"  ]
@@ -172,14 +161,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_jinro"  ]
 [tb_start_tyrano_code]
 #牙頭
-(間違いない、[emb exp="f.name"]は嘘をついている)[p]
+([emb exp="f.name"]は嘘をついてんな)[p]
 [_tb_end_tyrano_code]
 
 [return  ]
 *cover
 
 [tb_start_text mode=1 ]
-「誰なら信じれるか？」[p]
+「誰をシロだと思ってる？」[p]
 [_tb_end_text]
 
 [jump  storage="cover.ks"  target="*cover"  ]
@@ -194,7 +183,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="UI.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
-「[emb exp="f.name"]は人間である可能性が高い」[p]
+「オレは[emb exp="f.name"]は人間だと思ってる、お前らがどう思おうとな」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="cover.ks"  target="*show"  ]
@@ -204,7 +193,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [tb_start_text mode=1 ]
 #牙頭
 「投票の時間か」[p]
-「誰に投票する？」[p]
+「誰に投票するんだ？」[p]
 [_tb_end_text]
 
 [jump  storage="vote.ks"  target="*player_vote"  ]
@@ -214,7 +203,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「私だと？まったく、とんだマヌケ共め」[p]
+「オレを処刑したところで、オレの陣営の勝ちは変わんねぇよ」[p]
 [_tb_end_text]
 
 [chara_hide_all  time="1000"  wait="true"  ]
@@ -227,11 +216,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [jump  storage="gato.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #牙頭
-「言っておく、私が[emb exp="f.display09"]だ」[p]
+「オレが[emb exp="f.display09"]だ」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
-[emb exp="f.name"]を占った。結果は[emb exp="f.name2"]だ。[p]
+[emb exp="f.name"]は[emb exp="f.name2"]だったぜ。[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -408,7 +397,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「オレからも一枚噛ませろよ」[p]
+「オレもいいか？」[p]
 [_tb_end_text]
 
 [jump  storage="gato.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]

@@ -167,6 +167,7 @@ function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
 function isCO(c){return String(f.co).split(',')[c-1]==='1';}
 var charArr=String(f.character).split(',');
 var calmArr=String(f.calm).split(',');
+var coArr=String(f.co).split(',');
 function isWolf(c){return parseInt(charArr[c-1])<=5;} // 人狼陣営のうち"人狼"本体のみ対象（狂人9は襲撃対象になり得るため除外しない）
 var wolfChar=0;
 for(var i=0;i<n;i++){if(parseInt(charArr[i])===1){wolfChar=i+1;break;}}
@@ -179,7 +180,7 @@ function getLiar(b){return getEl(f.liar,gi(wolfChar,b));}
 function pickBest(filterFn){
 var cands=[];
 for(var c=1;c<=n;c++){
-if(isWolf(c)||!isAlive(c))continue;
+if(isWolf(c)||!isAlive(c)||c===excludeChar)continue;
 if(filterFn(c))cands.push(c);
 }
 cands.sort(function(a,b){var d=getPC(b)-getPC(a);return d!==0?d:a-b;});
@@ -187,11 +188,20 @@ return cands.length>0?cands[0]:0;
 }
 var coCount=0;
 for(var c=1;c<=n;c++){if(isAlive(c)&&isCO(c))coCount++;}
+// 偽CO対策：人狼自身が占い師(co=1)/霊媒師(co=2)に偽COしていて、同じ種類へのCO者が生存者中ちょうど2名（自分+相手）なら、
+// 相手（本物と推定される側）を襲撃対象から除外する
+var wolfCoType=parseInt(coArr[wolfChar-1]);
+var excludeChar=0;
+if(wolfCoType===1||wolfCoType===2){
+var sameTypeCOs=[];
+for(var c3=1;c3<=n;c3++){if(isAlive(c3)&&parseInt(coArr[c3-1])===wolfCoType)sameTypeCOs.push(c3);}
+if(sameTypeCOs.length===2)excludeChar=(sameTypeCOs[0]===wolfChar)?sameTypeCOs[1]:sameTypeCOs[0];
+}
 var target=0;
 // ①3人以上COなら非COキャラからランダム
 if(!target&&coCount>=3){
 var cands=[];
-for(var c=1;c<=n;c++){if(isWolf(c)||!isAlive(c)||isCO(c))continue;cands.push(c);}
+for(var c=1;c<=n;c++){if(isWolf(c)||!isAlive(c)||isCO(c)||c===excludeChar)continue;cands.push(c);}
 if(cands.length>0)target=cands[Math.floor(Math.random()*cands.length)];
 }
 // ②人狼がCOしている→非COキャラ優先、なければ全生存者から

@@ -67,10 +67,6 @@ f.display01=wolfNames.join("、");
 *debate_top
 
 [iscript]
-f.player_death = (String(f.alive).split(',')[parseInt(f.player)-1] === '1') ? 0 : 1;
-[endscript]
-
-[iscript]
 f.jump=0;
 f.result=0;
 f.target=0;

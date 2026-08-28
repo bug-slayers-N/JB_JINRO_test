@@ -231,7 +231,7 @@ var pn=parseInt(f.player);
 var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var votes=String(f.votes).split(",");
-votes[pn-1]=parseInt(f.target);
+votes[pn-1]=(aliveArr[pn-1]==="1")?parseInt(f.target):0;
 var count=[];for(var i=0;i<n;i++)count.push(0);
 for(var i=0;i<n;i++){var v=parseInt(votes[i]);if(v>=1&&v<=n)count[v-1]++;}
 var maxVote=0;

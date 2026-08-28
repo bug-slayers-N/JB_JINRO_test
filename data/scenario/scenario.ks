@@ -91,6 +91,73 @@
 「なんでもいいからさっさとはじめよ～！」[p]
 [_tb_end_text]
 
+[jump  storage="scenario.ks"  target="*day01_03"  cond="f.gamemode==5"  ]
+*gm9
+
+[call  storage="mafutsu.ks"  target="*show_do"  ]
+[tb_start_text mode=1 ]
+#真経津
+「あれ？他にも誰かいるみたい」[p]
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#？？？
+「ヒーローは遅れてやってくるってなぁ」[p]
+「な、相棒」[p]
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#？？？
+「ま、我々は忙しいですから」[p]
+「って、え、千晴君以外のメンバーって彼らなんですか！？」[p]
+
+[_tb_end_text]
+
+[tb_start_text mode=1 ]
+#山吹
+「まじかよ。オメーら、あんときの恨みは忘れてねぇからな」[p]
+[_tb_end_text]
+
+[call  storage="murasame.ks"  target="*show"  ]
+[call  storage="murasame.ks"  target="*show_ai"  ]
+[tb_start_text mode=1 ]
+#村雨
+「カラス銀行は仕事をさぼったのか？」[p]
+[_tb_end_text]
+
+[call  storage="sisigami.ks"  target="*show2"  ]
+[call  storage="sisigami.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
+#獅子神
+「お、オレは生きててくれて嬉しいよ」[p]
+[_tb_end_text]
+
+[call  storage="gato.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#？？？
+「お、みんな集まってるみたいじゃねぇか」[p]
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#？？？
+「ごめんね、がっちゃんが私服じゃなくてスーツで行くべきだって着替えてたら遅くなっちゃった」[p]
+#牙頭
+「ギャンブルじゃなくてゲーム大会だけど、カラ銀主催ならスーツの方がいいだろ」[p]
+「みんないつもの服じゃねぇか」[p]
+#漆原
+「そうだね、がっちゃんの言う通りだ」[p]
+
+[_tb_end_text]
+
+[call  storage="mafutsu.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#真経津
+「すっごい大所帯になってきたね、わくわくしてきたよ」[p]
+[_tb_end_text]
+
 *day01_03
 
 [jump  storage="debate.ks"  target=""  ]
