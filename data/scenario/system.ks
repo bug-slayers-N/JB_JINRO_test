@@ -409,7 +409,8 @@ setLiar(gi(obs3,pick),4);
 *death
 
 [iscript]
-f.player_death=parseInt(f.result)===parseInt(f.player)?1:0;
+f.target=parseInt(f.result)===parseInt(f.player)?1:0;
+if(f.target===1){f.player_death=1;}
 [endscript]
 
 [call  storage="end.ks"  target="*player_death"  cond="f.player_death==1"  ]

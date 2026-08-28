@@ -59,6 +59,9 @@ f.display07=0;
 *cover_ai
 
 [iscript]
+// AI主導の場合、f.jumpがAI.ksのpickCmd()由来の数値(2)のままになっているため、
+// addition.ksでの文字列比較('doubt'/'cover')が成立するよう明示的に文字列へ再設定する
+f.jump='cover';
 // actorの役職を取得してf.resultに格納（分岐判定用）
 var charArr=String(f.character).split(",");
 f.result=parseInt(charArr[parseInt(f.ai_actor)-1]);
