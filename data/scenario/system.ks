@@ -409,8 +409,12 @@ setLiar(gi(obs3,pick),4);
 *death
 
 [iscript]
-f.target=parseInt(f.result)===parseInt(f.player)?1:0;
-if(f.target===1){f.player_death=1;}
+// ===== プレイヤー死亡判定 =====
+// 旧実装はここでf.targetを0/1のフラグに流用していたが、f.targetは「襲撃対象のキャラ番号」として
+// night.ks側（*morning→UI.ks *name_change）まで生存している必要があるため、
+// 衝突しないf.name2を代わりに使う（f.name2はこの時点で未使用・後段でも参照されない安全な一時変数）。
+f.name2=parseInt(f.result)===parseInt(f.player)?1:0;
+if(f.name2===1){f.player_death=1;}
 [endscript]
 
 [call  storage="end.ks"  target="*player_death"  cond="f.player_death==1"  ]

@@ -418,6 +418,36 @@ if(coCount>=2)f.jump="CO3";
 [jump  storage="CO.ks"  target="*CO3"  cond="f.jump=='CO3'"  ]
 *CO3_back
 
+[iscript]
+// ===== 真占い師/真霊媒師：対抗COのライアーを更新（0→1、3→9。5人・9人モード共通、生死問わず対象） =====
+var n=parseInt(f.gamemode);
+var result=parseInt(f.result);
+var needRole=(result===1)?10:11;
+var roles=String(f.character).split(",").map(Number);
+var coArr=String(f.co).split(",");
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+var trueHolder=0;
+for(var i=1;i<=n;i++){
+if(roles[i-1]===needRole){trueHolder=i;break;}
+}
+if(trueHolder>0){
+for(var r=1;r<=n;r++){
+if(r===trueHolder)continue;
+if(coArr[r-1]!==String(result))continue;
+var idx=gi(trueHolder,r);
+var lr=String(f.liar).split(',');
+var cur=parseInt(lr[idx]);
+if(cur===0){
+lr[idx]="1";
+f.liar=lr.join(',');
+}else if(cur===3){
+lr[idx]="9";
+f.liar=lr.join(',');
+}
+}
+}
+[endscript]
+
 [call  storage="system.ks"  target="*liar"  ]
 [iscript]
 // ===== 人狼陣営：今回CO確定した役職に人狼がいた場合、残りの人狼が確率でrivalに4(囮)を入れる（gm9以上限定） =====
