@@ -103,7 +103,8 @@ A.正気な訳ありません。ゲームが面白かったら、正気に戻さ
 [glink  color="gray"  storage="omake_story.ks"  size="20"  text="ストーリー15"  target="*s15"  x="1030"  y="550"  width=""  height=""  _clickable_img=""  ]
 *te_s03
 
-[glink  color="btn_01_red"  storage="omake.ks"  size="20"  text="おまけに戻る"  target="*omake_top"  x="1105"  y="30"  width=""  height=""  _clickable_img=""  ]
+[glink  color="btn_05_purple"  storage="omake.ks"  size="20"  text="次のページへ"  target="*story2"  x="1078"  y="15"  width=""  height=""  _clickable_img=""  ]
+[glink  color="btn_05_lime"  storage="omake.ks"  size="20"  text="おまけに戻る"  target="*omake_top"  x="52"  y="21"  width=""  height=""  _clickable_img=""  ]
 [s  ]
 *story_start
 
@@ -115,3 +116,9 @@ A.正気な訳ありません。ゲームが面白かったら、正気に戻さ
 [chara_hide_all  time="1000"  wait="true"  ]
 [tb_hide_message_window  ]
 [jump  storage="omake.ks"  target="*story"  ]
+*story2
+
+[bg  time="1000"  method="crossfade"  storage="bg_base.png"  ]
+[glink  color="btn_05_purple"  storage="omake.ks"  size="20"  text="前のページへ"  target="*story"  x="1078"  y="15"  width=""  height=""  _clickable_img=""  ]
+[glink  color="btn_05_lime"  storage="omake.ks"  size="20"  text="おまけに戻る"  target="*omake_top"  x="52"  y="21"  width=""  height=""  _clickable_img=""  ]
+[s  ]

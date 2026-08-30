@@ -1,6 +1,3 @@
 [preload  storage="./data/fgimage/chara/10/urushibara_normal.png"  ]
-[preload  storage="./data/fgimage/chara/10/gato_normal2.png"  ]
-[preload  storage="./data/fgimage/chara/10/urushibara_ki.png"  ]
-[preload  storage="./data/fgimage/chara/10/urushibara_do.png"  ]
-[preload  storage="./data/fgimage/chara/10/urushibara_insane.png"  ]
+[preload  storage="./data/fgimage/chara/10/urushibara_aseri.png"  ]
 [return]

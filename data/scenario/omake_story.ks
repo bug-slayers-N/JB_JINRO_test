@@ -971,3 +971,30 @@
 
 [jump  storage="omake.ks"  target="*story_end"  ]
 [call  storage="omake_story.ks"  target=""  ]
+*s16
+
+[call  storage="yamabuki.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#山吹
+「っしゃ、敵はとったぜ！相棒！」[p]
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#時雨
+「たとえゲームだとしても、ちょっとすっきりしますね、千晴君」[p]
+「よくできました」[p]
+#山吹
+「このまま泣き面になるまでボコボコにしてやろうぜ」[p]
+#時雨
+「それはVIPの方の意向次第ですけど、私としても賛成ですね」[p]
+「どうですか？かのギャンブラー達が悔しがる顔にご興味とかは？」[p]
+#山吹
+「ヒーローは必ず勝つ！だからオマエらもこのままオレ達のこと見てろって」[p]
+#時雨
+「ちょっとは口の利き方を気をつけるようになったと思いますが、またぞろやらかさないように本当に気をつけてくださいね？」[p]
+#山吹
+「あ～、さすがに懲りてるよ」[p]
+[_tb_end_text]
+
+[jump  storage="omake.ks"  target="*story_end"  ]
