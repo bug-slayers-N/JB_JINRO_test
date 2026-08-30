@@ -1,5 +1,12 @@
 [_tb_system_call storage=system/_urushibara.ks]
 
+*name_change
+
+[jump  storage="urushibara.ks"  target="*name_change_end"  cond="f.name!='牙頭'"  ]
+[tb_eval  exp="f.name='ガッちゃん'"  name="name"  cmd="="  op="t"  val="ガッちゃん"  val_2="undefined"  ]
+*name_change_end
+
+[return  ]
 *show
 
 [iscript]
@@ -79,6 +86,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [return  ]
 *debate_Top
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
+[endscript]
+
 [chara_show  name="urushibara"  time="1000"  wait="true"  storage="chara/9/urushibara_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
@@ -121,6 +132,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「私的な意見だけど、僕は[emb exp="f.name"]が怪しいなって考えてるよ」[p]
@@ -159,6 +171,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show"  ]
 [call  storage="urushibara.ks"  target="*show_jinro"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 (あぁ、[emb exp="f.name"]は嘘つきみたいだ)[p]
@@ -181,6 +194,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「僕は[emb exp="f.name"]はシロの可能性が高いとみてるよ」[p]
@@ -203,7 +217,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #漆原
-「はぁ、まぁこれもくじびきだから仕方ない。味方は頑張って欲しいね」[p]
+「はぁ、まぁこれもくじびきだから仕方ない。味方は是非頑張って欲しいね」[p]
 [_tb_end_text]
 
 [chara_hide_all  time="1000"  wait="true"  ]
@@ -214,6 +228,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="urushibara.ks"  target="*show_ki"  ]
 [jump  storage="urushibara.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「僕が[emb exp="f.display09"]みたい」[p]
@@ -237,7 +252,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #漆原
-「ちょっといい？」[p]
+「ちょっといいかな？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -293,6 +308,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show2"  ]
 [call  storage="urushibara.ks"  target="*show_ai"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「[emb exp="f.name"]、少しうるさいんじゃないかな？」[p]
@@ -303,6 +319,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *push_act
 
 [call  storage="urushibara.ks"  target="*show2"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「[emb exp="f.name2"]、それは違うんじゃないかな？」[p]

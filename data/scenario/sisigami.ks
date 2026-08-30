@@ -91,6 +91,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 [return  ]
 *debate_Top
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
+[endscript]
+
 [chara_show  name="sisigami"  time="1000"  wait="true"  storage="chara/2/shishigami_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="sisigami.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
@@ -240,7 +244,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 
 [tb_start_text mode=1 ]
 #獅子神
-「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+「霊媒師はオレだけどよ、結果は明日になってからだな」[p]
 [_tb_end_text]
 
 [return  ]

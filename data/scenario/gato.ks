@@ -1,5 +1,12 @@
 [_tb_system_call storage=system/_gato.ks]
 
+*name_change
+
+[jump  storage="gato.ks"  target="*name_change_end"  cond="f.name!='漆原'"  ]
+[tb_eval  exp="f.name='伊月'"  name="name"  cmd="="  op="t"  val="伊月"  val_2="undefined"  ]
+*name_change_end
+
+[return  ]
 *show
 
 [iscript]
@@ -79,6 +86,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [return  ]
 *debate_Top
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
+[endscript]
+
 [chara_show  name="gato"  time="1000"  wait="true"  storage="chara/9/gato_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
@@ -121,6 +132,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 
 [call  storage="gato.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
 「オレは[emb exp="f.name"]が怪しいって思ってっから」[p]
@@ -148,6 +160,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *push3
 
 [call  storage="gato.ks"  target="*show_ki"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 「[emb exp="f.name"]は人狼で決まりだ」[p]
 「負け犬程ゴチャゴチャうるせぇ」[p]
@@ -159,6 +172,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 
 [call  storage="gato.ks"  target="*show"  ]
 [call  storage="gato.ks"  target="*show_jinro"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
 ([emb exp="f.name"]は嘘をついてんな)[p]
@@ -181,6 +195,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 
 [call  storage="gato.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
 「オレは[emb exp="f.name"]は人間だと思ってる、お前らがどう思おうとな」[p]
@@ -214,6 +229,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="gato.ks"  target="*show_ki"  ]
 [jump  storage="gato.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
 「オレが[emb exp="f.display09"]だ」[p]
@@ -228,7 +244,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 
 [tb_start_text mode=1 ]
 #牙頭
-「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+「霊媒師はオレだが、結果は明日になってからだな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -293,6 +309,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 
 [call  storage="gato.ks"  target="*show2"  ]
 [call  storage="gato.ks"  target="*show_ai"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
 「[emb exp="f.name"]、さすがに騒々しすぎる」[p]
@@ -303,6 +320,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *push_act
 
 [call  storage="gato.ks"  target="*show2"  ]
+[call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
 「[emb exp="f.name2"]、それは違う」[p]

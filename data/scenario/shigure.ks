@@ -94,6 +94,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [return  ]
 *debate_Top
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
+[endscript]
+
 [chara_show  name="shigure"  time="1000"  wait="true"  storage="chara/6/shigure_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]

@@ -99,6 +99,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [return  ]
 *debate_Top
 
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
+[endscript]
+
 [chara_show  name="kano"  time="1000"  wait="true"  storage="chara/4/kano_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="kano.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
@@ -242,7 +246,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 [tb_start_tyrano_code]
 #叶
 「じゃーん！オレが[emb exp="f.display09"]！」[p]
-[emb exp="f.name"]を占ったぞ！結果は[emb exp="f.name2"]！[p]
+「[emb exp="f.name"]は[emb exp="f.name2"]だったぞ！[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -250,7 +254,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 
 [tb_start_text mode=1 ]
 #叶
-「霊媒師は自分だけど、結果は明日のお楽しみ」[p]
+「霊媒師はオレだけど、結果は明日のお楽しみだな」[p]
 [_tb_end_text]
 
 [return  ]

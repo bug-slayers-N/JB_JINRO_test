@@ -417,7 +417,7 @@ f.name2=parseInt(f.result)===parseInt(f.player)?1:0;
 if(f.name2===1){f.player_death=1;}
 [endscript]
 
-[call  storage="end.ks"  target="*player_death"  cond="f.player_death==1"  ]
+[call  storage="end.ks"  target="*player_death"  cond="f.name2==1"  ]
 [iscript]
 var dead=parseInt(f.result);
 var aliveArr=String(f.alive).split(",");

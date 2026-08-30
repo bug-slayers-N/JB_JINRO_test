@@ -107,6 +107,8 @@ else if(prevActor===7){yusaburi=0.8;if(aliveArr[5]==='1')yusaburi*=1.1;}
 else if(prevActor===8){yusaburi=0.7;if(aliveArr[8]==='1')yusaburi*=1.4;}
 else{yusaburi=0.6;}
 var damage=20*yusaburi;
+// 獅子神(2)は受けるダメージ1.1倍
+if(prevActor===2){damage*=1.1;}
 var calmArr=String(f.calm).split(',');
 calmArr[prevActor-1]=String(parseFloat(calmArr[prevActor-1])-damage);
 f.calm=calmArr.join(',');

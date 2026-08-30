@@ -40,7 +40,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [return  ]
 *show_jinro
 
-[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_insane.png"  ]
+[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_normal.png"  ]
 [return  ]
 *show_jinro2
 
@@ -82,6 +82,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 
 [return  ]
 *debate_Top
+
+[iscript]
+f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
+[endscript]
 
 [chara_show  name="yamabuki"  time="1000"  wait="true"  storage="chara/8/yamabuki_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
@@ -232,7 +236,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 
 [tb_start_text mode=1 ]
 #山吹
-「霊媒師は俺だけど、結果は明日のお楽しみだな」[p]
+「霊媒師はオレだけど、結果は明日のお楽しみだな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -401,7 +405,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #山吹
-「俺の意見も聞けよ」[p]
+「オレの話も聞けよ」[p]
 [_tb_end_text]
 
 [jump  storage="yamabuki.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]

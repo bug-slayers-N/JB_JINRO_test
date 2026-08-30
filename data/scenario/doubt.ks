@@ -27,8 +27,8 @@ else if (playerNum === 8) { yusaburi = 0.7; if(isAlive(9)) yusaburi *= 1.4; }
 else { yusaburi = 0.6; }
 // ダメージ計算（基礎値40×ゆさぶり力）
 var damage = 40 * yusaburi;
-// 平常心減算ヘルパー
-function subCalm(num,val){var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+// 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍）
+function subCalm(num,val){if(num===2){val*=1.1;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
 // 対象の平常心をダメージ分減算
 subCalm(targetNum, damage);
 // 対象→プレイヤーへの好感度を-10
@@ -362,7 +362,8 @@ else if (actorNum === 8) { yusaburi = 0.7; if(isAlive(9)) yusaburi *= 1.4; }
 else { yusaburi = 0.6; }
 // 対象の平常心をダメージ分減算
 var damage = 40 * yusaburi;
-function subCalm(num,val){var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+// 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍）
+function subCalm(num,val){if(num===2){val*=1.1;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
 subCalm(target, damage);
 // target→actorの好感度-10
 var likeIdx = gi(target, actorNum);
@@ -444,7 +445,8 @@ f.display03 = pushChoice[p][2];
 
 [iscript]
 var playerNum=parseInt(f.player);
-function subCalm(num,val){var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+// 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍）
+function subCalm(num,val){if(num===2){val*=1.1;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
 subCalm(playerNum,20);
 [endscript]
 
@@ -470,7 +472,8 @@ if(f.win==="d1"){base=10;}
 else if(f.win==="d2"){base=20;}
 else if(f.win==="d3"){base=30;}
 var damage=base*yusaburi;
-function subCalm(num,val){var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+// 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍）
+function subCalm(num,val){if(num===2){val*=1.1;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
 subCalm(targetNum,damage);
 [endscript]
 
