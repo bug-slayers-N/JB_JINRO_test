@@ -132,7 +132,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
-[call  storage="gato.ks"  target="*name_change"  ]
+[call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「私的な意見だけど、僕は[emb exp="f.name"]が怪しいなって考えてるよ」[p]
@@ -171,7 +171,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show"  ]
 [call  storage="urushibara.ks"  target="*show_jinro"  ]
-[call  storage="gato.ks"  target="*name_change"  ]
+[call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 (あぁ、[emb exp="f.name"]は嘘つきみたいだ)[p]
@@ -194,7 +194,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
-[call  storage="gato.ks"  target="*name_change"  ]
+[call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「僕は[emb exp="f.name"]はシロの可能性が高いとみてるよ」[p]
@@ -228,7 +228,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="urushibara.ks"  target="*show_ki"  ]
 [jump  storage="urushibara.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
-[call  storage="gato.ks"  target="*name_change"  ]
+[call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「僕が[emb exp="f.display09"]みたい」[p]
@@ -308,7 +308,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show2"  ]
 [call  storage="urushibara.ks"  target="*show_ai"  ]
-[call  storage="gato.ks"  target="*name_change"  ]
+[call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「[emb exp="f.name"]、少しうるさいんじゃないかな？」[p]
@@ -319,7 +319,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *push_act
 
 [call  storage="urushibara.ks"  target="*show2"  ]
-[call  storage="gato.ks"  target="*name_change"  ]
+[call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
 「[emb exp="f.name2"]、それは違うんじゃないかな？」[p]

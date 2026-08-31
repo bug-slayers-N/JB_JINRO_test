@@ -99,59 +99,59 @@ f.display06 = hide ? 1 : 0;
 [jump  storage="UI.ks"  target="*listA_5"  ]
 *listA_9
 
-[tb_eval  exp="f.display04=200"  name="display04"  cmd="="  op="t"  val="200"  ]
-[tb_eval  exp="f.display08=200"  name="display08"  cmd="="  op="t"  val="200"  ]
+[tb_eval  exp="f.display04=50"  name="display04"  cmd="="  op="t"  val="50"  val_2="undefined"  ]
+[tb_eval  exp="f.display08=50"  name="display08"  cmd="="  op="t"  val="50"  val_2="undefined"  ]
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_1_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="真経津"  x="200"  y="&f.display04"  target="*list_ma"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="真経津"  x="300"  y="&f.display04"  target="*list_ma"  ]
 [tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
 *A9_1_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_2_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="獅子神"  x="700"  y="&f.display08"  target="*list_si"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="獅子神"  x="800"  y="&f.display08"  target="*list_si"  ]
 [tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
 *A9_2_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_3_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="村雨"  x="200"  y="&f.display04"  target="*list_mu"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="村雨"  x="300"  y="&f.display04"  target="*list_mu"  ]
 [tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
 *A9_3_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_4_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="叶"  x="700"  y="&f.display08"  target="*list_ka"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="叶"  x="800"  y="&f.display08"  target="*list_ka"  ]
 [tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
 *A9_4_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_5_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="天堂"  x="200"  y="&f.display04"  target="*list_te"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="天堂"  x="300"  y="&f.display04"  target="*list_te"  ]
 [tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
 *A9_5_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_6_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="時雨"  x="700"  y="&f.display08"  target="*list_shigure"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="時雨"  x="800"  y="&f.display08"  target="*list_shigure"  ]
 [tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
 *A9_6_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_7_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="山吹"  x="200"  y="&f.display04"  target="*list_yamabuki"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="山吹"  x="300"  y="&f.display04"  target="*list_yamabuki"  ]
 [tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
 *A9_7_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_8_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="牙頭"  x="700"  y="&f.display08"  target="*list_gato"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="牙頭"  x="800"  y="&f.display08"  target="*list_gato"  ]
 [tb_eval  exp="f.display08+=100"  name="display08"  cmd="+="  op="t"  val="100"  ]
 *A9_8_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*A9_9_skip"  cond="f.display06==1"  ]
-[glink  color="black"  storage="UI.ks"  size="20"  text="漆原"  x="200"  y="&f.display04"  target="*list_urushibara"  ]
+[glink  color="black"  storage="UI.ks"  size="20"  text="漆原"  x="300"  y="&f.display04"  target="*list_urushibara"  ]
 [tb_eval  exp="f.display04+=100"  name="display04"  cmd="+="  op="t"  val="100"  ]
 *A9_9_skip
 
@@ -354,13 +354,36 @@ f.result=(slots[0]!==""||slots[1]!==""||slots[2]!==""||slots[3]!==""||slots[4]!=
 [tb_show_message_window  ]
 [jump  storage="UI.ks"  target="*check_report_skip"  cond="f.result==0"  ]
 
-占い師・霊媒師の報告は[emb exp="f.display01"][emb exp="f.display02"][emb exp="f.display03"][emb exp="f.display04"][emb exp="f.display05"][emb exp="f.display06"][emb exp="f.display07"][emb exp="f.display08"][emb exp="f.display09"]です。[p]
+占い師・霊媒師の報告は[p]
+
+
+[emb exp="f.display01"]
+
+[emb exp="f.display02"]
+
+[emb exp="f.display03"]
+
+[emb exp="f.display04"]
+
+[emb exp="f.display05"]
+
+[emb exp="f.display06"]
+
+[emb exp="f.display07"]
+
+[emb exp="f.display08"]
+
+[emb exp="f.display09"]
+
+
+です。[p]
 
 
 [r]
 
 [jump  storage="UI.ks"  target="*check_body_end"  ]
 *check_report_skip
+
 
 現在、公開されている報告はありません。[p]
 

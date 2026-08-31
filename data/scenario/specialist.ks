@@ -206,7 +206,7 @@ f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 [_tb_end_text]
 
 [tb_eval  exp="f.jump='fakeseer'"  name="jump"  cmd="="  op="t"  val="fakeseer"  val_2="undefined"  ]
-[jump  storage="UI.ks"  target="*listB"  ]
+[jump  storage="UI.ks"  target="*listA"  ]
 *fakeseer_back
 
 [tb_start_text mode=1 ]
@@ -469,53 +469,49 @@ var day=parseInt(f.day);
 var mainDay=day-1; // 今回発表するメインの報告のday
 var n=parseInt(f.gamemode);
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-
 function getPsychicResults(){
-  if(String(f.psychic_result)==="0")return [];
-  var arr=String(f.psychic_result).split(',');
-  var res=[];
-  for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
-  return res;
+if(String(f.psychic_result)==="0")return [];
+var arr=String(f.psychic_result).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}
+return res;
 }
 function getPclaim(){
-  if(String(f.pclaim)==="0")return [];
-  var arr=String(f.pclaim).split(',');
-  var res=[];
-  for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-  return res;
+if(String(f.pclaim)==="0")return [];
+var arr=String(f.pclaim).split(',');
+var res=[];
+for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
+return res;
 }
 function addPclaimRaw(d,reporter,target,result){
-  var entry=d+","+reporter+","+target+","+result;
-  if(String(f.pclaim)==="0"){f.pclaim=entry;}
-  else{f.pclaim=f.pclaim+","+entry;}
-  // 追加時点でreporter視点のtargetライアーを更新：人間報告→3、人狼報告→4（5以上は上書き禁止）
-  if(target>0&&target!==reporter){
-    var lr=String(f.liar).split(',');
-    var idx=gi(reporter,target);
-    if(parseInt(lr[idx])<5){
-      lr[idx]=(result===1)?"4":"3";
-      f.liar=lr.join(',');
-    }
-  }
+var entry=d+","+reporter+","+target+","+result;
+if(String(f.pclaim)==="0"){f.pclaim=entry;}
+else{f.pclaim=f.pclaim+","+entry;}
+// 追加時点でreporter視点のtargetライアーを更新：人間報告→3、人狼報告→4（5以上は上書き禁止）
+if(target>0&&target!==reporter){
+var lr=String(f.liar).split(',');
+var idx=gi(reporter,target);
+if(parseInt(lr[idx])<5){
+lr[idx]=(result===1)?"4":"3";
+f.liar=lr.join(',');
 }
-
+}
+}
 var presults=getPsychicResults();
-
 var pclaimArr=getPclaim();
 var hasPrior=false;
 for(var i=0;i<pclaimArr.length;i++){
-  if(pclaimArr[i][1]===actor){hasPrior=true;break;}
+if(pclaimArr[i][1]===actor){hasPrior=true;break;}
 }
 if(!hasPrior){
-  // 初回CO：day0〜(mainDay-1)を過去データとしてバックフィル
-  // 対象はpsychic_resultの実際の処刑対象をそのまま借用、結果はランダム(処刑無しの日は0)
-  for(var d=0;d<mainDay;d++){
-    var pastTarget=(d>=1 && presults[d-1]) ? presults[d-1][0] : 0;
-    var pastResult=(pastTarget>0) ? Math.floor(Math.random()*2) : 0;
-    addPclaimRaw(d,actor,pastTarget,pastResult);
-  }
+// 初回CO：day0〜(mainDay-1)を過去データとしてバックフィル
+// 対象はpsychic_resultの実際の処刑対象をそのまま借用、結果はランダム(処刑無しの日は0)
+for(var d=0;d<mainDay;d++){
+var pastTarget=(d>=1 && presults[d-1]) ? presults[d-1][0] : 0;
+var pastResult=(pastTarget>0) ? Math.floor(Math.random()*2) : 0;
+addPclaimRaw(d,actor,pastTarget,pastResult);
 }
-
+}
 // 今回分(mainDay)：対象者はpsychic_resultの実際の処刑対象から取得
 // 結果はf.display01(既に決定済みの人間/人狼の偽結果)をそのまま転記
 var mainTarget=(mainDay>=1 && presults[mainDay-1]) ? presults[mainDay-1][0] : 0;

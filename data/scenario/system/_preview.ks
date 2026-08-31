@@ -1,7 +1,3 @@
-[eval exp="f._system_preview_ks='omake.ks'"] 
-[preload  storage="./data/bgimage/credits.png"  ]
-[preload  storage="./data/bgimage/BG_credits_260524.png"  ]
-[preload  storage="./data/bgimage/omake_story.png"  ]
+[eval exp="f._system_preview_ks='scene1.ks'"] 
 [preload  storage="./data/bgimage/93853245_p0.png"  ]
-[preload  storage="./data/bgimage/bg_base.png"  ]
 [return] 

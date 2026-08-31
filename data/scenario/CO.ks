@@ -3,6 +3,13 @@
 *please_CO
 
 [iscript]
+// ===== 呼びかけ人（COを促した本人）のキャラ番号をf.name2へ退避 =====
+// f.ai_actorはこの後、応答者(プレイヤーorAI抽選結果)で上書きされるため、
+// 「呼びかけた本人が自分の呼びかけに応答してしまう」バグを防ぐには
+// このタイミングで呼びかけ人IDを別変数に確保しておく必要がある。
+// f.name2はこの時点・この後の*player_CO_start/*AI_lotteryまで未使用で、
+// *CO_characall（277行目）で改めて上書きされるまで参照されないため退避先として使用。
+f.name2 = f.ai_actor;
 if(parseInt(f.gamemode)===5){
 f.result=1;
 }
@@ -78,9 +85,11 @@ f.display09=(result===1)?"占い師":"霊媒師";
 var role = parseInt(f.role);
 var result = parseInt(f.result);
 var pn = parseInt(f.player);
+var caller = parseInt(f.name2); // 呼びかけ人のキャラ番号（*please_COで退避済み）
+var isCaller = (caller === pn); // プレイヤー自身が呼びかけた本人かどうか
 var coArr = String(f.co).split(",");
 var playerCoed = coArr[pn-1]!=="0";
-var qualifies = !playerCoed && ((role<10) || (role===10&&result===1) || (role===11&&result===2));
+var qualifies = !playerCoed && !isCaller && ((role<10) || (role===10&&result===1) || (role===11&&result===2));
 f.jump = qualifies?1:0;
 [endscript]
 
@@ -138,15 +147,17 @@ f.co=coArr.join(",");
 [iscript]
 var n=parseInt(f.gamemode);
 var pn=parseInt(f.player);
+var caller=parseInt(f.name2); // 呼びかけ人のキャラ番号（*please_COで退避済み）
 var aliveArr=String(f.alive).split(",");
 var coArr=String(f.co).split(",");
 var charArr=String(f.character).split(",").map(Number);
 var pArr=[0,2,0,0,2,1,1,2,2,0];
 function getRole(i){return charArr[i-1];}
-// 抽選対象の基礎プール：生存・プレイヤー除外・未CO・役職12未満
+// 抽選対象の基礎プール：生存・プレイヤー除外・呼びかけ人除外・未CO・役職12未満
 var basePool=[];
 for(var i=1;i<=n;i++){
 if(i===pn)continue;
+if(i===caller)continue; // 呼びかけた本人は自分の呼びかけに応答できない
 if(aliveArr[i-1]==="0")continue;
 if(coArr[i-1]!=="0")continue;
 if(getRole(i)>=12)continue;
