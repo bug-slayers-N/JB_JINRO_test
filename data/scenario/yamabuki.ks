@@ -54,11 +54,13 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [tb_start_text mode=1 ]
 #山吹
 「はぁ？人狼ゲームゥ？なんでそんなもん参加しねぇーといけないんだ？」[p]
+「ヒーローも暇じゃあねぇんだよ」[p]
+「……」[p]
 「え、相棒もいんの？」[p]
 「あ～、それなら行くか」[p]
 [_tb_end_text]
 
-[call  storage="yamabuki.ks"  target="*show_normal"  ]
+[call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 「まぁ、暇つぶしにはなんだろ」[p]
 [_tb_end_text]
@@ -157,7 +159,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 
 [call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_tyrano_code]
-「[emb exp="f.name"]は人狼、それ以外にありえねぇーんだよ」[p]
+「[emb exp="f.name"]は人狼、それ以外にありえねーんだよ」[p]
 「悪人は黙ってボコられてな」[p]
 [_tb_end_tyrano_code]
 
@@ -224,7 +226,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [jump  storage="yamabuki.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
 #山吹
-「俺が[emb exp="f.display09"]だぜ」[p]
+「オレが[emb exp="f.display09"]だぜ」[p]
 [_tb_end_tyrano_code]
 
 [tb_start_tyrano_code]
@@ -255,7 +257,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #山吹
-「この中に悪い奴がいんのか、楽しくなってきたな」[p]
+「この中に悪党がいんのか、楽しくなってきたな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -325,7 +327,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [tb_start_text mode=1 ]
 #山吹
 「ざんねぇーん！ヒーローは嘘つかないと思ったか？」[p]
-「悪い奴をボコれるなら、何やってもいいんだよ」[p]
+「悪党をボコれるなら、何やってもいいんだよ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -364,6 +366,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [mask_off  time="200"  effect="fadeOut"  ]
 [tb_start_text mode=1 ]
 「ま、お前も悪くなかったぜ。いつでもこっち来いよ」[p]
+「歓迎してやる」[p]
 [_tb_end_text]
 
 [return  ]
@@ -375,7 +378,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 #山吹
 「チッ、負けかよ」[p]
 「遊びだっつっても気分悪ィわ」[p]
-「あ～あ、帰りに犯罪者でもぶん殴ってすっきりすっか」[p]
+「あ～あ、帰りに悪党でもぶん殴ってすっきりすっか」[p]
 「じゃあな」[p]
 [_tb_end_text]
 

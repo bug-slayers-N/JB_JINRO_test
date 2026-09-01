@@ -118,7 +118,19 @@ A.正気な訳ありません。ゲームが面白かったら、正気に戻さ
 [jump  storage="omake.ks"  target="*story"  ]
 *story2
 
-[bg  time="1000"  method="crossfade"  storage="bg_base.png"  ]
+[bg  time="1000"  method="crossfade"  storage="無題167_20260901223449.png"  ]
 [glink  color="btn_05_purple"  storage="omake.ks"  size="20"  text="前のページへ"  target="*story"  x="1078"  y="15"  width=""  height=""  _clickable_img=""  ]
 [glink  color="btn_05_lime"  storage="omake.ks"  size="20"  text="おまけに戻る"  target="*omake_top"  x="52"  y="21"  width=""  height=""  _clickable_img=""  ]
+[jump  storage="omake.ks"  target="*keiji_s01"  cond="sf.keiji_s01!=1"  ]
+[glink  color="green"  storage="omake_story.ks"  size="20"  text="ストーリー16"  target="*s16"  x="178"  y="412"  width=""  height=""  _clickable_img=""  ]
+*keiji_s01
+
+[jump  storage="omake.ks"  target="*keiji_s02"  cond="sf.keiji_s02!=1"  ]
+[glink  color="green"  storage="omake_story.ks"  size="20"  text="ストーリー17"  target="*s17"  x="178"  y="482"  width=""  height=""  _clickable_img=""  ]
+*keiji_s02
+
+[jump  storage="omake.ks"  target="*keiji_s03"  cond="sf.keiji_s03!=1"  ]
+[glink  color="green"  storage="omake_story.ks"  size="20"  text="ストーリー18"  target="*s18"  x="178"  y="552"  width=""  height=""  _clickable_img=""  ]
+*keiji_s03
+
 [s  ]

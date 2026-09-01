@@ -3,12 +3,6 @@
 *please_CO
 
 [iscript]
-// ===== 呼びかけ人（COを促した本人）のキャラ番号をf.name2へ退避 =====
-// f.ai_actorはこの後、応答者(プレイヤーorAI抽選結果)で上書きされるため、
-// 「呼びかけた本人が自分の呼びかけに応答してしまう」バグを防ぐには
-// このタイミングで呼びかけ人IDを別変数に確保しておく必要がある。
-// f.name2はこの時点・この後の*player_CO_start/*AI_lotteryまで未使用で、
-// *CO_characall（277行目）で改めて上書きされるまで参照されないため退避先として使用。
 f.name2 = f.ai_actor;
 if(parseInt(f.gamemode)===5){
 f.result=1;
@@ -163,6 +157,33 @@ if(coArr[i-1]!=="0")continue;
 if(getRole(i)>=12)continue;
 basePool.push(i);
 }
+var winner=0;
+if(caller===5){
+// ===== 天堂(5番)が呼びかけた場合の特殊抽選プール：真役職:狂人:人狼＝2:2:1 =====
+// 真役職・狂人・人狼いずれも、死亡済み/プレイヤー/呼びかけ人(天堂)はbasePoolの時点で役職ごと除外済み
+var specRoleT=(parseInt(f.result)===1)?10:11;
+var poolTrue=basePool.filter(function(i){return getRole(i)===specRoleT;});
+var poolMad=basePool.filter(function(i){return getRole(i)===9;});
+var poolWolf=basePool.filter(function(i){return getRole(i)<=5;});
+var cats=[];
+if(poolTrue.length>0)cats.push({w:2,pool:poolTrue});
+if(poolMad.length>0)cats.push({w:2,pool:poolMad});
+if(poolWolf.length>0)cats.push({w:1,pool:poolWolf});
+var totalW=0;
+for(var ci=0;ci<cats.length;ci++)totalW+=cats[ci].w;
+if(totalW>0){
+var rnd=Math.random()*totalW;
+var acc=0;
+for(var ci2=0;ci2<cats.length;ci2++){
+acc+=cats[ci2].w;
+if(rnd<acc){
+// 人狼カテゴリ当選時は、プレイヤーでも天堂でもない生存人狼からランダム選出（poolWolfは既にbasePoolでその条件を満たす）
+winner=cats[ci2].pool[Math.floor(Math.random()*cats[ci2].pool.length)];
+break;
+}
+}
+}
+}else{
 // 人狼の重複CO防止ガード：今回のresultと同じ役職を味方人狼が既にCO済みなら
 // 人狼の抽選(パートA)自体を止める
 var wolfBlocked=false;
@@ -201,12 +222,12 @@ for(var s=parts.length-1;s>0;s--){
 var r=Math.floor(Math.random()*(s+1));
 var tmp=parts[s];parts[s]=parts[r];parts[r]=tmp;
 }
-var winner=0;
 for(var pIdx=0;pIdx<parts.length;pIdx++){
 if(winner>0)break;
 if(parts[pIdx]==="A")winner=rollPool(poolA,rateA);
 else if(parts[pIdx]==="B")winner=rollPool(poolB,rateB);
 else if(parts[pIdx]==="C")winner=rollPool(poolC,rateC);
+}
 }
 f.ai_actor=winner;
 // ===== COを求めるに応えてai_actorに選ばれた回数を+1 =====

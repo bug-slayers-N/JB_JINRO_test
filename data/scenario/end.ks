@@ -153,6 +153,12 @@ var wc=(isWolfTeam(r)&&w===2)||(!isWolfTeam(r)&&w===1);
 if(wc&&isCO(5)){sf.te_s01=1;if(pd)sf.te_s02=1;}
 if(r===10&&w===1&&pd)sf.te_s03=1;
 }
+if(p===6||p===7){
+var wc2=(isWolfTeam(r)&&w===2)||(!isWolfTeam(r)&&w===1);
+if(p===7&&pd&&wc2)sf.keiji_s01=1;
+if(isAlive(6)&&isAlive(7)&&wc2)sf.keiji_s02=1;
+if(isAlive(2)&&isAlive(3)&&isAlive(6)&&isAlive(7)&&wc2)sf.keiji_s03=1;
+}
 [endscript]
 
 [return  ]

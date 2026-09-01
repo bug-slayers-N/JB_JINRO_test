@@ -90,7 +90,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [endscript]
 
-[chara_show  name="urushibara"  time="1000"  wait="true"  storage="chara/9/urushibara_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
+[chara_show  name="urushibara"  time="1000"  wait="true"  storage="chara/10/urushibara_normal.png"  width="320"  height="720"  left="700"  top=""  reflect="false"  ]
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #漆原
@@ -280,7 +280,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #漆原
-「[emb exp="f.name"]は名乗り出てくれたら嬉しいな」[p]
+「[emb exp="f.display09"]は名乗り出てくれたら嬉しいな」[p]
 [_tb_end_tyrano_code]
 
 [return  ]

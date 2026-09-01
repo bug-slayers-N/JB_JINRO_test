@@ -976,7 +976,7 @@
 [call  storage="yamabuki.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #山吹
-「っしゃ、敵はとったぜ！相棒！」[p]
+「っしゃ、仇はとったぜ！相棒！」[p]
 [_tb_end_text]
 
 [call  storage="shigure.ks"  target="*show2"  ]
@@ -995,6 +995,144 @@
 「ちょっとは口の利き方を気をつけるようになったと思いますが、またぞろやらかさないように本当に気をつけてくださいね？」[p]
 #山吹
 「あ～、さすがに懲りてるよ」[p]
+[_tb_end_text]
+
+[jump  storage="omake.ks"  target="*story_end"  ]
+*s17
+
+[call  storage="shigure.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#時雨
+「あははははははは」[p]
+「これが正しい姿ですよォ！」[p]
+
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#千晴
+「まったくだぜ」[p]
+「もう銀行のギャンブルも人狼ゲームでいいだろ」[p]
+#時雨
+「あれ、千晴君最初は全然ノリ気じゃなかったですよね？見てましたよ？」[p]
+#千晴
+「あ”～？別にいいじゃねぇか」[p]
+「勝ったんだからよ」[p]
+#時雨
+「それもそうですね」[p]
+[_tb_end_text]
+
+[call  storage="mafutsu.ks"  target="*show"  ]
+[call  storage="mafutsu.ks"  target="*show_raku"  ]
+[tb_start_text mode=1 ]
+#真経津
+「獅子神さん達の対戦相手だった人、仲良しなんだね」[p]
+[_tb_end_text]
+
+[call  storage="sisigami.ks"  target="*show2"  ]
+[call  storage="sisigami.ks"  target="*show_ai"  ]
+[tb_start_text mode=1 ]
+#獅子神
+「あ～……まぁ、な……」[p]
+
+[_tb_end_text]
+
+[call  storage="mafutsu.ks"  target="*show_jinro"  ]
+[tb_start_text mode=1 ]
+#真経津
+「いいんだよ、獅子神さん。ここは"そういう世界"なんだから」[p]
+#獅子神
+「いや、オレは時雨がどうなったか知らねぇ…し…」[p]
+[_tb_end_text]
+
+[call  storage="murasame.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#村雨
+「気にするな、今目の前にいるのは幽霊でもなんでもない」[p]
+「私としては迷惑だが」[p]
+[_tb_end_text]
+
+[jump  storage="omake.ks"  target="*story_end"  ]
+*s18
+
+[call  storage="sisigami.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#獅子神
+「あん時も、こうなりゃよかったんだけどよ」[p]
+[_tb_end_text]
+
+[call  storage="murasame.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#村雨
+「正気か？マヌケめ。”処理”しなければめんどうな生活が待っていたのだ」[p]
+「私はごめんだな」[p]
+#獅子神
+「い、いや現実山吹は今これだし、何もころ……」[p]
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#時雨
+「私を勝手に幽霊にしないでくれます？」[p]
+「ねぇ、千晴君」[p]
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#山吹
+「銀行内だから相棒が生きてるって言っていいの助かるぜ」[p]
+「銀行の取り決めが色々あんだよ、おかげさまで"権力の犬"生活だ」[p]
+「……それでも相棒が生きてることにはかえらんねぇーけど」[p]
+#時雨
+「ま、命あっての物種ですからね」[p]
+「デスギャンブルは卒業させてもらいましたよ」[p]
+[_tb_end_text]
+
+[call  storage="murasame.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#村雨
+「出禁の間違いでは？」[p]
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#山吹
+「オメーなァ！！言わせておけばッ」[p]
+
+[_tb_end_text]
+
+[call  storage="murasame.ks"  target="*show"  ]
+[call  storage="murasame.ks"  target="*show_do"  ]
+[tb_start_text mode=1 ]
+#村雨
+「おい、獅子神ッ！？」[p]
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#山吹
+「オレを無視すんな！」[p]
+[_tb_end_text]
+
+[call  storage="sisigami.ks"  target="*show"  ]
+[call  storage="sisigami.ks"  target="*show_ai"  ]
+[tb_start_text mode=1 ]
+#獅子神
+「なんか……こんな未来もあったんだなって思うと、クソッ」[p]
+[_tb_end_text]
+
+[call  storage="murasame.ks"  target="*show2"  ]
+[tb_start_text mode=1 ]
+#村雨
+「……」[p]
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show"  ]
+[tb_start_text mode=1 ]
+#時雨
+「獅子神君に免じて引き下がってあげなさい、千晴君」[p]
+「……」[p]
+「次はないからですね」[p]
 [_tb_end_text]
 
 [jump  storage="omake.ks"  target="*story_end"  ]
