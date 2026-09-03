@@ -109,6 +109,8 @@ else{yusaburi=0.6;}
 var damage=20*yusaburi;
 // 獅子神(2)は受けるダメージ1.1倍
 if(prevActor===2){damage*=1.1;}
+// gamemode9はさらに最終ダメージ1.2倍
+if(parseInt(f.gamemode)===9){damage*=1.2;}
 var calmArr=String(f.calm).split(',');
 calmArr[prevActor-1]=String(parseFloat(calmArr[prevActor-1])-damage);
 f.calm=calmArr.join(',');

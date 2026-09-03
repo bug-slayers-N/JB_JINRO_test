@@ -40,7 +40,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [return  ]
 *show_jinro
 
-[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_insane.png"  ]
+[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_normal.png"  ]
 [return  ]
 *show_jinro2
 
