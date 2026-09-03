@@ -16,7 +16,7 @@
 ;yamabuki
 [chara_new  name="yamabuki"  jname="yamabuki"  storage="chara/8/yamabuki_aseri.png"  ]
 ;gato
-[chara_new  name="gato"  jname="gato"  storage="chara/9/gato_do.png"  ]
+[chara_new  name="gato"  jname="gato"  storage="chara/9/gato_aseri.png"  ]
 ;urushibara
 [chara_new  name="urushibara"  jname="urushibara"  storage="chara/10/gato_normal2.png"  ]
 

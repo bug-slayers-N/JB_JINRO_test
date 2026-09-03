@@ -973,6 +973,7 @@
 [call  storage="omake_story.ks"  target=""  ]
 *s16
 
+[call  storage="omake.ks"  target="*story_start"  ]
 [call  storage="yamabuki.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #山吹
@@ -1000,6 +1001,7 @@
 [jump  storage="omake.ks"  target="*story_end"  ]
 *s17
 
+[call  storage="omake.ks"  target="*story_start"  ]
 [call  storage="shigure.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #時雨
@@ -1055,6 +1057,7 @@
 [jump  storage="omake.ks"  target="*story_end"  ]
 *s18
 
+[call  storage="omake.ks"  target="*story_start"  ]
 [call  storage="sisigami.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #獅子神

@@ -1,6 +1,3 @@
 [preload  storage="./data/fgimage/chara/9/gato_normal.png"  ]
-[preload  storage="./data/fgimage/chara/9/gato_normal2.png"  ]
-[preload  storage="./data/fgimage/chara/9/gato_ki.png"  ]
-[preload  storage="./data/fgimage/chara/9/gato_do.png"  ]
-[preload  storage="./data/fgimage/chara/9/gato_insane.png"  ]
+[preload  storage="./data/fgimage/chara/9/gato_aseri.png"  ]
 [return]

@@ -31,28 +31,28 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [return  ]
 *show_normal2
 
-[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_normal2.png"  ]
+[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_aseri.png"  ]
 [return  ]
 *show_ki
 
-[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_ki.png"  ]
+[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_normal.png"  ]
 [return  ]
 *show_do
 
 [jump  storage="gato.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_do.png"  ]
+[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_aseri.png"  ]
 [return  ]
 *show_ai
 
 [return  ]
 *show_jinro
 
-[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_insane.png"  ]
+[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_normal.png"  ]
 [return  ]
 *show_jinro2
 
 [chara_hide_all  time="0"  wait="true"  ]
-[chara_show  name="gato"  time="1000"  wait="true"  storage="chara/9/gato_insane2.png"  width="400"  height="900"  left="430"  top="-40"  reflect="false"  ]
+[chara_show  name="gato"  time="1000"  wait="true"  storage="chara/9/gato_normal.png"  width="320"  height="720"  left="430"  top="-40"  reflect="false"  ]
 [return  ]
 *day01_01
 
@@ -63,7 +63,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 「もうギャンブルは辞めたんだよ。伊月ともそう約束した」[p]
 「……ただのパーティーゲーム？」[p]
 「は、たまには息抜きも悪くはねぇか」[p]
-「勿論、伊月もいんだろ？」[p]
+「こういう遊びはあんましてこなかったし、伊月も存外楽しめそうだし」[p]
+「勿論、伊月も来るんだろ？」[p]
 [_tb_end_text]
 
 [return  ]
@@ -281,7 +282,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_tyrano_code]
 #牙頭
-「[emb exp="f.display09"]は名乗り出るべきではないか？」[p]
+「[emb exp="f.display09"]は名乗りでろよ。チキってんのか？」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -291,7 +292,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「情報に乏しい今、一度全員が村人だと宣言したらどうか？」[p]
+「しゃらくせぇ、全員が村人陣営って言ってみろ。そうしたら嘘つきが出てくる」[p]
 [_tb_end_text]
 
 [return  ]
@@ -312,8 +313,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
-「[emb exp="f.name"]、さすがに騒々しすぎる」[p]
-「何か必死に誘導したいのか？かえって怪しいが」[p]
+「うるせぇよ、[emb exp="f.name"]」[p]
+「現状に満足してねぇ奴ってのは怪しいんだよ」[p]
 [_tb_end_tyrano_code]
 
 [return  ]
@@ -323,8 +324,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
-「[emb exp="f.name2"]、それは違う」[p]
-「少し黙った方がいいのでは？」[p]
+「ちげーだろ、[emb exp="f.name2"]」[p]
+「少し黙ってろ」[p]
 [_tb_end_tyrano_code]
 
 [jump  storage="observe.ks"  target="*observe"  ]
@@ -334,8 +335,8 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_jinro"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「マヌケめ、私達が嘘つきだ」[p]
-「手軽なゲームだろうと私が強い」[p]
+「オレが嘘つきだよ」[p]
+「残念だったな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -344,7 +345,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show2"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「当然、村人陣営の勝利だ」[p]
+「村人陣営の勝利だ、ま、当然だろ」[p]
 [_tb_end_text]
 
 [return  ]
@@ -353,9 +354,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「当然の勝利だ」[p]
-「ふんっ、マヌケにしてはまだマシな方だったということだな」[p]
-「私は帰らせてもらう」[p]
+「結構遊べたな」[p]
+「賭場なんざにはもう二度といかねぇーけど、今度伊月と遊びにいくのも悪くねぇわ」[p]
+「オレは指図されんのは、ありえねぇからよ」[p]
+「ま、今日だけは流しておくぜ」[p]
+「じゃあな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -364,16 +367,16 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「当然の勝利だ」[p]
-「ふんっ、マヌケにしてはまだマシな方だったということだな」[p]
-
+「結構遊べたな」[p]
+「賭場なんざにはもう二度といかねぇーけど、今度伊月と遊びにいくのも悪くねぇわ」[p]
+「オレは指図されんのは、ありえねぇからよ」[p]
 [_tb_end_text]
 
 [mask  time="200"  effect="fadeIn"  color="0x000000"  ]
 [call  storage="gato.ks"  target="*show_jinro2"  ]
 [mask_off  time="200"  effect="fadeOut"  ]
 [tb_start_text mode=1 ]
-「否、あなたは自分の可能性に気が付いていないのかも知れないな」[p]
+「でもオメーは割とセンスありそうだけどな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -383,10 +386,10 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「負けたか」[p]
-「仕方あるまい、私には決定権がなかったのだ」[p]
-「どれだけの名医でも、言うことの聞かない患者に出来ることはない」[p]
-「私は帰らせてもらう」[p]
+「負けでもまぁ楽しかった」[p]
+「今度伊月と普通に遊びに行くわ」[p]
+「なんたって、オレは指図されんのはありえねぇからな」[p]
+「じゃあな」[p]
 [_tb_end_text]
 
 [return  ]
@@ -415,7 +418,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「オレもいいか？」[p]
+「オレからも」[p]
 [_tb_end_text]
 
 [jump  storage="gato.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]
