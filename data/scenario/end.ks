@@ -109,6 +109,12 @@ f.result=lines.join("、");
 [return  ]
 *end
 
+[iscript]
+if(parseInt(f.player)===9&&parseInt(f.day)===1&&parseInt(f.tutorial)!==1){
+sf.amigo_s01=1;
+}
+[endscript]
+
 [bg  time="1000"  method="crossfade"  storage="92690259_p0.png"  ]
 [jump  storage="scenario.ks"  target="*lose"  ]
 *omake
@@ -152,6 +158,11 @@ if(p===5){
 var wc=(isWolfTeam(r)&&w===2)||(!isWolfTeam(r)&&w===1);
 if(wc&&isCO(5)){sf.te_s01=1;if(pd)sf.te_s02=1;}
 if(r===10&&w===1&&pd)sf.te_s03=1;
+if(isAlive(8)&&isAlive(9)&&wc)sf.amigo_s03=1;
+}
+if(p===8||p===9){
+var wc3=(isWolfTeam(r)&&w===2)||(!isWolfTeam(r)&&w===1);
+if(isAlive(8)&&isAlive(9)&&wc3)sf.amigo_s02=1;
 }
 if(p===6||p===7){
 var wc2=(isWolfTeam(r)&&w===2)||(!isWolfTeam(r)&&w===1);

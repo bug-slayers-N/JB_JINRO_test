@@ -184,29 +184,15 @@ break;
 }
 }
 }else{
-// 人狼の重複CO防止ガード：今回のresultと同じ役職を味方人狼が既にCO済みなら
-// 人狼の抽選(パートA)自体を止める
-var wolfBlocked=false;
-for(var i=1;i<=n;i++){
-if(getRole(i)>5)continue;
-if(parseInt(f.result)===1&&coArr[i-1]==="1")wolfBlocked=true;
-if(parseInt(f.result)===2&&coArr[i-1]==="2")wolfBlocked=true;
-}
-var poolA=wolfBlocked?[]:basePool.filter(function(i){return getRole(i)<=5;});
+// ===== 天堂以外：人狼枠・狂人枠・本物枠の抽選対象を1本のプールにまとめ、
+//      シャッフルした順に先頭から現行の当選確率で当落判定する。
+//      当選が出た時点で抽選終了。誰も当選しなければ0のまま。
+//      （旧・人狼重複CO防止ガードは、応答抽選の時点で促されている役職の
+//        CO者は存在し得ない＝常にfalseにしかならないため撤去） =====
+var poolA=basePool.filter(function(i){return getRole(i)<=5;});
 var poolB=basePool.filter(function(i){return getRole(i)===9;});
 var specRole=(parseInt(f.result)===1)?10:11;
 var poolC=basePool.filter(function(i){return getRole(i)===specRole;});
-function rollPool(pool,rateTbl){
-var hits=[];
-for(var j=0;j<pool.length;j++){
-var c=pool[j];
-var p=pArr[c];
-var rate=rateTbl[p];
-if(Math.random()<rate)hits.push(c);
-}
-if(hits.length===0)return 0;
-return hits[Math.floor(Math.random()*hits.length)];
-}
 var rateA={2:0.20,1:0.10,0:0.05};
 var rateB={2:0.60,1:0.40,0:0.20};
 var has1lot=coArr.indexOf("1")!==-1;
@@ -217,16 +203,18 @@ rateA={2:0.30,1:0.20,0:0.15};
 rateB={2:0.70,1:0.50,0:0.30};
 }
 var rateC={2:0.60,1:0.40,0:0.20};
-var parts=["A","B","C"];
-for(var s=parts.length-1;s>0;s--){
+var entries=[];
+for(var a=0;a<poolA.length;a++)entries.push({c:poolA[a],rate:rateA});
+for(var b=0;b<poolB.length;b++)entries.push({c:poolB[b],rate:rateB});
+for(var cc=0;cc<poolC.length;cc++)entries.push({c:poolC[cc],rate:rateC});
+for(var s=entries.length-1;s>0;s--){
 var r=Math.floor(Math.random()*(s+1));
-var tmp=parts[s];parts[s]=parts[r];parts[r]=tmp;
+var tmp=entries[s];entries[s]=entries[r];entries[r]=tmp;
 }
-for(var pIdx=0;pIdx<parts.length;pIdx++){
-if(winner>0)break;
-if(parts[pIdx]==="A")winner=rollPool(poolA,rateA);
-else if(parts[pIdx]==="B")winner=rollPool(poolB,rateB);
-else if(parts[pIdx]==="C")winner=rollPool(poolC,rateC);
+for(var e=0;e<entries.length;e++){
+var cch=entries[e].c;
+var rate=entries[e].rate[pArr[cch]];
+if(Math.random()<rate){winner=cch;break;}
 }
 }
 f.ai_actor=winner;

@@ -133,4 +133,16 @@ A.正気な訳ありません。ゲームが面白かったら、正気に戻さ
 [glink  color="green"  storage="omake_story.ks"  size="20"  text="ストーリー18"  target="*s18"  x="178"  y="552"  width=""  height=""  _clickable_img=""  ]
 *keiji_s03
 
+[jump  storage="omake.ks"  target="*amigo_s01"  cond="sf.amigo_s01!=1"  ]
+[glink  color="white"  storage="omake_story.ks"  size="20"  text="ストーリー19"  target="*s19"  x="900"  y="412"  width=""  height=""  _clickable_img=""  ]
+*amigo_s01
+
+[jump  storage="omake.ks"  target="*amigo_s02"  cond="sf.amigo_s02!=1"  ]
+[glink  color="white"  storage="omake_story.ks"  size="20"  text="ストーリー20"  target="*s20"  x="900"  y="482"  width=""  height=""  _clickable_img=""  ]
+*amigo_s02
+
+[jump  storage="omake.ks"  target="*amigo_s03"  cond="sf.amigo_s03!=1"  ]
+[glink  color="white"  storage="omake_story.ks"  size="20"  text="ストーリー21"  target="*s21"  x="900"  y="552"  width=""  height=""  _clickable_img=""  ]
+*amigo_s03
+
 [s  ]
