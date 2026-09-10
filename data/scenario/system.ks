@@ -102,8 +102,8 @@ function getPC(a,b){
 var calmArr2=String(f.calm).split(',');
 var v=parseFloat(calmArr2[b-1]);
 var al2=String(f.alive).split(',');
-if(b===6&&al2[6]==='1')v*=1.1;
-if(b===7&&al2[5]==='1')v*=1.1;
+if(b===6&&al2[6]==='1')v*=1.2;
+if(b===7&&al2[5]==='1')v*=1.2;
 if(b===9&&al2[7]==='1')v*=1.4;
 var lk2=String(f.like).split(',');
 return v+parseFloat(lk2[gi(a,b)]);

@@ -23,8 +23,8 @@ else if(cur===3){lr[idx]="9";}
 }
 function getCalm(i){
 var v=parseFloat(calmArr[i-1]);
-if(i===6&&al[6]==="1")v*=1.1;
-if(i===7&&al[5]==="1")v*=1.1;
+if(i===6&&al[6]==="1")v*=1.2;
+if(i===7&&al[5]==="1")v*=1.2;
 if(i===9&&al[7]==="1")v*=1.4;
 return v;
 }
@@ -32,8 +32,8 @@ for(var ob=1;ob<=n;ob++){
 if(al[ob-1]==="0")continue;
 var pw=op[ob-1];
 if(ob===4&&parseInt(f.turn)%3===0&&parseInt(f.turn)!==0){pw=pw*1.5;}
-if(ob===6&&al[6]==="1")pw=pw*1.1;
-if(ob===7&&al[5]==="1")pw=pw*1.1;
+if(ob===6&&al[6]==="1")pw=pw*1.2;
+if(ob===7&&al[5]==="1")pw=pw*1.2;
 var pl=[];
 for(var t=1;t<=n;t++){
 if(t===ob)continue;

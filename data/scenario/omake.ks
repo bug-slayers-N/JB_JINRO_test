@@ -118,7 +118,7 @@ A.正気な訳ありません。ゲームが面白かったら、正気に戻さ
 [jump  storage="omake.ks"  target="*story"  ]
 *story2
 
-[bg  time="1000"  method="crossfade"  storage="無題167_20260901223449.png"  ]
+[bg  time="1000"  method="crossfade"  storage="omake2.png"  ]
 [glink  color="btn_05_purple"  storage="omake.ks"  size="20"  text="前のページへ"  target="*story"  x="1078"  y="15"  width=""  height=""  _clickable_img=""  ]
 [glink  color="btn_05_lime"  storage="omake.ks"  size="20"  text="おまけに戻る"  target="*omake_top"  x="52"  y="21"  width=""  height=""  _clickable_img=""  ]
 [jump  storage="omake.ks"  target="*keiji_s01"  cond="sf.keiji_s01!=1"  ]

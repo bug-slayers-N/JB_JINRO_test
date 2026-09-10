@@ -109,8 +109,8 @@ else if(winnerNum===2){var steps=[0.5,0.6,0.7,0.8,0.9,1.0];yusaburi=steps[Math.f
 else if(winnerNum===3){yusaburi=0.6;}
 else if(winnerNum===4){yusaburi=0.7;}
 else if(winnerNum===5){yusaburi=0.8;}
-else if(winnerNum===6){yusaburi=0.7;if(isAlive2(7))yusaburi*=1.1;}
-else if(winnerNum===7){yusaburi=0.8;if(isAlive2(6))yusaburi*=1.1;}
+else if(winnerNum===6){yusaburi=0.7;if(isAlive2(7))yusaburi*=1.2;}
+else if(winnerNum===7){yusaburi=0.8;if(isAlive2(6))yusaburi*=1.2;}
 else if(winnerNum===8){yusaburi=0.7;if(isAlive2(9))yusaburi*=1.4;}
 else{yusaburi=0.6;}
 var damage=(40*yusaburi)/2;

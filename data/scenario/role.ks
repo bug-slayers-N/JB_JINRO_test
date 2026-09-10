@@ -53,7 +53,7 @@
 *9mode_pick
 
 [tb_hide_message_window  ]
-[bg  time="1000"  method="crossfade"  storage="9mode.png"  ]
+[bg  time="1000"  method="crossfade"  storage="BG_selectChara_9chara.png"  ]
 [jump  storage="role.ks"  target="*9mode_pick_list"  ]
 *5mode_pick_list
 
@@ -65,15 +65,15 @@
 [jump  storage="role.ks"  target="*picklist_end"  ]
 *9mode_pick_list
 
-[glink  color="btn_06_red"  storage="role.ks"  size="20"  text="真経津晨にする"  x="72"  y="297"  width=""  height=""  _clickable_img=""  target="*mafutsu"  ]
-[glink  color="btn_06_yellow"  storage="role.ks"  size="20"  text="獅子神敬一にする"  x="315"  y="289"  width=""  height=""  _clickable_img=""  target="*sisigami"  ]
-[glink  color="btn_06_blue"  storage="role.ks"  size="20"  text="村雨礼二にする"  x="573"  y="291"  width=""  height=""  _clickable_img=""  target="*murasame"  ]
-[glink  color="btn_06_purple"  storage="role.ks"  size="20"  text="叶黎明にする"  x="825"  y="286"  width=""  height=""  _clickable_img=""  target="*kano"  ]
-[glink  color="btn_06_black"  storage="role.ks"  size="20"  text="天堂弓彦にする"  x="1062"  y="283"  width=""  height=""  _clickable_img=""  target="*tendo"  ]
-[glink  color="btn_06_green"  storage="role.ks"  size="20"  text="時雨賢人にする"  x="199"  y="600"  width=""  height=""  _clickable_img=""  target="*shigure"  ]
-[glink  color="btn_06_yellow"  storage="role.ks"  size="20"  text="山吹千春にする"  x="440"  y="595"  width=""  height=""  _clickable_img=""  target="*yamabuki"  ]
-[glink  color="btn_06_red"  storage="role.ks"  size="20"  text="牙頭猛晴にする"  x="691"  y="591"  width=""  height=""  _clickable_img=""  target="*gato"  ]
-[glink  color="btn_06_black"  storage="role.ks"  size="20"  text="漆原伊月にする"  x="944"  y="589"  width=""  height=""  _clickable_img=""  target="*urushibara"  ]
+[glink  color="btn_06_red"  storage="role.ks"  size="20"  text="真経津晨にする"  x="72"  y="302"  width=""  height=""  _clickable_img=""  target="*mafutsu"  ]
+[glink  color="btn_06_yellow"  storage="role.ks"  size="20"  text="獅子神敬一にする"  x="310"  y="302"  width=""  height=""  _clickable_img=""  target="*sisigami"  ]
+[glink  color="btn_06_blue"  storage="role.ks"  size="20"  text="村雨礼二にする"  x="567"  y="302"  width=""  height=""  _clickable_img=""  target="*murasame"  ]
+[glink  color="btn_06_purple"  storage="role.ks"  size="20"  text="叶黎明にする"  x="817"  y="302"  width=""  height=""  _clickable_img=""  target="*kano"  ]
+[glink  color="btn_06_black"  storage="role.ks"  size="20"  text="天堂弓彦にする"  x="1050"  y="302"  width=""  height=""  _clickable_img=""  target="*tendo"  ]
+[glink  color="btn_06_green"  storage="role.ks"  size="20"  text="時雨賢人にする"  x="72"  y="635"  width=""  height=""  _clickable_img=""  target="*shigure"  ]
+[glink  color="btn_06_yellow"  storage="role.ks"  size="20"  text="山吹千春にする"  x="310"  y="635"  width=""  height=""  _clickable_img=""  target="*yamabuki"  ]
+[glink  color="btn_06_red"  storage="role.ks"  size="20"  text="牙頭猛晴にする"  x="817"  y="635"  width=""  height=""  _clickable_img=""  target="*gato"  ]
+[glink  color="btn_06_black"  storage="role.ks"  size="20"  text="漆原伊月にする"  x="1050"  y="635"  width=""  height=""  _clickable_img=""  target="*urushibara"  ]
 *picklist_end
 
 [s  ]

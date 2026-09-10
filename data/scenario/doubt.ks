@@ -21,8 +21,8 @@ yusaburi = steps[Math.floor(Math.random() * steps.length)];
 else if (playerNum === 3) { yusaburi = 0.6; }
 else if (playerNum === 4) { yusaburi = 0.7; }
 else if (playerNum === 5) { yusaburi = 0.8; }
-else if (playerNum === 6) { yusaburi = 0.7; if(isAlive(7)) yusaburi *= 1.1; }
-else if (playerNum === 7) { yusaburi = 0.8; if(isAlive(6)) yusaburi *= 1.1; }
+else if (playerNum === 6) { yusaburi = 0.7; if(isAlive(7)) yusaburi *= 1.2; }
+else if (playerNum === 7) { yusaburi = 0.8; if(isAlive(6)) yusaburi *= 1.2; }
 else if (playerNum === 8) { yusaburi = 0.7; if(isAlive(9)) yusaburi *= 1.4; }
 else { yusaburi = 0.6; }
 // ダメージ計算（基礎値40×ゆさぶり力）
@@ -356,8 +356,8 @@ yusaburi = steps[Math.floor(Math.random() * steps.length)];
 else if (actorNum === 3) { yusaburi = 0.6; }
 else if (actorNum === 4) { yusaburi = 0.7; }
 else if (actorNum === 5) { yusaburi = 0.8; }
-else if (actorNum === 6) { yusaburi = 0.7; if(isAlive(7)) yusaburi *= 1.1; }
-else if (actorNum === 7) { yusaburi = 0.8; if(isAlive(6)) yusaburi *= 1.1; }
+else if (actorNum === 6) { yusaburi = 0.7; if(isAlive(7)) yusaburi *= 1.2; }
+else if (actorNum === 7) { yusaburi = 0.8; if(isAlive(6)) yusaburi *= 1.2; }
 else if (actorNum === 8) { yusaburi = 0.7; if(isAlive(9)) yusaburi *= 1.4; }
 else { yusaburi = 0.6; }
 // 対象の平常心をダメージ分減算
@@ -463,8 +463,8 @@ else if(playerNum===2){var steps=[0.5,0.6,0.7,0.8,0.9,1.0];yusaburi=steps[Math.f
 else if(playerNum===3){yusaburi=0.6;}
 else if(playerNum===4){yusaburi=0.7;}
 else if(playerNum===5){yusaburi=0.8;}
-else if(playerNum===6){yusaburi=0.7;if(isAlive(7))yusaburi*=1.1;}
-else if(playerNum===7){yusaburi=0.8;if(isAlive(6))yusaburi*=1.1;}
+else if(playerNum===6){yusaburi=0.7;if(isAlive(7))yusaburi*=1.2;}
+else if(playerNum===7){yusaburi=0.8;if(isAlive(6))yusaburi*=1.2;}
 else if(playerNum===8){yusaburi=0.7;if(isAlive(9))yusaburi*=1.4;}
 else{yusaburi=0.6;}
 var base=0;

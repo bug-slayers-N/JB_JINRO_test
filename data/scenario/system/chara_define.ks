@@ -18,7 +18,7 @@
 ;gato
 [chara_new  name="gato"  jname="gato"  storage="chara/9/gato_aseri.png"  ]
 ;urushibara
-[chara_new  name="urushibara"  jname="urushibara"  storage="chara/10/gato_normal2.png"  ]
+[chara_new  name="urushibara"  jname="urushibara"  storage="chara/10/urushibara_aseri.png"  ]
 
 ;=========変数宣言部分 
 [iscript] 
