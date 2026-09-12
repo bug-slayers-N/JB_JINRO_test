@@ -11,8 +11,13 @@
 
 *member
 
+[iscript]
+f.Ezmode=0;
+[endscript]
+
 [glink  color="btn_05_green"  storage="role.ks"  size="20"  text="5人で遊ぶ(人狼1人)"  target="*5mode_select"  autopos="true"  x="100"  y="100"  width=""  height=""  _clickable_img=""  ]
 [glink  color="btn_05_yellow"  storage="role.ks"  size="20"  text="9人で遊ぶ(人狼2人)"  target="*9mode_select"  autopos="true"  x="100"  y="100"  width=""  height=""  _clickable_img=""  ]
+[glink  color="btn_05_blue"  storage="role.ks"  size="20"  text="9人で遊ぶ(簡単モード)"  target="*9mode_easy_select"  autopos="true"  x="100"  y="100"  width=""  height=""  _clickable_img=""  ]
 [glink  color="btn_05_purple"  storage="role.ks"  size="20"  text="13人で遊ぶ(人狼3人)"  target="*13mode_select"  x="99"  y="192"  width=""  height=""  _clickable_img=""  autopos="true"  ]
 [s  ]
 *13mode_select
@@ -33,6 +38,18 @@
 [_tb_end_text]
 
 [jump  storage="role.ks"  target="*5mode_pick"  ]
+*9mode_easy_select
+
+[tb_eval  exp="f.gamemode=9"  name="gamemode"  cmd="="  op="t"  val="9"  val_2="undefined"  ]
+[tb_eval  exp="f.Ezmode=5"  name="Ezmode"  cmd="="  op="t"  val="5"  val_2="undefined"  ]
+[call  storage="system.ks"  target="*9mode_init"  ]
+[tb_start_text mode=1 ]
+#システム
+9人モード(簡単)を選択しました。人狼陣営時は被ダメが下がり、村人陣営時は全体の被ダメが上昇します。また、うるさい機能もなくなります。[p]
+選択可能キャラは真経津、獅子神、村雨、叶、天堂、時雨、山吹、牙頭、漆原です。[p]
+[_tb_end_text]
+
+[jump  storage="role.ks"  target="*9mode_pick"  ]
 *9mode_select
 
 [tb_eval  exp="f.gamemode=9"  name="gamemode"  cmd="="  op="t"  val="9"  val_2="undefined"  ]
@@ -265,6 +282,68 @@ break;
 }
 arr[playerIdx]=String(newRole);
 f.character=arr.join(',');
+if(parseInt(f.Ezmode)===5){
+f.Ezmode=(parseInt(f.role)<10)?1:2;
+}
+// 騎士s03未解放時、時雨/山吹プレイヤー・村人陣営・かんたんモードなら村雨/獅子神を人狼陣営から救済
+if(parseInt(sf.keiji_s03)!==1&&(parseInt(f.player)===6||parseInt(f.player)===7)&&parseInt(f.role)>=10&&parseInt(f.Ezmode)===2){
+var poolArr=String(f.character).split(',');
+var excluded=[playerIdx,1,2];
+[2,1].forEach(function(idx){
+var r=parseInt(poolArr[idx]);
+if(r===1||r===2||r===9){
+for(var i=0;i<poolArr.length;i++){
+if(excluded.indexOf(i)!==-1)continue;
+var rv=parseInt(poolArr[i]);
+if(rv===15||rv===16||rv===17){
+poolArr[idx]=String(rv);
+poolArr[i]=String(r);
+break;
+}
+}
+}
+});
+f.character=poolArr.join(',');
+}
+// amigo_s03未解放時、天堂プレイヤー・かんたんモードなら牙頭/漆原を天堂と同じ陣営へ寄せる
+if(parseInt(sf.amigo_s03)!==1&&parseInt(f.player)===5&&parseInt(f.Ezmode)===2){
+var poolArr2=String(f.character).split(',');
+var excluded2=[playerIdx,7,8];
+[8,7].forEach(function(idx){
+var r=parseInt(poolArr2[idx]);
+if(r===1||r===2||r===9){
+for(var i=0;i<poolArr2.length;i++){
+if(excluded2.indexOf(i)!==-1)continue;
+var rv=parseInt(poolArr2[i]);
+if(rv===15||rv===16||rv===17){
+poolArr2[idx]=String(rv);
+poolArr2[i]=String(r);
+break;
+}
+}
+}
+});
+f.character=poolArr2.join(',');
+}
+if(parseInt(sf.amigo_s03)!==1&&parseInt(f.player)===5&&parseInt(f.Ezmode)===1){
+var poolArr3=String(f.character).split(',');
+var excluded3=[playerIdx,7,8];
+[8,7].forEach(function(idx){
+var r=parseInt(poolArr3[idx]);
+if(r===15||r===16||r===17){
+for(var i=0;i<poolArr3.length;i++){
+if(excluded3.indexOf(i)!==-1)continue;
+var rv=parseInt(poolArr3[i]);
+if(rv===1||rv===2||rv===9){
+poolArr3[idx]=String(rv);
+poolArr3[i]=String(r);
+break;
+}
+}
+}
+});
+f.character=poolArr3.join(',');
+}
 [endscript]
 
 *role_end

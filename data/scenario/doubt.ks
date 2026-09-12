@@ -28,9 +28,9 @@ else { yusaburi = 0.6; }
 // ダメージ計算（基礎値40×ゆさぶり力）
 var damage = 40 * yusaburi;
 // 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍、gamemode9はさらに最終ダメージ1.2倍）
-function subCalm(num,val){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+function subCalm(num,val,actor){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var em=parseInt(f.Ezmode);if(em===2){val*=2;}else if(em===1&&parseInt(actor)!==parseInt(f.player)){val*=0.5;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
 // 対象の平常心をダメージ分減算
-subCalm(targetNum, damage);
+subCalm(targetNum, damage, playerNum);
 // 対象→プレイヤーへの好感度を-10
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 var likes = String(f.like).split(",");
@@ -363,8 +363,8 @@ else { yusaburi = 0.6; }
 // 対象の平常心をダメージ分減算
 var damage = 40 * yusaburi;
 // 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍、gamemode9はさらに最終ダメージ1.2倍）
-function subCalm(num,val){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
-subCalm(target, damage);
+function subCalm(num,val,actor){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var em=parseInt(f.Ezmode);if(em===2){val*=2;}else if(em===1&&parseInt(actor)!==parseInt(f.player)){val*=0.5;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+subCalm(target, damage, actorNum);
 // target→actorの好感度-10
 var likeIdx = gi(target, actorNum);
 lk[likeIdx] = parseInt(lk[likeIdx]) - 10;
@@ -408,7 +408,7 @@ var pushChoice={
 3:["理論はない、医者の勘","生体反応を見ろ","論理的に考えて人狼"],
 4:["観測者の勘","嘘をついている反応","誰の目に観ても人狼"],
 5:["神の直感","神の目からは逃れられない","哀れな咎人に神罰を下そう"],
-6:["刑事の勘","嘘つきなのはバレてますよ","人狼である証拠はあがってる"],
+6:["刑事の勘","嘘つきなのはバレてますよ","人狼である証拠はあがってます"],
 7:["刑事の勘","嘘つきってバレってから","証拠はもう揃ってんだよ"],
 8:["オレの直感は当たる","嘘つきなのは間違いない","負け犬程ごちゃごちゃうるせぇ"],
 9:["私的な直感","嘘つきの証拠は既にある","人狼という判決は覆せない"]
@@ -446,8 +446,8 @@ f.display03 = pushChoice[p][2];
 [iscript]
 var playerNum=parseInt(f.player);
 // 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍、gamemode9はさらに最終ダメージ1.2倍）
-function subCalm(num,val){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
-subCalm(playerNum,20);
+function subCalm(num,val,actor){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var em=parseInt(f.Ezmode);if(em===2){val*=2;}else if(em===1&&parseInt(actor)!==parseInt(f.player)){val*=0.5;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+subCalm(playerNum,20,playerNum);
 [endscript]
 
 [jump  storage="doubt.ks"  target="*push_back"  ]
@@ -473,8 +473,8 @@ else if(f.win==="d2"){base=20;}
 else if(f.win==="d3"){base=30;}
 var damage=base*yusaburi;
 // 平常心減算ヘルパー（獅子神=2は受けるダメージ1.1倍、gamemode9はさらに最終ダメージ1.2倍）
-function subCalm(num,val){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
-subCalm(targetNum,damage);
+function subCalm(num,val,actor){if(num===2){val*=1.1;}if(parseInt(f.gamemode)===9){val*=1.2;}var em=parseInt(f.Ezmode);if(em===2){val*=2;}else if(em===1&&parseInt(actor)!==parseInt(f.player)){val*=0.5;}var arr=String(f.calm).split(',');arr[num-1]=String(parseFloat(arr[num-1])-val);f.calm=arr.join(',');}
+subCalm(targetNum,damage,playerNum);
 [endscript]
 
 [jump  storage="doubt.ks"  target="*push_back"  ]

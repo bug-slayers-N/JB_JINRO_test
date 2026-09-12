@@ -1,5 +1,6 @@
 [_tb_system_call storage=system/_night.ks]
 
+[tb_show_message_window  ]
 *night
 
 *liar_execution
@@ -12,7 +13,6 @@ if(parseInt(lr[idx])>=5)return;
 lr[idx]=String(val);
 f.liar=lr.join(',');
 }
-
 var n=parseInt(f.gamemode);
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
@@ -23,7 +23,6 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-
 // ===== ①処刑トリガー：処刑されたのにゲームが続いている＝処刑対象は人狼ではなかった =====
 // （5人モード限定。人狼1体のみだから「処刑して尚ゲーム続行」＝処刑対象は人狼ではなかったと断定できる。pclaimは5人モードに存在しないためsclaimのみ見る）
 if(n===5){
@@ -41,7 +40,6 @@ setLiar(gi(obs,reporter),1);
 }
 }
 }
-
 // ===== ②霊媒師トリガー：alive4人以下なのに一度も人狼と報告していない霊媒師申告者は嘘つき確定 =====
 // （9人モード限定。勝利条件式(人狼数>=人間数で人狼勝利)から、alive<=4でゲーム継続中(=night到達)なら人狼は必ずちょうど1体生存中と確定する。
 //   人狼が死ぬ手段は処刑のみなので、もう1体の人狼はどこかの処刑で必ず出ている。それを一度も「人狼」と報告していない申告者は嘘つき確定。）
@@ -278,7 +276,6 @@ if(parseInt(lr[idx])>=5)return;
 lr[idx]=String(val);
 f.liar=lr.join(',');
 }
-
 var n=parseInt(f.gamemode);
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(c){return String(f.alive).split(',')[c-1]==='1';}
@@ -289,10 +286,8 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-
 // 襲撃失敗（護衛成功でrole2='skip'）ならここには来ない想定だが、念のため二重ガード
 if(f.role2!=='skip'){
-
 // ===== ①襲撃トリガー：襲撃対象を人狼と報告していた占い師は嘘つき確定 =====
 // （人狼は仲間を襲撃対象に選ばない仕様（list_judge/ai_wolf双方で人狼同士を除外済み）なので、
 //   襲撃された時点で対象が人狼でないことはモード問わず確定する）
@@ -307,7 +302,6 @@ setLiar(gi(obs,reporter),1);
 }
 }
 }
-
 // ===== ②霊媒師トリガー：alive4人以下なのに一度も人狼と報告していない霊媒師申告者は嘘つき確定（9人モード限定） =====
 if(n===9){
 var aliveCount=0;
@@ -332,7 +326,6 @@ setLiar(gi(obs,repNum),1);
 }
 }
 }
-
 // ===== ③襲撃死亡：対象自身以外の全員視点で、現在値に応じてliarを変換 =====
 // 0(不明)→3(人間) / 1(嘘つき)→9(狂人) / 2(正直)→2のまま / 3(人間)→3のまま / 4(囮)→3(人間、実際に人狼に襲撃され死亡した以上は誤りと確定) / 5以上(確定値)→変更なし
 for(var obs2=1;obs2<=n;obs2++){
@@ -350,7 +343,6 @@ lr2[idx2]=String(next2);
 f.liar=lr2.join(',');
 }
 }
-
 }
 [endscript]
 
@@ -514,19 +506,24 @@ f.display02=psychicLines.join("\n");
 [endscript]
 
 [if exp="f.display01!==''"]
+
 [tb_start_text mode=1 ]
 #システム
 占い師から下記の報告がありました。[p]
 [emb exp="f.display01"][p]
 [_tb_end_text]
+
 [endif]
 
 [if exp="f.display02!==''"]
+
 [tb_start_text mode=1 ]
 #システム
 霊媒師からは下記の報告がありました。[p]
 [emb exp="f.display02"][p]
 [_tb_end_text]
+
 [endif]
 
 [jump  storage="end.ks"  target="*turn_set"  ]
+[tb_show_message_window  ]

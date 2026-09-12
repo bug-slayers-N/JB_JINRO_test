@@ -203,57 +203,57 @@ f.display06 = hide ? 1 : 0;
 [jump  storage="UI.ks"  target="*listB_5"  ]
 *9mode_pic
 
-[bg  time="1000"  method="crossfade"  storage="9mode.png"  ]
+[bg  time="1000"  method="crossfade"  storage="BG_selectChara_9chara_noText.png"  ]
 [jump  storage="UI.ks"  target="*listB_9"  ]
 *listB_9
 
 [tb_eval  exp="f.display05=0"  name="display05"  cmd="="  op="t"  val="0"  ]
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_1_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="真経津晨にする"  x="72"  y="297"  target="*list_ma"  ]
+[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="真経津晨にする"  x="72"  y="302"  target="*list_ma"  ]
 *B9_1_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_2_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="獅子神敬一にする"  x="315"  y="289"  target="*list_si"  ]
+[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="獅子神敬一にする"  x="310"  y="302"  target="*list_si"  ]
 *B9_2_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_3_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_blue"  storage="UI.ks"  size="20"  text="村雨礼二にする"  x="573"  y="291"  target="*list_mu"  ]
+[glink  color="btn_06_blue"  storage="UI.ks"  size="20"  text="村雨礼二にする"  x="567"  y="302"  target="*list_mu"  ]
 *B9_3_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_4_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_purple"  storage="UI.ks"  size="20"  text="叶黎明にする"  x="825"  y="286"  target="*list_ka"  ]
+[glink  color="btn_06_purple"  storage="UI.ks"  size="20"  text="叶黎明にする"  x="817"  y="302"  target="*list_ka"  ]
 *B9_4_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_5_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1062"  y="283"  target="*list_te"  ]
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="天堂弓彦にする"  x="1050"  y="302"  target="*list_te"  ]
 *B9_5_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_6_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_green"  storage="UI.ks"  size="20"  text="時雨賢人にする"  x="199"  y="600"  target="*list_shigure"  ]
+[glink  color="btn_06_green"  storage="UI.ks"  size="20"  text="時雨賢人にする"  x="72"  y="635"  target="*list_shigure"  ]
 *B9_6_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_7_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="山吹千春にする"  x="440"  y="595"  target="*list_yamabuki"  ]
+[glink  color="btn_06_yellow"  storage="UI.ks"  size="20"  text="山吹千春にする"  x="310"  y="635"  target="*list_yamabuki"  ]
 *B9_7_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_8_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="牙頭猛晴にする"  x="691"  y="591"  target="*list_gato"  ]
+[glink  color="btn_06_red"  storage="UI.ks"  size="20"  text="牙頭猛晴にする"  x="817"  y="635"  target="*list_gato"  ]
 *B9_8_skip
 
 [call  storage="UI.ks"  target="*list_judge"  ]
 [jump  storage="UI.ks"  target="*B9_9_skip"  cond="f.display06==1"  ]
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="漆原伊月にする"  x="944"  y="589"  target="*list_urushibara"  ]
+[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="漆原伊月にする"  x="1050"  y="635"  target="*list_urushibara"  ]
 *B9_9_skip
 
-[glink  color="btn_06_black"  storage="UI.ks"  size="20"  text="状況確認"  x="600"  y="750"  target="*list_check"  ]
+[glink  color="btn_01_red"  storage="UI.ks"  size="20"  text="状況確認"  x="590"  y="550"  target="*list_check"  width=""  height=""  _clickable_img=""  ]
 [s  ]
 *listB_5
 

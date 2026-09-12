@@ -111,6 +111,8 @@ var damage=20*yusaburi;
 if(prevActor===2){damage*=1.1;}
 // gamemode9はさらに最終ダメージ1.2倍
 if(parseInt(f.gamemode)===9){damage*=1.2;}
+// かんたんモード補正（人間と言えはプレイヤー起因のためEzmode1では減衰させない）
+if(parseInt(f.Ezmode)===2){damage*=2;}
 var calmArr=String(f.calm).split(',');
 calmArr[prevActor-1]=String(parseFloat(calmArr[prevActor-1])-damage);
 f.calm=calmArr.join(',');
@@ -163,8 +165,10 @@ f.jump="stop";
 [call  storage="urushibara.ks"  target="*stop2"  cond="f.display07==9"  ]
 [iscript]
 function addCalm(i,val){var arr=String(f.calm).split(',');arr[i-1]=String(parseFloat(arr[i-1])+val);f.calm=arr.join(',');}
-addCalm(parseInt(f.ai_actor),-15);
-addCalm(parseInt(f.display07),-15);
+// かんたんモード補正（人間と言えはプレイヤー起因のためEzmode1では減衰させない）
+var counterDamage=(parseInt(f.Ezmode)===2)?-30:-15;
+addCalm(parseInt(f.ai_actor),counterDamage);
+addCalm(parseInt(f.display07),counterDamage);
 [endscript]
 
 [jump  storage="say_human.ks"  target="*end"  ]

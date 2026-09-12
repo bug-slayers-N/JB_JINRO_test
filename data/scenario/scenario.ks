@@ -101,6 +101,7 @@
 [_tb_end_text]
 
 [call  storage="yamabuki.ks"  target="*show"  ]
+[call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #？？？
 「ヒーローは遅れてやってくるってなぁ」[p]
@@ -111,10 +112,17 @@
 [tb_start_text mode=1 ]
 #？？？
 「ま、我々は忙しいですから」[p]
-「って、え、千晴君以外のメンバーって彼らなんですか！？」[p]
+
 
 [_tb_end_text]
 
+[call  storage="shigure.ks"  target="*show_ai"  ]
+[tb_start_text mode=1 ]
+#時雨
+「って、え、千晴君以外のメンバーって彼らなんですか！？」[p]
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #山吹
 「まじかよ。オメーら、あんときの恨みは忘れてねぇからな」[p]

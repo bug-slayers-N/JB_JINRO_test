@@ -153,7 +153,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *push2
 
 [tb_start_text mode=1 ]
-「嘘ついてんのはわかってんだよ。問題は人狼か狂人か」[p]
+「嘘ついてんのはわかってんだよ。今はもう人狼か狂人かを考える段階だ」[p]
 [_tb_end_text]
 
 [jump  storage="doubt.ks"  target="*push_act"  cond="f.result==1"  ]
@@ -355,7 +355,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [tb_start_text mode=1 ]
 #牙頭
 「結構遊べたな」[p]
-「賭場なんざにはもう二度といかねぇーけど、今度伊月と遊びにいくのも悪くねぇわ」[p]
+「賭場なんざにはもう二度といかねぇーけど、今度伊月と2人で遊びにいくのも悪くねぇわ」[p]
 「オレは指図されんのは、ありえねぇからよ」[p]
 「ま、今日だけは流しておくぜ」[p]
 「じゃあな」[p]
@@ -387,7 +387,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [tb_start_text mode=1 ]
 #牙頭
 「負けでもまぁ楽しかった」[p]
-「今度伊月と普通に遊びに行くわ」[p]
+「今度伊月と普通に遊びに行く」[p]
 「なんたって、オレは指図されんのはありえねぇからな」[p]
 「じゃあな」[p]
 [_tb_end_text]
@@ -418,7 +418,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [call  storage="gato.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
 #牙頭
-「オレからも」[p]
+「オレからも言わせてもらう」[p]
 [_tb_end_text]
 
 [jump  storage="gato.ks"  target="*doubt3"  cond="f.jump=='doubt'"  ]

@@ -114,6 +114,8 @@ else if(winnerNum===7){yusaburi=0.8;if(isAlive2(6))yusaburi*=1.2;}
 else if(winnerNum===8){yusaburi=0.7;if(isAlive2(9))yusaburi*=1.4;}
 else{yusaburi=0.6;}
 var damage=(40*yusaburi)/2;
+var em=parseInt(f.Ezmode);
+if(em===2){damage*=2;}else if(em===1&&parseInt(winnerNum)!==parseInt(f.player)){damage*=0.5;}
 var calmArr2=String(f.calm).split(",");
 calmArr2[targetNum-1]=String(parseFloat(calmArr2[targetNum-1])-damage);
 f.calm=calmArr2.join(",");
