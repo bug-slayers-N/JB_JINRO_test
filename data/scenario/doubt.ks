@@ -85,8 +85,8 @@ var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
-var claim=String(f.claim).split(",");
-var claim2=String(f.claim2).split(",");
+function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
+function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function getCalm(num){return parseFloat(String(f.calm).split(',')[num-1]);}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
@@ -115,9 +115,11 @@ var target=0;
 if(target===0){
 var accusers=targets.filter(function(t){
 if(coArr[t-1]==="0")return false;
-var c1t=parseInt(claim[(t-1)*2]),c1r=parseInt(claim[(t-1)*2+1]);
-var c2t=parseInt(claim2[(t-1)*2]),c2r=parseInt(claim2[(t-1)*2+1]);
-return (c1t===actorNum&&c1r===1)||(c2t===actorNum&&c2r===1);
+var sc=latestClaimBy(getClaimList(f.sclaim),t);
+var pc=latestClaimBy(getClaimList(f.pclaim),t);
+var i1=sc&&sc[2]===actorNum&&sc[3]===1;
+var i2=pc&&pc[2]===actorNum&&pc[3]===1;
+return i1||i2;
 });
 if(accusers.length>0&&Math.random()<0.75){
 target=accusers[Math.floor(Math.random()*accusers.length)];
@@ -163,15 +165,17 @@ var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
-var claimArr=String(f.claim).split(",");
-var claim2Arr=String(f.claim2).split(",");
+function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
+function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function getCalm(num){return parseFloat(String(f.calm).split(',')[num-1]);}
 function isWolfFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3;}
 function hasCO(num){return coArr[num-1]!=="0";}
 function reportedHuman(actor,tgt){
-var i1=parseInt(claimArr[(actor-1)*2])===tgt&&claimArr[(actor-1)*2+1]==="0";
-var i2=parseInt(claim2Arr[(actor-1)*2])===tgt&&claim2Arr[(actor-1)*2+1]==="0";
+var sc=latestClaimBy(getClaimList(f.sclaim),actor);
+var pc=latestClaimBy(getClaimList(f.pclaim),actor);
+var i1=sc&&sc[2]===tgt&&sc[3]===0;
+var i2=pc&&pc[2]===tgt&&pc[3]===0;
 return i1||i2;
 }
 function getTargets(actor){

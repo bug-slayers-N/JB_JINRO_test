@@ -1,3 +1,5 @@
 [preload  storage="./data/fgimage/chara/10/urushibara_normal.png"  ]
 [preload  storage="./data/fgimage/chara/10/urushibara_aseri.png"  ]
+[preload  storage="./data/fgimage/chara/10/urushibara_ki.png"  ]
+[preload  storage="./data/fgimage/chara/10/urushibara_aseri_2.png"  ]
 [return]

@@ -28,15 +28,12 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [return  ]
 *show_ki
 
-[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_normal.png"  ]
+[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_ki.png"  ]
 [return  ]
 *show_do
 
 [jump  storage="yamabuki.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_aseri.png"  ]
-[return  ]
-*show_ai
-
+[chara_mod  name="yamabuki"  time="300"  cross="false"  storage="chara/8/yamabuki_do.png"  ]
 [return  ]
 *show_jinro
 
@@ -53,9 +50,14 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 [call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
-「はぁ？人狼ゲームゥ？なんでそんなもん参加しねぇーといけないんだ？」[p]
+「はぁ？人狼ゲームゥ？なんでそんなもん参加しねぇーといけねぇんだ？」[p]
 「ヒーローも暇じゃあねぇんだよ」[p]
 「……」[p]
+
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
 「え、相棒もいんの？」[p]
 「あ～、それなら行くか」[p]
 [_tb_end_text]
@@ -302,7 +304,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *noisy
 
 [call  storage="yamabuki.ks"  target="*show2"  ]
-[call  storage="yamabuki.ks"  target="*show_ai"  ]
+[call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_tyrano_code]
 #山吹
 「ぎゃーぎゃーうるせぇよ、[emb exp="f.name"]」[p]
@@ -334,6 +336,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *human_win
 
 [call  storage="yamabuki.ks"  target="*show2"  ]
+[call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #山吹
 「正義は勝つ！村人陣営の勝利だ」[p]
@@ -343,10 +346,16 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *win
 
 [call  storage="yamabuki.ks"  target="*show"  ]
+[call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #山吹
 「ヒーローが勝つのは当然だろォ？」[p]
 「もっと賞賛してくれていいんだぜ？」[p]
+
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
 「それじゃ、エンタメショーはこれで終わりだ」[p]
 「あばよ」[p]
 [_tb_end_text]
@@ -355,6 +364,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *win2
 
 [call  storage="yamabuki.ks"  target="*show"  ]
+[call  storage="yamabuki.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #山吹
 「ヒーローが勝つのは当然だろォ？」[p]
@@ -378,6 +388,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 #山吹
 「チッ、負けかよ」[p]
 「遊びだっつっても気分悪ィわ」[p]
+
+[_tb_end_text]
+
+[call  storage="yamabuki.ks"  target="*show_do"  ]
+[tb_start_text mode=1 ]
 「あ～あ、帰りに悪党でもぶん殴ってすっきりすっか」[p]
 「じゃあな」[p]
 [_tb_end_text]
@@ -386,6 +401,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *stop
 
 [call  storage="yamabuki.ks"  target="*show"  ]
+[call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
 「あ？おめーは宣言しねぇのかよ」[p]
@@ -395,7 +411,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *stop2
 
 [call  storage="yamabuki.ks"  target="*show2"  ]
-[call  storage="yamabuki.ks"  target="*show_ai"  ]
+[call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
 「お前だけが楯突いたって忘れんなよ」[p]

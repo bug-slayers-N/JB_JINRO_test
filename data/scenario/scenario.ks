@@ -122,7 +122,7 @@
 「って、え、千晴君以外のメンバーって彼らなんですか！？」[p]
 [_tb_end_text]
 
-[call  storage="yamabuki.ks"  target="*show_ai"  ]
+[call  storage="yamabuki.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #山吹
 「まじかよ。オメーら、あんときの恨みは忘れてねぇからな」[p]
@@ -143,24 +143,37 @@
 [_tb_end_text]
 
 [call  storage="gato.ks"  target="*show"  ]
+[call  storage="gato.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #？？？
-「お、みんな集まってるみたいじゃねぇか」[p]
+「みんな集まってるみたいじゃねぇか」[p]
 [_tb_end_text]
 
 [call  storage="urushibara.ks"  target="*show2"  ]
+[call  storage="urushibara.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #？？？
 「ごめんね、がっちゃんが私服じゃなくてスーツで行くべきだって着替えてたら遅くなっちゃった」[p]
-#牙頭
-「ギャンブルじゃなくてゲーム大会だけど、カラ銀主催ならスーツの方がいいだろ」[p]
-「みんないつもの服じゃねぇか」[p]
-#漆原
-「そうだね、がっちゃんの言う通りだ」[p]
 
 [_tb_end_text]
 
+[call  storage="gato.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
+#牙頭
+「ギャンブルじゃなくてゲーム大会だけど、カラ銀主催ならスーツの方がいいだろ」[p]
+「みんないつもの服じゃねぇか」[p]
+
+
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
+#漆原
+「そうだね、がっちゃんの言う通りだ」[p]
+[_tb_end_text]
+
 [call  storage="mafutsu.ks"  target="*show"  ]
+[call  storage="mafutsu.ks"  target="*show_raku"  ]
 [tb_start_text mode=1 ]
 #真経津
 「すっごい大所帯になってきたね、わくわくしてきたよ」[p]

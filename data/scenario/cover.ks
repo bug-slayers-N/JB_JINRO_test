@@ -76,17 +76,18 @@ var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var coArr=String(f.co).split(",");
-var claimArr=String(f.claim).split(",");
-var claimArr2=String(f.claim2).split(",");
+function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
+function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 var calmArr=String(f.calm).split(",");
 function getCalm(num){return parseFloat(calmArr[num-1]);}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function reportedWolf(actor,c){
-var idx=(c-1)*2;
-if(parseInt(claimArr[idx])===actor&&claimArr[idx+1]==="1")return true;
-if(parseInt(claimArr2[idx])===actor&&claimArr2[idx+1]==="1")return true;
+var sc=latestClaimBy(getClaimList(f.sclaim),c);
+var pc=latestClaimBy(getClaimList(f.pclaim),c);
+if(sc&&sc[2]===actor&&sc[3]===1)return true;
+if(pc&&pc[2]===actor&&pc[3]===1)return true;
 return false;
 }
 var actorCO=coArr[actorNum-1]!=="0";
@@ -112,14 +113,15 @@ var actorNum=parseInt(f.ai_actor);
 var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var coArr=String(f.co).split(",");
-var claimArr=String(f.claim).split(",");
-var claimArr2=String(f.claim2).split(",");
+function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
+function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 var actorCO=coArr[actorNum-1]!=="0";
 function isAlive(i){return aliveArr[i-1]==="1";}
 function reportedWolf(seer,target){
-var idx=(seer-1)*2;
-if(parseInt(claimArr[idx])===target&&claimArr[idx+1]==="1")return true;
-if(parseInt(claimArr2[idx])===target&&claimArr2[idx+1]==="1")return true;
+var sc=latestClaimBy(getClaimList(f.sclaim),seer);
+var pc=latestClaimBy(getClaimList(f.pclaim),seer);
+if(sc&&sc[2]===target&&sc[3]===1)return true;
+if(pc&&pc[2]===target&&pc[3]===1)return true;
 return false;
 }
 function isExcluded(i){
@@ -156,25 +158,28 @@ var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
-var claimArr=String(f.claim).split(",");
-var claimArr2=String(f.claim2).split(",");
+function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
+function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function hasCO(i){return coArr[i-1]!=="0";}
 function isLiarFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3||v===4;}
 function reportedWolf(actor,c){
-var idx=(c-1)*2;
-if(parseInt(claimArr[idx])===actor&&claimArr[idx+1]==="1")return true;
-if(parseInt(claimArr2[idx])===actor&&claimArr2[idx+1]==="1")return true;
+var sc=latestClaimBy(getClaimList(f.sclaim),c);
+var pc=latestClaimBy(getClaimList(f.pclaim),c);
+if(sc&&sc[2]===actor&&sc[3]===1)return true;
+if(pc&&pc[2]===actor&&pc[3]===1)return true;
 return false;
 }
 var actorCO=coArr[actorNum-1]!=="0";
-var sr1=String(f.seer_result1).split(",");
-var sr2=String(f.seer_result2).split(",");
+function getSeerResultList(){if(String(f.seer_result)==="0")return [];var arr=String(f.seer_result).split(',');var res=[];for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}return res;}
 var humanResult=[];
 var wolfResult=[];
-if(parseInt(sr1[0])>0){if(parseInt(sr1[1])===0)humanResult.push(parseInt(sr1[0]));else wolfResult.push(parseInt(sr1[0]));}
-if(parseInt(sr2[0])>0){if(parseInt(sr2[1])===0)humanResult.push(parseInt(sr2[0]));else wolfResult.push(parseInt(sr2[0]));}
+var seerResults=getSeerResultList();
+for(var si=0;si<seerResults.length;si++){
+var srTgt=seerResults[si][0],srRes=seerResults[si][1];
+if(srRes===0)humanResult.push(srTgt);else wolfResult.push(srTgt);
+}
 var target=0;
 var humanCands=humanResult.filter(function(c){
 return isAlive(c)&&c!==actorNum&&!reportedWolf(actorNum,c)&&(!actorCO||!hasCO(c));
@@ -232,16 +237,17 @@ var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
-var claimArr=String(f.claim).split(",");
-var claimArr2=String(f.claim2).split(",");
+function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
+function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function hasCO(i){return coArr[i-1]!=="0";}
 function isLiarFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3||v===4;}
 function reportedWolf(actor,c){
-var idx=(c-1)*2;
-if(parseInt(claimArr[idx])===actor&&claimArr[idx+1]==="1")return true;
-if(parseInt(claimArr2[idx])===actor&&claimArr2[idx+1]==="1")return true;
+var sc=latestClaimBy(getClaimList(f.sclaim),c);
+var pc=latestClaimBy(getClaimList(f.pclaim),c);
+if(sc&&sc[2]===actor&&sc[3]===1)return true;
+if(pc&&pc[2]===actor&&pc[3]===1)return true;
 return false;
 }
 var target=0;

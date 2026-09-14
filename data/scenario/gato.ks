@@ -35,15 +35,12 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [return  ]
 *show_ki
 
-[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_normal.png"  ]
+[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_ki.png"  ]
 [return  ]
 *show_do
 
 [jump  storage="gato.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_aseri.png"  ]
-[return  ]
-*show_ai
-
+[chara_mod  name="gato"  time="300"  cross="false"  storage="chara/9/gato_do.png"  ]
 [return  ]
 *show_jinro
 
@@ -61,9 +58,19 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 [tb_start_text mode=1 ]
 #牙頭
 「もうギャンブルは辞めたんだよ。伊月ともそう約束した」[p]
+
+[_tb_end_text]
+
+[call  storage="gato.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
 「……ただのパーティーゲーム？」[p]
-「は、たまには息抜きも悪くはねぇか」[p]
-「こういう遊びはあんましてこなかったし、伊月も存外楽しめそうだし」[p]
+
+[_tb_end_text]
+
+[call  storage="gato.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
+「は、たまには息抜きも悪かねぇか」[p]
+「こういう遊びはあんましてこなかったし、伊月も存外楽しめそうだ」[p]
 「勿論、伊月も来るんだろ？」[p]
 [_tb_end_text]
 
@@ -216,7 +223,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *death
 
 [call  storage="gato.ks"  target="*show"  ]
-[call  storage="gato.ks"  target="*show_do"  ]
+[call  storage="gato.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #牙頭
 「オレを処刑したところで、オレの陣営の勝ちは変わんねぇよ」[p]
@@ -309,7 +316,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *noisy
 
 [call  storage="gato.ks"  target="*show2"  ]
-[call  storage="gato.ks"  target="*show_ai"  ]
+[call  storage="gato.ks"  target="*show_do"  ]
 [call  storage="gato.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #牙頭
@@ -352,6 +359,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *win
 
 [call  storage="gato.ks"  target="*show"  ]
+[call  storage="gato.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #牙頭
 「結構遊べたな」[p]
@@ -365,6 +373,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *win2
 
 [call  storage="gato.ks"  target="*show"  ]
+[call  storage="gato.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #牙頭
 「結構遊べたな」[p]
@@ -396,6 +405,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *stop
 
 [call  storage="gato.ks"  target="*show"  ]
+[call  storage="gato.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #牙頭
 「おかしいよなァ。おめーは村人だって言ってない」[p]
@@ -405,7 +415,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *stop2
 
 [call  storage="gato.ks"  target="*show2"  ]
-[call  storage="gato.ks"  target="*show_ai"  ]
+[call  storage="gato.ks"  target="*show_do"  ]
 [tb_start_text mode=1 ]
 #牙頭
 「厄介クレーマーはどっちかってんなら、見てる奴らが決めるだろ」[p]

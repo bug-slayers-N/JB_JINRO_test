@@ -35,15 +35,12 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [return  ]
 *show_ki
 
-[chara_mod  name="urushibara"  time="300"  cross="false"  storage="chara/10/urushibara_normal.png"  ]
-[return  ]
-*show_do
-
-[jump  storage="urushibara.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="urushibara"  time="300"  cross="false"  storage="chara/10/urushibara_aseri.png"  ]
+[chara_mod  name="urushibara"  time="300"  cross="false"  storage="chara/10/urushibara_ki.png"  ]
 [return  ]
 *show_ai
 
+[jump  storage="urushibara.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
+[chara_mod  name="urushibara"  time="300"  cross="false"  storage="chara/10/urushibara_aseri_2.png"  ]
 [return  ]
 *show_jinro
 
@@ -57,12 +54,21 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *day01_01
 
 [call  storage="urushibara.ks"  target="*show"  ]
-[call  storage="urushibara.ks"  target="*show_do"  ]
+[call  storage="urushibara.ks"  target="*show_normal2"  ]
 [tb_start_text mode=1 ]
 #漆原
 「うん？人狼ゲームのお誘いだって？」[p]
 「僕は遠慮しておくかな…」[p]
+
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
 「え、がっちゃんも来るの？それを先に言って欲しかったよ」[p]
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
 「それなら勿論行くよ」[p]
 [_tb_end_text]
 
@@ -100,7 +106,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *kuro
 
 [call  storage="urushibara.ks"  target="*show2"  ]
-[call  storage="urushibara.ks"  target="*show_do"  ]
+[call  storage="urushibara.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #漆原
 「それはあくまで憶測だろう？きちんと根拠を提示してほしいな」[p]
@@ -214,7 +220,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *death
 
 [call  storage="urushibara.ks"  target="*show"  ]
-[call  storage="urushibara.ks"  target="*show_do"  ]
+[call  storage="urushibara.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #漆原
 「はぁ、まぁこれもくじびきだから仕方ない。味方は是非頑張って欲しいね」[p]
@@ -307,7 +313,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *noisy
 
 [call  storage="urushibara.ks"  target="*show2"  ]
-[call  storage="urushibara.ks"  target="*show_ai"  ]
 [call  storage="urushibara.ks"  target="*name_change"  ]
 [tb_start_tyrano_code]
 #漆原
@@ -341,6 +346,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *human_win
 
 [call  storage="urushibara.ks"  target="*show2"  ]
+[call  storage="urushibara.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #漆原
 「うん、村人陣営の勝利だ。僕がついているんだからね」[p]
@@ -354,6 +360,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 #漆原
 「言論で戦うゲームなら、やっぱり得意かも」[p]
 「村人陣営なら本職に近いし、人狼なら守りに入ればかたい」[p]
+
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
 「最も、攻めを担当してくれる誰かがいてくれるのも大きいけどね」[p]
 「ギャンブルは辞めたけど、こういう遊びならまた来ようかな」[p]
 「それでは、お暇するね」[p]
@@ -385,7 +396,17 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 [tb_start_text mode=1 ]
 #漆原
 「負け、か」[p]
+
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
 「ゲームだとしても言論で負けるのは悔しいな」[p]
+
+[_tb_end_text]
+
+[call  storage="urushibara.ks"  target="*show_normal"  ]
+[tb_start_text mode=1 ]
 「まぁ僕が選べないことも多かったし、くじびきに過度に入れ込むのはよくないね」[p]
 「それでは、お暇するね」[p]
 [_tb_end_text]
@@ -403,7 +424,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 *stop2
 
 [call  storage="urushibara.ks"  target="*show2"  ]
-[call  storage="urushibara.ks"  target="*show_ai"  ]
+[call  storage="urushibara.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #漆原
 「反論の自由はあるけど、みんなの心証はどうだろうね」[p]

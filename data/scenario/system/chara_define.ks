@@ -12,7 +12,7 @@
 ;suo
 [chara_new  name="suo"  jname="suo"  storage="chara/6/suo_egao.png"  ]
 ;shigure
-[chara_new  name="shigure"  jname="shigure"  storage="chara/7/shigure_aseri.png"  ]
+[chara_new  name="shigure"  jname="shigure"  storage="chara/7/shigure_ai.png"  ]
 ;yamabuki
 [chara_new  name="yamabuki"  jname="yamabuki"  storage="chara/8/yamabuki_aseri.png"  ]
 ;gato

@@ -28,15 +28,12 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [return  ]
 *show_ki
 
-[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_normal.png"  ]
-[return  ]
-*show_do
-
-[jump  storage="shigure.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
-[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_aseri.png"  ]
+[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_ki.png"  ]
 [return  ]
 *show_ai
 
+[jump  storage="shigure.ks"  target="*show_normal2"  cond="f.calm_low==1"  ]
+[chara_mod  name="shigure"  time="300"  cross="false"  storage="chara/7/shigure_ai.png"  ]
 [return  ]
 *show_jinro
 
@@ -50,7 +47,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *day01_01
 
 [call  storage="shigure.ks"  target="*show"  ]
-[call  storage="shigure.ks"  target="*show_do"  ]
+[call  storage="shigure.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #時雨
 「え、人狼ゲームですか？また何故に？」[p]
@@ -62,10 +59,6 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [tb_start_text mode=1 ]
 「失敬、VIPの皆様との余興なのですね」[p]
 「それに千晴君も一緒とのことで」[p]
-[_tb_end_text]
-
-[call  storage="shigure.ks"  target="*show_normal"  ]
-[tb_start_text mode=1 ]
 「またぞろ何をしでかすかわかりませんし」[p]
 [_tb_end_text]
 
@@ -108,7 +101,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *kuro
 
 [call  storage="shigure.ks"  target="*show2"  ]
-[call  storage="shigure.ks"  target="*show_do"  ]
+[call  storage="shigure.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #時雨
 「証拠もないのに、冤罪はよくありませんねぇ」[p]
@@ -219,7 +212,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *death
 
 [call  storage="shigure.ks"  target="*show"  ]
-[call  storage="shigure.ks"  target="*show_do"  ]
+[call  storage="shigure.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #時雨
 「警察に縄をかけるなんて、次は取調室で会いましょうね」[p]
@@ -343,6 +336,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *human_win
 
 [call  storage="shigure.ks"  target="*show2"  ]
+[call  storage="shigure.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 #時雨
 「村人陣営の勝利、と。まぁ私達がいるんですから当然ですよね」[p]
@@ -356,6 +350,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 #時雨
 「さてさて、お楽しみいただけましたかね？」[p]
 「私は千晴君がまたぞろやらかさないか冷や冷やしてましたが」[p]
+
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
 「まぁ、全て杞憂に終わったんですけどね」[p]
 「それでは、お暇させてもらいます」[p]
 [_tb_end_text]
@@ -387,6 +386,11 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 #時雨
 「負けてしまいました。申し訳ございません」[p]
 「さすがに暴れ馬をコントロールするのは、千晴君1人で精いっぱいみたいです」[p]
+
+[_tb_end_text]
+
+[call  storage="shigure.ks"  target="*show_ki"  ]
+[tb_start_text mode=1 ]
 「ふふ、これ以上昇進したくないものですね」[p]
 「それでは」[p]
 [_tb_end_text]
@@ -395,6 +399,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *stop
 
 [call  storage="shigure.ks"  target="*show"  ]
+[call  storage="shigure.ks"  target="*show_ai"  ]
 [tb_start_text mode=1 ]
 #時雨
 「声掛け側は人間と言わないのでしょう？怪しいですねぇ」[p]
