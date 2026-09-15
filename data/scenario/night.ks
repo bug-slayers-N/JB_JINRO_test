@@ -100,7 +100,7 @@ f.jump=(parseInt(f.role)===12)?1:2;
 [_tb_end_text]
 
 [tb_eval  exp="f.jump='knight'"  name="jump"  cmd="="  op="t"  val="knight"  val_2="undefined"  ]
-[jump  storage="UI.ks"  target="*listA"  ]
+[jump  storage="UI.ks"  target="*listB"  ]
 *knight_back
 
 [tb_show_message_window  ]

@@ -84,9 +84,13 @@ function getCalm(num){return parseFloat(calmArr[num-1]);}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function reportedWolf(actor,c){
-var sc=latestClaimBy(getClaimList(f.sclaim),c);
+// 全sclaimエントリを走査し、最新分だけでなく過去のいずれかで
+// c(候補)がactor(行動主=人狼)を人狼だと申告していれば除外対象にする
+var scList=getClaimList(f.sclaim);
+for(var k=0;k<scList.length;k++){
+if(scList[k][1]===c&&scList[k][2]===actor&&scList[k][3]===1)return true;
+}
 var pc=latestClaimBy(getClaimList(f.pclaim),c);
-if(sc&&sc[2]===actor&&sc[3]===1)return true;
 if(pc&&pc[2]===actor&&pc[3]===1)return true;
 return false;
 }
@@ -158,71 +162,60 @@ var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
-function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
-function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
-function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function hasCO(i){return coArr[i-1]!=="0";}
-function isLiarFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3||v===4;}
-function reportedWolf(actor,c){
-var sc=latestClaimBy(getClaimList(f.sclaim),c);
-var pc=latestClaimBy(getClaimList(f.pclaim),c);
-if(sc&&sc[2]===actor&&sc[3]===1)return true;
-if(pc&&pc[2]===actor&&pc[3]===1)return true;
-return false;
-}
-var actorCO=coArr[actorNum-1]!=="0";
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function getLiar(a,b){return parseInt(lr[gi(a,b)]);}
+function getLike(a,b){return parseInt(lk[gi(a,b)]);}
+var calmArr=String(f.calm).split(",");
+function getCalm(num){var v=parseFloat(calmArr[num-1]);if(num===6&&isAlive(7))v*=1.1;if(num===7&&isAlive(6))v*=1.1;if(num===9&&isAlive(8))v*=1.4;return v;}
+function getPC(actor,tgt){return getCalm(tgt)+getLike(actor,tgt);}
 function getSeerResultList(){if(String(f.seer_result)==="0")return [];var arr=String(f.seer_result).split(',');var res=[];for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}return res;}
-var humanResult=[];
-var wolfResult=[];
+var target=0;
+// ①本物の占い結果で「人間」と出ている＋生存＋未CO のキャラからランダム
 var seerResults=getSeerResultList();
+var step1=[];
 for(var si=0;si<seerResults.length;si++){
 var srTgt=seerResults[si][0],srRes=seerResults[si][1];
-if(srRes===0)humanResult.push(srTgt);else wolfResult.push(srTgt);
+if(srRes===0&&isAlive(srTgt)&&srTgt!==actorNum&&!hasCO(srTgt))step1.push(srTgt);
 }
-var target=0;
-var humanCands=humanResult.filter(function(c){
-return isAlive(c)&&c!==actorNum&&!reportedWolf(actorNum,c)&&(!actorCO||!hasCO(c));
-});
-if(humanCands.length>0){target=humanCands[0];}
+if(step1.length>0){
+target=step1[Math.floor(Math.random()*step1.length)];
+}
+// ②本人視点のliarが10以上（役職確定・村人陣営側）だが、
+// 他の生存者の少なくとも1人はまだliar10未満（＝共通認識にはなっていない）のキャラからランダム
 if(target===0){
-var excluded=wolfResult;
-if(!actorCO){
-var coChars=[];
-for(var i=1;i<=n;i++){if(isAlive(i)&&i!==actorNum&&hasCO(i)&&!reportedWolf(actorNum,i))coChars.push(i);}
-if(coChars.length>=2){
-var liarCO=coChars.filter(function(c){return isLiarFor(actorNum,c);});
-var honestCO=coChars.filter(function(c){return !isLiarFor(actorNum,c)&&excluded.indexOf(c)===-1;});
-if(liarCO.length>0&&honestCO.length>0){target=honestCO[0];}
-}
-}
-if(target===0){
+var step2=[];
 for(var i=1;i<=n;i++){
-if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||reportedWolf(actorNum,i))continue;
-if(actorCO&&hasCO(i))continue;
-if(parseInt(lk[gi(actorNum,i)])>=30){target=i;break;}
+if(i===actorNum||!isAlive(i))continue;
+if(getLiar(actorNum,i)<10)continue;
+var knownByAll=true;
+for(var j=1;j<=n;j++){
+if(j===i||!isAlive(j))continue;
+if(getLiar(j,i)<10){knownByAll=false;break;}
+}
+if(!knownByAll)step2.push(i);
+}
+if(step2.length>0){
+target=step2[Math.floor(Math.random()*step2.length)];
 }
 }
+// ③本人視点のliarが0・2・3のキャラのうち、知覚平常心（平常心＋好感度）上位50%からランダム
 if(target===0){
-var pool=[];
+var step3=[];
 for(var i=1;i<=n;i++){
-if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||hasCO(i)||reportedWolf(actorNum,i))continue;
-if(parseInt(lk[gi(i,actorNum)])>=0)pool.push(i);
+if(i===actorNum||!isAlive(i))continue;
+var lv=getLiar(actorNum,i);
+if(lv===0||lv===2||lv===3)step3.push(i);
 }
+step3.sort(function(a,b){var d=getPC(actorNum,b)-getPC(actorNum,a);return d!==0?d:a-b;});
+var topN=Math.ceil(step3.length*0.5);
+var pool=step3.slice(0,topN);
 if(pool.length>0){
 target=pool[Math.floor(Math.random()*pool.length)];
-}else{
-var best=-999999,bestChar=-1;
-for(var i=1;i<=n;i++){
-if(i===actorNum||!isAlive(i)||excluded.indexOf(i)!==-1||reportedWolf(actorNum,i))continue;
-if(actorCO&&hasCO(i))continue;
-var v=parseInt(lk[gi(i,actorNum)]);
-if(v>best||(v===best&&i<bestChar)){best=v;bestChar=i;}
-}
-if(bestChar>0)target=bestChar;
 }
 }
-}
+// ④ここまでで決まらなければtarget=0のまま
 f.target=target;
 [endscript]
 
@@ -236,52 +229,46 @@ var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
-var coArr=String(f.co).split(",");
-function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
-function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
-function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isAlive(i){return aliveArr[i-1]==="1";}
-function hasCO(i){return coArr[i-1]!=="0";}
-function isLiarFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3||v===4;}
-function reportedWolf(actor,c){
-var sc=latestClaimBy(getClaimList(f.sclaim),c);
-var pc=latestClaimBy(getClaimList(f.pclaim),c);
-if(sc&&sc[2]===actor&&sc[3]===1)return true;
-if(pc&&pc[2]===actor&&pc[3]===1)return true;
-return false;
-}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function getLiar(a,b){return parseInt(lr[gi(a,b)]);}
+function getLike(a,b){return parseInt(lk[gi(a,b)]);}
+var calmArr=String(f.calm).split(",");
+function getCalm(num){var v=parseFloat(calmArr[num-1]);if(num===6&&isAlive(7))v*=1.1;if(num===7&&isAlive(6))v*=1.1;if(num===9&&isAlive(8))v*=1.4;return v;}
+function getPC(actor,tgt){return getCalm(tgt)+getLike(actor,tgt);}
 var target=0;
-var coChars=[];
-for(var i=1;i<=n;i++){if(isAlive(i)&&i!==actorNum&&hasCO(i)&&!reportedWolf(actorNum,i))coChars.push(i);}
-if(coChars.length>=2){
-var liarCO=coChars.filter(function(c){return isLiarFor(actorNum,c);});
-var honestCO=coChars.filter(function(c){return !isLiarFor(actorNum,c);});
-if(liarCO.length>0&&honestCO.length>0){target=honestCO[0];}
-}
-if(target===0){
+// ②本人視点のliarが10以上（役職確定・村人陣営側）だが、
+// 他の生存者の少なくとも1人はまだliar10未満（＝共通認識にはなっていない）のキャラからランダム
+var step2=[];
 for(var i=1;i<=n;i++){
-if(i===actorNum||!isAlive(i)||reportedWolf(actorNum,i))continue;
-if(parseInt(lk[gi(actorNum,i)])>=30){target=i;break;}
+if(i===actorNum||!isAlive(i))continue;
+if(getLiar(actorNum,i)<10)continue;
+var knownByAll=true;
+for(var j=1;j<=n;j++){
+if(j===i||!isAlive(j))continue;
+if(getLiar(j,i)<10){knownByAll=false;break;}
 }
+if(!knownByAll)step2.push(i);
 }
+if(step2.length>0){
+target=step2[Math.floor(Math.random()*step2.length)];
+}
+// ③本人視点のliarが0・2・3のキャラのうち、知覚平常心（平常心＋好感度）上位50%からランダム
 if(target===0){
-var pool=[];
+var step3=[];
 for(var i=1;i<=n;i++){
-if(i===actorNum||!isAlive(i)||hasCO(i)||reportedWolf(actorNum,i))continue;
-if(parseInt(lk[gi(i,actorNum)])>=0)pool.push(i);
+if(i===actorNum||!isAlive(i))continue;
+var lv=getLiar(actorNum,i);
+if(lv===0||lv===2||lv===3)step3.push(i);
 }
+step3.sort(function(a,b){var d=getPC(actorNum,b)-getPC(actorNum,a);return d!==0?d:a-b;});
+var topN=Math.ceil(step3.length*0.5);
+var pool=step3.slice(0,topN);
 if(pool.length>0){
 target=pool[Math.floor(Math.random()*pool.length)];
-}else{
-var best=-999999,bestChar=-1;
-for(var i=1;i<=n;i++){
-if(i===actorNum||!isAlive(i)||reportedWolf(actorNum,i))continue;
-var v=parseInt(lk[gi(i,actorNum)]);
-if(v>best||(v===best&&i<bestChar)){best=v;bestChar=i;}
-}
-if(bestChar>0)target=bestChar;
 }
 }
+// ④ここまでで決まらなければtarget=0のまま
 f.target=target;
 [endscript]
 

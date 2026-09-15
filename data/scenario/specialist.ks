@@ -206,7 +206,7 @@ f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 [_tb_end_text]
 
 [tb_eval  exp="f.jump='fakeseer'"  name="jump"  cmd="="  op="t"  val="fakeseer"  val_2="undefined"  ]
-[jump  storage="UI.ks"  target="*listA"  ]
+[jump  storage="UI.ks"  target="*listB"  ]
 *fakeseer_back
 
 [tb_start_text mode=1 ]
@@ -544,7 +544,7 @@ f.jump=(parseInt(f.role)===10)?1:2;
 [_tb_end_text]
 
 [tb_eval  exp="f.jump='seer'"  name="jump"  cmd="="  op="t"  val="seer"  val_2="undefined"  ]
-[jump  storage="UI.ks"  target="*listA"  ]
+[jump  storage="UI.ks"  target="*listB"  ]
 *seer_back
 
 [tb_show_message_window  ]

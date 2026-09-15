@@ -110,7 +110,7 @@ f.result=lines.join("、");
 *end
 
 [iscript]
-if(parseInt(f.player)===9&&parseInt(f.day)===1&&parseInt(f.tutorial)!==1){
+if(parseInt(f.player)===9&&parseInt(f.day)===2&&parseInt(f.tutorial)!==1){
 sf.amigo_s01=1;
 }
 [endscript]

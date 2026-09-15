@@ -290,93 +290,58 @@ f.display06 = hide ? 1 : 0;
 [iscript]
 var charNames=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
 var resultNames=["人間","人狼"];
-function getSclaim(){
-if(String(f.sclaim)==="0")return [];
-var arr=String(f.sclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
-}
-function getPclaim(){
-if(String(f.pclaim)==="0")return [];
-var arr=String(f.pclaim).split(',');
-var res=[];
-for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
-return res;
-}
-// 占い・霊媒の全申告を報告者ごとにまとめる：[[day,target,result],...]
+// kindは"s"(占い師/sclaim)または"p"(霊媒師/pclaim)。1種別分のテキストを丸ごと組み立てる
 // UI.ksの状況確認は当日(f.day)分の申告は表示しない
+function buildClaimText(kind){
+var raw=(kind==="s")?String(f.sclaim):String(f.pclaim);
+var label=(kind==="s")?"占い師":"霊媒師";
+if(raw==="0")return "";
+var arr=raw.split(',');
+var claims=[];
+for(var i=0;i<arr.length;i+=4){claims.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 var today=parseInt(f.day);
-var sclaims=getSclaim();
-var pclaims=getPclaim();
+// 報告者ごとにまとめる：[[day,target,result],...]（当日分は除外）
 var byReporter={};
-for(var i=0;i<sclaims.length;i++){
-var day=sclaims[i][0],reporter=sclaims[i][1],target=sclaims[i][2],result=sclaims[i][3];
+for(var j=0;j<claims.length;j++){
+var day=claims[j][0],reporter=claims[j][1],target=claims[j][2],result=claims[j][3];
 if(day===today)continue;
 if(!byReporter[reporter])byReporter[reporter]=[];
 byReporter[reporter].push([day,target,result]);
 }
-for(var j=0;j<pclaims.length;j++){
-var pday=pclaims[j][0],preporter=pclaims[j][1],ptarget=pclaims[j][2],presult=pclaims[j][3];
-if(pday===today)continue;
-if(!byReporter[preporter])byReporter[preporter]=[];
-byReporter[preporter].push([pday,ptarget,presult]);
-}
 // 報告者はキャラ番号順、各報告者内の対象はday順に整列
 var reporters=Object.keys(byReporter).map(Number).sort(function(a,b){return a-b;});
-var slots=["","","","","","","","",""];
-for(var r=0;r<reporters.length&&r<9;r++){
+if(reporters.length===0)return "";
+var blocks=[];
+for(var r=0;r<reporters.length;r++){
 var reporter=reporters[r];
-var claims=byReporter[reporter].slice().sort(function(a,b){return a[0]-b[0];});
+var rclaims=byReporter[reporter].slice().sort(function(a,b){return a[0]-b[0];});
 var parts=[];
-for(var k=0;k<claims.length;k++){
-var tgt=claims[k][1],res=claims[k][2];
+for(var k=0;k<rclaims.length;k++){
+var tgt=rclaims[k][1],res=rclaims[k][2];
 if(tgt===9&&res===9){
 parts.push("対象者無し");
 }else{
 parts.push(charNames[tgt]+"："+resultNames[res]);
 }
 }
-slots[r]=charNames[reporter]+"→"+parts.join("、")+"、";
+blocks.push((r+1)+"人目の"+charNames[reporter]+"→"+parts.join("、")+"、");
 }
-f.display01=slots[0];
-f.display02=slots[1];
-f.display03=slots[2];
-f.display04=slots[3];
-f.display05=slots[4];
-f.display06=slots[5];
-f.display07=slots[6];
-f.display08=slots[7];
-f.display09=slots[8];
-f.result=(slots[0]!==""||slots[1]!==""||slots[2]!==""||slots[3]!==""||slots[4]!==""||slots[5]!==""||slots[6]!==""||slots[7]!==""||slots[8]!=="")?1:0;
+return label+"の結果報告は次の通りです。"+blocks.join("");
+}
+f.display02=buildClaimText("s");
+f.display03=buildClaimText("p");
+f.result=(f.display02!==""||f.display03!=="")?1:0;
 [endscript]
 
 [tb_show_message_window  ]
 [jump  storage="UI.ks"  target="*check_report_skip"  cond="f.result==0"  ]
 
-占い師・霊媒師の報告は[p]
-
-
-[emb exp="f.display01"]
-
 [emb exp="f.display02"]
+[jump  storage="UI.ks"  target="*check_claim_join_skip"  cond="f.display02==''||f.display03==''"  ]
+[r]
+*check_claim_join_skip
 
-[emb exp="f.display03"]
-
-[emb exp="f.display04"]
-
-[emb exp="f.display05"]
-
-[emb exp="f.display06"]
-
-[emb exp="f.display07"]
-
-[emb exp="f.display08"]
-
-[emb exp="f.display09"]
-
-
-です。[p]
+[emb exp="f.display03"][p]
 
 
 [r]

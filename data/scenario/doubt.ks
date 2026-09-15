@@ -88,7 +88,7 @@ var coArr=String(f.co).split(",");
 function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
 function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){return parseFloat(String(f.calm).split(',')[num-1]);}
+function getCalm(num){var v=parseFloat(String(f.calm).split(',')[num-1]);if(num===6&&aliveArr[6]==="1")v*=1.2;if(num===7&&aliveArr[5]==="1")v*=1.2;if(num===9&&aliveArr[7]==="1")v*=1.4;return v;}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function hasCO(num){return coArr[num-1]!=="0";}
 function getTargets(actor){
@@ -168,8 +168,8 @@ var coArr=String(f.co).split(",");
 function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
 function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){return parseFloat(String(f.calm).split(',')[num-1]);}
-function isWolfFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===3;}
+function getCalm(num){var v=parseFloat(String(f.calm).split(',')[num-1]);if(num===6&&aliveArr[6]==="1")v*=1.2;if(num===7&&aliveArr[5]==="1")v*=1.2;if(num===9&&aliveArr[7]==="1")v*=1.4;return v;}
+function isWolfFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===5;}
 function hasCO(num){return coArr[num-1]!=="0";}
 function reportedHuman(actor,tgt){
 var sc=latestClaimBy(getClaimList(f.sclaim),actor);
@@ -222,7 +222,7 @@ var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){return parseFloat(String(f.calm).split(',')[num-1]);}
+function getCalm(num){var v=parseFloat(String(f.calm).split(',')[num-1]);if(num===6&&aliveArr[6]==="1")v*=1.2;if(num===7&&aliveArr[5]==="1")v*=1.2;if(num===9&&aliveArr[7]==="1")v*=1.4;return v;}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function getTargets(actor){
 var n=parseInt(f.gamemode);
@@ -244,11 +244,11 @@ return 0;
 }
 var targets=getTargets(actorNum);
 var target=0;
-// ① liar=3（人狼確定）が当選
+// ① liar=5（人狼確定）が当選
 if(target===0){
-var wolf3=targets.filter(function(t){return parseInt(lr[gi(actorNum,t)])===3;});
-if(wolf3.length>0){
-target=wolf3[0];
+var wolf5=targets.filter(function(t){return parseInt(lr[gi(actorNum,t)])===5;});
+if(wolf5.length>0){
+target=wolf5[0];
 }
 }
 // ② liar=1（嘘つき確定）が当選、複数いたら平常心高い優先
@@ -283,7 +283,7 @@ var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-function getCalm(num){return parseFloat(String(f.calm).split(',')[num-1]);}
+function getCalm(num){var v=parseFloat(String(f.calm).split(',')[num-1]);if(num===6&&aliveArr[6]==="1")v*=1.2;if(num===7&&aliveArr[5]==="1")v*=1.2;if(num===9&&aliveArr[7]==="1")v*=1.4;return v;}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function hasCO(num){return coArr[num-1]!=="0";}
 function getTargets(actor){
@@ -306,11 +306,11 @@ return 0;
 }
 var targets=getTargets(actorNum);
 var target=0;
-// ① liar=3（人狼確定）が当選
+// ① liar=5（人狼確定）が当選
 if(target===0){
-var wolf3=targets.filter(function(t){return parseInt(lr[gi(actorNum,t)])===3;});
-if(wolf3.length>0){
-target=wolf3[0];
+var wolf5=targets.filter(function(t){return parseInt(lr[gi(actorNum,t)])===5;});
+if(wolf5.length>0){
+target=wolf5[0];
 }
 }
 // ② liar=1（嘘つき確定）が当選、複数いたら平常心高い優先
