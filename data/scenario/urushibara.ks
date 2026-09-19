@@ -64,12 +64,13 @@ f.calm_low=parseFloat(String(f.calm).split(',')[8])<28?1:0;
 
 [call  storage="urushibara.ks"  target="*show_normal"  ]
 [tb_start_text mode=1 ]
-「え、がっちゃんも来るの？それを先に言って欲しかったよ」[p]
+「え、ガッちゃんも来るの？それを先に言って欲しかったよ」[p]
 [_tb_end_text]
 
 [call  storage="urushibara.ks"  target="*show_ki"  ]
 [tb_start_text mode=1 ]
 「それなら勿論行くよ」[p]
+「人狼ゲームなんて何年振りだろう」[p]
 [_tb_end_text]
 
 [return  ]

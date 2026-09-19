@@ -206,9 +206,12 @@ f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 [_tb_end_text]
 
 [tb_eval  exp="f.jump='fakeseer'"  name="jump"  cmd="="  op="t"  val="fakeseer"  val_2="undefined"  ]
+[chara_hide_all  time="500"  wait="true"  ]
 [jump  storage="UI.ks"  target="*listB"  ]
 *fakeseer_back
 
+[bg  time="1000"  method="crossfade"  storage="92690259_p0.png"  ]
+[tb_show_message_window  ]
 [tb_start_text mode=1 ]
 #システム
 結果はどちらにしますか？[p]
@@ -547,6 +550,7 @@ f.jump=(parseInt(f.role)===10)?1:2;
 [jump  storage="UI.ks"  target="*listB"  ]
 *seer_back
 
+[bg  time="1000"  method="crossfade"  storage="92690259_p0.png"  ]
 [tb_show_message_window  ]
 [jump  storage="specialist.ks"  target="*seer_night_write"  ]
 *seer_night_ai

@@ -135,6 +135,7 @@ f.co=coArr.join(",");
 [call  storage="specialist.ks"  target="*fake_psychic_player"  cond="f.jump==4"  ]
 *player_CO_end
 
+[bg  time="500"  method="crossfade"  storage="93853245_p0.png"  ]
 [jump  storage="CO.ks"  target="*CO_characall"  ]
 *AI_lottery
 

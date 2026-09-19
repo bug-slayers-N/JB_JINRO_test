@@ -1,5 +1,12 @@
 [_tb_system_call storage=system/_shigure.ks]
 
+*namechange
+
+[jump  storage="shigure.ks"  target="*namechange_end"  cond="f.name!='山吹'"  ]
+[tb_eval  exp="f.name='千晴君'"  name="name"  cmd="="  op="t"  val="千晴君"  val_2="undefined"  ]
+*namechange_end
+
+[return  ]
 *show
 
 [iscript]
@@ -133,6 +140,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
+[call  storage="shigure.ks"  target="*namechange"  ]
 [tb_start_tyrano_code]
 #時雨
 「私は、[emb exp="f.name"]が怪しいと睨んでいます」[p]
@@ -160,6 +168,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 *push3
 
 [call  storage="shigure.ks"  target="*show_ki"  ]
+[call  storage="shigure.ks"  target="*namechange"  ]
 [tb_start_tyrano_code]
 「[emb exp="f.name"]は人狼です。証拠は全て揃っています」[p]
 「大人しくお縄につきましょうねぇ！」[p]
@@ -171,6 +180,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 
 [call  storage="shigure.ks"  target="*show"  ]
 [call  storage="shigure.ks"  target="*show_jinro"  ]
+[call  storage="shigure.ks"  target="*namechange"  ]
 [tb_start_tyrano_code]
 #時雨
 (あらら、[emb exp="f.name"]は嘘をついているみたいですね)[p]
@@ -193,6 +203,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 
 [call  storage="shigure.ks"  target="*show_normal"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
+[call  storage="shigure.ks"  target="*namechange"  ]
 [tb_start_tyrano_code]
 #時雨
 「今のところ[emb exp="f.name"]は人間である可能性が高いでしょう」[p]
@@ -222,6 +233,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [jump  storage="system.ks"  target="*death"  ]
 *CO
 
+[call  storage="shigure.ks"  target="*namechange"  ]
 [call  storage="shigure.ks"  target="*show2"  ]
 [call  storage="shigure.ks"  target="*CO2"  cond="f.role2=='co'"  ]
 [call  storage="shigure.ks"  target="*show_ki"  ]
@@ -303,6 +315,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 [jump  storage="say_human.ks"  target="*say_human_reply"  ]
 *noisy
 
+[call  storage="shigure.ks"  target="*namechange"  ]
 [call  storage="shigure.ks"  target="*show2"  ]
 [call  storage="shigure.ks"  target="*show_ai"  ]
 [tb_start_tyrano_code]

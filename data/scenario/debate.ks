@@ -227,7 +227,7 @@ parts.push("対象者無し");
 parts.push(charNames[tgt]+"："+resultNames[res]);
 }
 }
-blocks.push((r+1)+"人目の"+charNames[reporter]+"→"+parts.join("、")+"、");
+blocks.push(charNames[reporter]+"→"+parts.join("、")+"、");
 }
 return label+"の結果報告は次の通りです。"+blocks.join("");
 }
