@@ -330,11 +330,11 @@ return label+"の結果報告は次の通りです。"+blocks.join("");
 }
 f.display02=buildClaimText("s");
 f.display03=buildClaimText("p");
-f.result=(f.display02!==""||f.display03!=="")?1:0;
+f.name2=(f.display02!==""||f.display03!=="")?1:0;
 [endscript]
 
 [tb_show_message_window  ]
-[jump  storage="UI.ks"  target="*check_report_skip"  cond="f.result==0"  ]
+[jump  storage="UI.ks"  target="*check_report_skip"  cond="f.name2==0"  ]
 
 [emb exp="f.display02"]
 [jump  storage="UI.ks"  target="*check_claim_join_skip"  cond="f.display02==''||f.display03==''"  ]

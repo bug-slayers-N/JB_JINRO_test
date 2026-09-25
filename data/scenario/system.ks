@@ -468,16 +468,12 @@ f.display01=aliveNames.join("、");
 [tb_eval  exp="f.action+=1"  name="action"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
 [iscript]
 if(parseInt(f.Ezmode)===0){
-if(parseInt(f.day)===1){
-if(parseInt(f.turn)>=6){
-if(parseInt(f.action)/parseInt(f.turn)>0.5){
+var day=parseInt(f.day);
+var mode=parseInt(f.gamemode);
+var dayTurns=(day===1)?7:((day===2&&mode===9)?7:5);
+var maxAction=(dayTurns===7)?3:2;
+if(parseInt(f.action)>maxAction){
 f.result='noisy';
-}
-}
-}else{
-if(parseInt(f.action)>=3){
-f.result='noisy';
-}
 }
 }
 [endscript]
@@ -521,7 +517,7 @@ f.name=names[parseInt(f.player)];
 if(parseInt(f.Ezmode)===0){
 var day=parseInt(f.day),turn=parseInt(f.turn),action=parseInt(f.action);
 if(day===1){
-if(turn>=5&&action/turn<0.2)f.result='quiet';
+if(turn>=4&&action/turn<0.2)f.result='quiet';
 }else{
 if(turn>=4&&action===0)f.result='quiet';
 }

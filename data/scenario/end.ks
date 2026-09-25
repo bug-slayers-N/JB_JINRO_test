@@ -23,7 +23,7 @@ var turn=parseInt(f.turn);
 var mode=parseInt(f.gamemode);
 var threshold;
 if(day===1){
-threshold=10;
+threshold=7;
 }else if(day===2&&mode===9){
 threshold=7;
 }else{

@@ -24,7 +24,7 @@ pinchId = sorted[0];
 var zeros = [];for(var i=0;i<n;i++)zeros.push("0");
 var allZero = (String(f.co) === zeros.join(","));
 var day = parseInt(f.day);
-var coPromote = (day === 1 && parseInt(f.turn) >= 6 && allZero) || (day >= 2);
+var coPromote = (day === 1 && parseInt(f.turn) >= 4 && allZero) || (day >= 2);
 var mediumPromote = (day >= 2);
 var totalW = 0;
 var weights = [];

@@ -72,6 +72,7 @@ f.result=0;
 f.target=0;
 f.ai_actor=0;
 f.role2=0;
+f.name2="";
 f.win=0;
 f.display01=0;
 f.display02="";
