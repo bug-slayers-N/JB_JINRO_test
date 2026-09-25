@@ -70,8 +70,8 @@ f.display01=wolfNames.join("、");
 f.jump=0;
 f.result=0;
 f.target=0;
-f.ai_actor=0;
-f.role2=0;
+f.actor=0;
+f.judge=0;
 f.name2="";
 f.win=0;
 f.display01=0;
@@ -151,12 +151,12 @@ f.display09="";
 *plz_CO
 
 [call  storage="system.ks"  target="*action"  ]
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="CO.ks"  target="*please_CO"  ]
 *CO
 
 [call  storage="system.ks"  target="*action"  ]
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="debate.ks"  target="*seer"  cond="f.role==11"  ]
 [tb_eval  exp="f.result=1"  name="result"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
 [jump  storage="debate.ks"  target="*psychic"  ]
@@ -169,13 +169,13 @@ f.display09="";
 *fake_CO
 
 [call  storage="system.ks"  target="*action"  ]
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
-[tb_eval  exp="f.role2='fco'"  name="role2"  cmd="="  op="t"  val="fco"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.judge='fco'"  name="judge"  cmd="="  op="t"  val="fco"  val_2="undefined"  ]
 [jump  storage="CO.ks"  target="*9mode_choice"  ]
 *say_human
 
 [call  storage="system.ks"  target="*action"  ]
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="say_human.ks"  target="*say_human"  ]
 *auto
 

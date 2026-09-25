@@ -226,7 +226,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 *CO
 
 [call  storage="murasame.ks"  target="*show2"  ]
-[call  storage="murasame.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="murasame.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="murasame.ks"  target="*show_ki"  ]
 [jump  storage="murasame.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]

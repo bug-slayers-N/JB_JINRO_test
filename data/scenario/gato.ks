@@ -234,7 +234,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[7])<25?1:0;
 *CO
 
 [call  storage="gato.ks"  target="*show2"  ]
-[call  storage="gato.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="gato.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="gato.ks"  target="*show_ki"  ]
 [jump  storage="gato.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [call  storage="gato.ks"  target="*name_change"  ]

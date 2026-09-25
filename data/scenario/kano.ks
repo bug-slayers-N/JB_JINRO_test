@@ -239,7 +239,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[3])<25?1:0;
 *CO
 
 [call  storage="kano.ks"  target="*show2"  ]
-[call  storage="kano.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="kano.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="kano.ks"  target="*show_ki"  ]
 [call  storage="kano.ks"  target="*kano_namechange"  ]
 [jump  storage="kano.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]

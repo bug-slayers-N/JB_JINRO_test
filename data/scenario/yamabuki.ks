@@ -223,7 +223,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[6])<23?1:0;
 *CO
 
 [call  storage="yamabuki.ks"  target="*show2"  ]
-[call  storage="yamabuki.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="yamabuki.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="yamabuki.ks"  target="*show_ki"  ]
 [jump  storage="yamabuki.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]

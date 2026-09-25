@@ -5,7 +5,7 @@
 f.display06=f.jump;
 
 var n=parseInt(f.gamemode);
-var actor1=parseInt(f.ai_actor);
+var actor1=parseInt(f.actor);
 var target=parseInt(f.target);
 var aliveArr=String(f.alive).split(",");
 function isAlive(i){return aliveArr[i-1]==="1";}
@@ -84,16 +84,16 @@ decision="cover";
 }
 }
 
-f.ai_actor=winner;
+f.actor=winner;
 if(winner>0)f.jump=decision;
 [endscript]
 
-[jump  storage="doubt.ks"  target="*reaction_only"  cond="f.display06=='doubt' && f.ai_actor==0"  ]
-[jump  storage="cover.ks"  target="*reaction_only"  cond="f.display06=='cover' && f.ai_actor==0"  ]
+[jump  storage="doubt.ks"  target="*reaction_only"  cond="f.display06=='doubt' && f.actor==0"  ]
+[jump  storage="cover.ks"  target="*reaction_only"  cond="f.display06=='cover' && f.actor==0"  ]
 
 [iscript]
 // ===== 当選時：count+1、効果値は本来の半分 =====
-var winnerNum=parseInt(f.ai_actor);
+var winnerNum=parseInt(f.actor);
 var targetNum=parseInt(f.target);
 var countArr2=String(f.count).split(",");
 countArr2[winnerNum-1]=String(parseInt(countArr2[winnerNum-1],10)+1);

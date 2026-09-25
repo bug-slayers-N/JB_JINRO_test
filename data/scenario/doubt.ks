@@ -42,7 +42,7 @@ f.like = likes.join(",");
 [jump  storage="doubt.ks"  target="*push"  cond="f.win=='push'"  ]
 *push_back
 
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="doubt.ks"  target="*dispatch_doubt2"  ]
 *show
 
@@ -71,7 +71,7 @@ f.display07=0;
 // addition.ksでの文字列比較('doubt'/'cover')が成立するよう明示的に文字列へ再設定する
 f.jump='doubt';
 // actorの役職を取得してf.resultに格納（分岐判定用）
-f.result=parseInt(String(f.character).split(',')[parseInt(f.ai_actor)-1]);
+f.result=parseInt(String(f.character).split(',')[parseInt(f.actor)-1]);
 [endscript]
 
 *ai_jinro
@@ -80,7 +80,7 @@ f.result=parseInt(String(f.character).split(',')[parseInt(f.ai_actor)-1]);
 *ai_jinro_block
 
 [iscript]
-var actorNum=parseInt(f.ai_actor);
+var actorNum=parseInt(f.actor);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
@@ -160,7 +160,7 @@ f.target=target;
 
 [jump  storage="doubt.ks"  target="*ai_seer"  cond="f.result!=9"  ]
 [iscript]
-var actorNum=parseInt(f.ai_actor);
+var actorNum=parseInt(f.actor);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
@@ -216,7 +216,7 @@ f.target=target;
 
 [jump  storage="doubt.ks"  target="*ai_vill"  cond="f.result!=10"  ]
 [iscript]
-var actorNum=parseInt(f.ai_actor);
+var actorNum=parseInt(f.actor);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
@@ -277,7 +277,7 @@ f.target=target;
 *ai_vill
 
 [iscript]
-var actorNum=parseInt(f.ai_actor);
+var actorNum=parseInt(f.actor);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
 var lr=String(f.liar).split(",");
@@ -345,7 +345,7 @@ f.target=target;
 *ai_calc
 
 [iscript]
-var actorNum = parseInt(f.ai_actor);
+var actorNum = parseInt(f.actor);
 var target = parseInt(f.target);
 var lk = String(f.like).split(",");
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
@@ -377,15 +377,15 @@ f.like = lk.join(",");
 
 *dispatch_doubt2
 
-[jump  storage="mafutsu.ks"  target="*doubt2"  cond="f.ai_actor==1"  ]
-[jump  storage="sisigami.ks"  target="*doubt2"  cond="f.ai_actor==2"  ]
-[jump  storage="murasame.ks"  target="*doubt2"  cond="f.ai_actor==3"  ]
-[jump  storage="kano.ks"  target="*doubt2"  cond="f.ai_actor==4"  ]
-[jump  storage="tendo.ks"  target="*doubt2"  cond="f.ai_actor==5"  ]
-[jump  storage="shigure.ks"  target="*doubt2"  cond="f.ai_actor==6"  ]
-[jump  storage="yamabuki.ks"  target="*doubt2"  cond="f.ai_actor==7"  ]
-[jump  storage="gato.ks"  target="*doubt2"  cond="f.ai_actor==8"  ]
-[jump  storage="urushibara.ks"  target="*doubt2"  cond="f.ai_actor==9"  ]
+[jump  storage="mafutsu.ks"  target="*doubt2"  cond="f.actor==1"  ]
+[jump  storage="sisigami.ks"  target="*doubt2"  cond="f.actor==2"  ]
+[jump  storage="murasame.ks"  target="*doubt2"  cond="f.actor==3"  ]
+[jump  storage="kano.ks"  target="*doubt2"  cond="f.actor==4"  ]
+[jump  storage="tendo.ks"  target="*doubt2"  cond="f.actor==5"  ]
+[jump  storage="shigure.ks"  target="*doubt2"  cond="f.actor==6"  ]
+[jump  storage="yamabuki.ks"  target="*doubt2"  cond="f.actor==7"  ]
+[jump  storage="gato.ks"  target="*doubt2"  cond="f.actor==8"  ]
+[jump  storage="urushibara.ks"  target="*doubt2"  cond="f.actor==9"  ]
 *push
 
 [tb_eval  exp="f.push=1"  name="push"  cmd="="  op="t"  val="1"  val_2="undefined"  ]

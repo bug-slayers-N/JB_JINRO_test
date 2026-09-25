@@ -20,7 +20,7 @@
 *player_vote_end
 
 [mask_off  time="1000"  effect="fadeOut"  ]
-[jump  storage="vote.ks"  target="*like_boost"  cond="f.revote==1"  ]
+[jump  storage="vote.ks"  target="*like_boost"  cond="f.judge==1"  ]
 *vote_ai
 
 [iscript]
@@ -240,14 +240,14 @@ var top=[];
 for(var i=0;i<n;i++){if(aliveArr[i]==="0")continue;if(count[i]===maxVote)top.push(i+1);}
 if(top.length===1){
 f.result=top[0];
-f.revote=0;
-}else if(parseInt(f.revote)===1){
+f.judge=0;
+}else if(parseInt(f.judge)===1){
 f.result=0;
-f.revote=2;
+f.judge=2;
 }else{
 f.result=0;
 f.vote_target=top.join(",");
-f.revote=1;
+f.judge=1;
 }
 f.votes=votes.join(",");
 [endscript]
@@ -297,14 +297,14 @@ f.display09=lines[8]||"";
 [emb exp="f.display01"]  [emb exp="f.display02"]  [emb exp="f.display03"]  [emb exp="f.display04"]  [emb exp="f.display05"] [emb exp="f.display06"] [emb exp="f.display07"] [emb exp="f.display08"] [emb exp="f.display09"][p]
 [_tb_end_text]
 
-[jump  storage="vote.ks"  target="*reset"  cond="f.revote==1"  ]
-[jump  storage="vote.ks"  target="*no_kill"  cond="f.revote==2"  ]
+[jump  storage="vote.ks"  target="*reset"  cond="f.judge==1"  ]
+[jump  storage="vote.ks"  target="*no_kill"  cond="f.judge==2"  ]
 [iscript]
 var names=["","真経津","獅子神","村雨","叶","天堂","時雨","山吹","牙頭","漆原"];
 f.name=names[parseInt(f.result)];
 [endscript]
 
-[tb_eval  exp="f.role2=f.result"  name="role2"  cmd="="  op="h"  val="result"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=f.result"  name="keep"  cmd="="  op="h"  val="result"  val_2="undefined"  ]
 [tb_start_text mode=1 ]
 投票の結果、[emb exp="f.name"]の処刑が決まりました。[p]
 [_tb_end_text]

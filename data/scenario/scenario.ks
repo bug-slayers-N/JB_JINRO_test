@@ -203,7 +203,7 @@ if(parseInt(charArr[i-1])===1){f.target=i;break;}
 [call  storage="gato.ks"  target="*jinro_win"  cond="f.target==8"  ]
 [call  storage="urushibara.ks"  target="*jinro_win"  cond="f.target==9"  ]
 [iscript]
-// 9人モードのみ：人狼はrole1とrole2の2人いるため、2人目(role2)も演出対象にする
+// 9人モードのみ：人狼は役職番号1と2の2キャラいるため、2人目も演出対象にする
 f.target=0;
 var n=parseInt(f.gamemode);
 if(n===9){

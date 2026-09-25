@@ -227,7 +227,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[1])<20?1:0;
 *CO
 
 [call  storage="sisigami.ks"  target="*show2"  ]
-[call  storage="sisigami.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="sisigami.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="sisigami.ks"  target="*show_ki"  ]
 [jump  storage="sisigami.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]

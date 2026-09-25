@@ -2,7 +2,7 @@
 
 *say_human
 
-[tb_eval  exp="f.display07=f.ai_actor"  name="display07"  cmd="="  op="h"  val="ai_actor"  val_2="undefined"  ]
+[tb_eval  exp="f.display07=f.actor"  name="display07"  cmd="="  op="h"  val="actor"  val_2="undefined"  ]
 [tb_eval  exp="f.say_human=1"  name="say_human"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
 [call  storage="mafutsu.ks"  target="*s_human"  cond="f.display07==1"  ]
 [call  storage="sisigami.ks"  target="*s_human"  cond="f.display07==2"  ]
@@ -22,7 +22,7 @@
 [s  ]
 *p_stop_yes
 
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="say_human.ks"  target="*stop_list"  ]
 *p_stop_no
 
@@ -92,7 +92,7 @@ f.jump=0;
 [iscript]
 // 直前に喋ったキャラのダメージ処理（jump==1の初回は誰もまだ喋っていないのでスキップ）
 if(parseInt(f.jump)>1){
-var prevActor=parseInt(f.ai_actor);
+var prevActor=parseInt(f.actor);
 var prevRole=parseInt(String(f.character).split(',')[prevActor-1]);
 if(prevRole<10){
 var aliveArr=String(f.alive).split(',');
@@ -125,7 +125,7 @@ if(parseInt(f.jump)>n){
 f.jump="end";
 }else{
 var c=parseInt(pool[parseInt(f.jump)-1]);
-f.ai_actor=c;
+f.actor=c;
 if(parseInt(f.jump)===parseInt(f.result)){
 f.jump="stop";
 }
@@ -134,26 +134,26 @@ f.jump="stop";
 
 [jump  storage="say_human.ks"  target="*end"  cond="f.jump=='end'"  ]
 [jump  storage="say_human.ks"  target="*stop_list"  cond="f.jump=='stop'"  ]
-[jump  storage="mafutsu.ks"  target="*human"  cond="f.ai_actor==1"  ]
-[jump  storage="sisigami.ks"  target="*human"  cond="f.ai_actor==2"  ]
-[jump  storage="murasame.ks"  target="*human"  cond="f.ai_actor==3"  ]
-[jump  storage="kano.ks"  target="*human"  cond="f.ai_actor==4"  ]
-[jump  storage="tendo.ks"  target="*human"  cond="f.ai_actor==5"  ]
-[jump  storage="shigure.ks"  target="*human"  cond="f.ai_actor==6"  ]
-[jump  storage="yamabuki.ks"  target="*human"  cond="f.ai_actor==7"  ]
-[jump  storage="gato.ks"  target="*human"  cond="f.ai_actor==8"  ]
-[jump  storage="urushibara.ks"  target="*human"  cond="f.ai_actor==9"  ]
+[jump  storage="mafutsu.ks"  target="*human"  cond="f.actor==1"  ]
+[jump  storage="sisigami.ks"  target="*human"  cond="f.actor==2"  ]
+[jump  storage="murasame.ks"  target="*human"  cond="f.actor==3"  ]
+[jump  storage="kano.ks"  target="*human"  cond="f.actor==4"  ]
+[jump  storage="tendo.ks"  target="*human"  cond="f.actor==5"  ]
+[jump  storage="shigure.ks"  target="*human"  cond="f.actor==6"  ]
+[jump  storage="yamabuki.ks"  target="*human"  cond="f.actor==7"  ]
+[jump  storage="gato.ks"  target="*human"  cond="f.actor==8"  ]
+[jump  storage="urushibara.ks"  target="*human"  cond="f.actor==9"  ]
 *stop_list
 
-[call  storage="mafutsu.ks"  target="*stop"  cond="f.ai_actor==1"  ]
-[call  storage="sisigami.ks"  target="*stop"  cond="f.ai_actor==2"  ]
-[call  storage="murasame.ks"  target="*stop"  cond="f.ai_actor==3"  ]
-[call  storage="kano.ks"  target="*stop"  cond="f.ai_actor==4"  ]
-[call  storage="tendo.ks"  target="*stop"  cond="f.ai_actor==5"  ]
-[call  storage="shigure.ks"  target="*stop"  cond="f.ai_actor==6"  ]
-[call  storage="yamabuki.ks"  target="*stop"  cond="f.ai_actor==7"  ]
-[call  storage="gato.ks"  target="*stop"  cond="f.ai_actor==8"  ]
-[call  storage="urushibara.ks"  target="*stop"  cond="f.ai_actor==9"  ]
+[call  storage="mafutsu.ks"  target="*stop"  cond="f.actor==1"  ]
+[call  storage="sisigami.ks"  target="*stop"  cond="f.actor==2"  ]
+[call  storage="murasame.ks"  target="*stop"  cond="f.actor==3"  ]
+[call  storage="kano.ks"  target="*stop"  cond="f.actor==4"  ]
+[call  storage="tendo.ks"  target="*stop"  cond="f.actor==5"  ]
+[call  storage="shigure.ks"  target="*stop"  cond="f.actor==6"  ]
+[call  storage="yamabuki.ks"  target="*stop"  cond="f.actor==7"  ]
+[call  storage="gato.ks"  target="*stop"  cond="f.actor==8"  ]
+[call  storage="urushibara.ks"  target="*stop"  cond="f.actor==9"  ]
 [call  storage="mafutsu.ks"  target="*stop2"  cond="f.display07==1"  ]
 [call  storage="sisigami.ks"  target="*stop2"  cond="f.display07==2"  ]
 [call  storage="murasame.ks"  target="*stop2"  cond="f.display07==3"  ]
@@ -167,7 +167,7 @@ f.jump="stop";
 function addCalm(i,val){var arr=String(f.calm).split(',');arr[i-1]=String(parseFloat(arr[i-1])+val);f.calm=arr.join(',');}
 // かんたんモード補正（人間と言えはプレイヤー起因のためEzmode1では減衰させない）
 var counterDamage=(parseInt(f.Ezmode)===2)?-30:-15;
-addCalm(parseInt(f.ai_actor),counterDamage);
+addCalm(parseInt(f.actor),counterDamage);
 addCalm(parseInt(f.display07),counterDamage);
 [endscript]
 

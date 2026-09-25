@@ -3,7 +3,7 @@
 *please_CO
 
 [iscript]
-f.name2 = f.ai_actor;
+f.keep = f.actor;
 if(parseInt(f.gamemode)===5){
 f.result=1;
 }
@@ -12,7 +12,7 @@ f.result=1;
 [jump  storage="CO.ks"  target="*9mode_choice_end"  cond="f.gamemode==5"  ]
 *9mode_choice
 
-[jump  storage="CO.ks"  target="*please_CO_player_choice"  cond="f.ai_actor==f.player"  ]
+[jump  storage="CO.ks"  target="*please_CO_player_choice"  cond="f.actor==f.player"  ]
 [iscript]
 var coArr=String(f.co).split(",");
 var has1=coArr.indexOf("1")!==-1;
@@ -47,12 +47,12 @@ COの役職は？[p]
 *please_CO_choice_seer
 
 [tb_eval  exp="f.result=1"  name="result"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
-[jump  storage="CO.ks"  target="*player_CO"  cond="f.role2=='fco'"  ]
+[jump  storage="CO.ks"  target="*player_CO"  cond="f.judge=='fco'"  ]
 [jump  storage="CO.ks"  target="*9mode_choice_end"  ]
 *please_CO_choice_psychic
 
 [tb_eval  exp="f.result=2"  name="result"  cmd="="  op="t"  val="2"  val_2="undefined"  ]
-[jump  storage="CO.ks"  target="*player_CO"  cond="f.role2=='fco'"  ]
+[jump  storage="CO.ks"  target="*player_CO"  cond="f.judge=='fco'"  ]
 *9mode_choice_end
 
 *please_CO_characall
@@ -62,15 +62,15 @@ var result=parseInt(f.result);
 f.display09=(result===1)?"占い師":"霊媒師";
 [endscript]
 
-[call  storage="mafutsu.ks"  target="*pCO"  cond="f.ai_actor==1"  ]
-[call  storage="sisigami.ks"  target="*pCO"  cond="f.ai_actor==2"  ]
-[call  storage="murasame.ks"  target="*pCO"  cond="f.ai_actor==3"  ]
-[call  storage="kano.ks"  target="*pCO"  cond="f.ai_actor==4"  ]
-[call  storage="tendo.ks"  target="*pCO"  cond="f.ai_actor==5"  ]
-[call  storage="shigure.ks"  target="*pCO"  cond="f.ai_actor==6"  ]
-[call  storage="yamabuki.ks"  target="*pCO"  cond="f.ai_actor==7"  ]
-[call  storage="gato.ks"  target="*pCO"  cond="f.ai_actor==8"  ]
-[call  storage="urushibara.ks"  target="*pCO"  cond="f.ai_actor==9"  ]
+[call  storage="mafutsu.ks"  target="*pCO"  cond="f.actor==1"  ]
+[call  storage="sisigami.ks"  target="*pCO"  cond="f.actor==2"  ]
+[call  storage="murasame.ks"  target="*pCO"  cond="f.actor==3"  ]
+[call  storage="kano.ks"  target="*pCO"  cond="f.actor==4"  ]
+[call  storage="tendo.ks"  target="*pCO"  cond="f.actor==5"  ]
+[call  storage="shigure.ks"  target="*pCO"  cond="f.actor==6"  ]
+[call  storage="yamabuki.ks"  target="*pCO"  cond="f.actor==7"  ]
+[call  storage="gato.ks"  target="*pCO"  cond="f.actor==8"  ]
+[call  storage="urushibara.ks"  target="*pCO"  cond="f.actor==9"  ]
 *please_CO_characall_end
 
 *player_CO_start
@@ -79,7 +79,7 @@ f.display09=(result===1)?"占い師":"霊媒師";
 var role = parseInt(f.role);
 var result = parseInt(f.result);
 var pn = parseInt(f.player);
-var caller = parseInt(f.name2); // 呼びかけ人のキャラ番号（*please_COで退避済み）
+var caller = parseInt(f.keep); // 呼びかけ人のキャラ番号（*please_COで退避済み）
 var isCaller = (caller === pn); // プレイヤー自身が呼びかけた本人かどうか
 var coArr = String(f.co).split(",");
 var playerCoed = coArr[pn-1]!=="0";
@@ -94,7 +94,7 @@ f.jump = qualifies?1:0;
 [s  ]
 *player_CO_yes
 
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
 [jump  storage="CO.ks"  target="*player_CO"  ]
 *player_CO_no
 
@@ -142,7 +142,7 @@ f.co=coArr.join(",");
 [iscript]
 var n=parseInt(f.gamemode);
 var pn=parseInt(f.player);
-var caller=parseInt(f.name2); // 呼びかけ人のキャラ番号（*please_COで退避済み）
+var caller=parseInt(f.keep); // 呼びかけ人のキャラ番号（*please_COで退避済み）
 var aliveArr=String(f.alive).split(",");
 var coArr=String(f.co).split(",");
 var charArr=String(f.character).split(",").map(Number);
@@ -218,8 +218,8 @@ var rate=entries[e].rate[pArr[cch]];
 if(Math.random()<rate){winner=cch;break;}
 }
 }
-f.ai_actor=winner;
-// ===== COを求めるに応えてai_actorに選ばれた回数を+1 =====
+f.actor=winner;
+// ===== COを求めるに応えてactorに選ばれた回数を+1 =====
 if(winner>0){
 var countArr=String(f.count).split(',');
 countArr[winner-1]=String(parseInt(countArr[winner-1],10)+1);
@@ -227,7 +227,7 @@ f.count=countArr.join(',');
 }
 [endscript]
 
-[jump  storage="CO.ks"  target="*AI_CO"  cond="f.ai_actor>0"  ]
+[jump  storage="CO.ks"  target="*AI_CO"  cond="f.actor>0"  ]
 *AI_lottery_end
 
 [chara_hide_all  time="1000"  wait="true"  ]
@@ -240,7 +240,7 @@ f.count=countArr.join(',');
 *AI_CO
 
 [iscript]
-var actor=parseInt(f.ai_actor);
+var actor=parseInt(f.actor);
 var role=parseInt(String(f.character).split(",")[actor-1]);
 var result=parseInt(f.result);
 var jmp=0;
@@ -287,7 +287,7 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-var actor = parseInt(f.ai_actor);
+var actor = parseInt(f.actor);
 var claims = (result===1)?getSclaim():getPclaim();
 var mine = [];
 for(var i=0;i<claims.length;i++){
@@ -300,15 +300,15 @@ f.name2 = resultNames[latest[3]];
 
 *CO_dialogue
 
-[call  storage="mafutsu.ks"  target="*CO"  cond="f.ai_actor==1"  ]
-[call  storage="sisigami.ks"  target="*CO"  cond="f.ai_actor==2"  ]
-[call  storage="murasame.ks"  target="*CO"  cond="f.ai_actor==3"  ]
-[call  storage="kano.ks"  target="*CO"  cond="f.ai_actor==4"  ]
-[call  storage="tendo.ks"  target="*CO"  cond="f.ai_actor==5"  ]
-[call  storage="shigure.ks"  target="*CO"  cond="f.ai_actor==6"  ]
-[call  storage="yamabuki.ks"  target="*CO"  cond="f.ai_actor==7"  ]
-[call  storage="gato.ks"  target="*CO"  cond="f.ai_actor==8"  ]
-[call  storage="urushibara.ks"  target="*CO"  cond="f.ai_actor==9"  ]
+[call  storage="mafutsu.ks"  target="*CO"  cond="f.actor==1"  ]
+[call  storage="sisigami.ks"  target="*CO"  cond="f.actor==2"  ]
+[call  storage="murasame.ks"  target="*CO"  cond="f.actor==3"  ]
+[call  storage="kano.ks"  target="*CO"  cond="f.actor==4"  ]
+[call  storage="tendo.ks"  target="*CO"  cond="f.actor==5"  ]
+[call  storage="shigure.ks"  target="*CO"  cond="f.actor==6"  ]
+[call  storage="yamabuki.ks"  target="*CO"  cond="f.actor==7"  ]
+[call  storage="gato.ks"  target="*CO"  cond="f.actor==8"  ]
+[call  storage="urushibara.ks"  target="*CO"  cond="f.actor==9"  ]
 *CO_characall_end
 
 *vsCO
@@ -317,7 +317,7 @@ f.name2 = resultNames[latest[3]];
 var pn=parseInt(f.player);
 var coArr=String(f.co).split(",");
 var playerCoed=coArr[pn-1]!=="0";
-f.jump=(playerCoed||String(f.role2)==="co")?10:0;
+f.jump=(playerCoed||String(f.judge)==="co")?10:0;
 [endscript]
 
 [jump  storage="CO.ks"  target="*AI_vsCO"  cond="f.jump==10"  ]
@@ -337,8 +337,8 @@ f.jump=qualifies?100:0;
 [s  ]
 *player_vsCO_yes
 
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
-[tb_eval  exp="f.role2='co'"  name="role2"  cmd="="  op="t"  val="co"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="h"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.judge='co'"  name="judge"  cmd="="  op="t"  val="co"  val_2="undefined"  ]
 [jump  storage="CO.ks"  target="*player_CO"  ]
 *player_vsCO_no
 
@@ -367,7 +367,7 @@ if(getRole(i)>5)continue;
 if(parseInt(f.result)===1&&coArr[i-1]==="1")wolfBlocked=true;
 if(parseInt(f.result)===2&&coArr[i-1]==="2")wolfBlocked=true;
 }
-var isRole2Co=(String(f.role2)==="co");
+var isRole2Co=(String(f.judge)==="co");
 var resultNum=parseInt(f.result);
 var otherVal=(resultNum===1)?"2":"1";
 var otherCount=0;
@@ -414,22 +414,22 @@ else if(parts[pIdx]==="B")winner=rollPool(poolB,rateB);
 else if(parts[pIdx]==="C")winner=rollPool(poolC,rateC);
 }
 if(winner>0){
-f.ai_actor=winner;
-f.role2="co";
-// ===== 対抗COでai_actorに選ばれた回数を+1 =====
+f.actor=winner;
+f.judge="co";
+// ===== 対抗COでactorに選ばれた回数を+1 =====
 var countArr=String(f.count).split(',');
 countArr[winner-1]=String(parseInt(countArr[winner-1],10)+1);
 f.count=countArr.join(',');
 }else{
-f.ai_actor=0;
+f.actor=0;
 }
 [endscript]
 
-[jump  storage="CO.ks"  target="*AI_CO"  cond="f.ai_actor>0"  ]
+[jump  storage="CO.ks"  target="*AI_CO"  cond="f.actor>0"  ]
 *end
 
 [iscript]
-f.role2=0;
+f.judge=0;
 var coArr=String(f.co).split(",");
 var result=parseInt(f.result);
 var coCount=coArr.filter(function(c){return c===String(result);}).length;
@@ -547,7 +547,7 @@ f.target = cands[Math.floor(Math.random() * cands.length)];
 *psychic_day1
 
 [iscript]
-var actor=parseInt(f.ai_actor);
+var actor=parseInt(f.actor);
 var coArr=String(f.co).split(",");
 coArr[actor-1]="2";
 f.co=coArr.join(",");

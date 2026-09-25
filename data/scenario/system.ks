@@ -25,7 +25,7 @@ f.psychic_result="0";
 f.sclaim="0";
 f.pclaim="0";
 // ===== 投票関連（display系はここでのみ初期化。モード別initでは触らない） =====
-f.revote=0;
+f.judge=0;
 f.display01=0;
 f.display02=0;
 f.display03=0;
@@ -54,7 +54,7 @@ f.like="10,0,0,0,0,30,0,0,0,30,0,0,0,10,0,0,0,10,0,0";
 f.calm="100,80,110,100,120";
 // ===== 投票関連（5人分） =====
 f.votes="0,0,0,0,0";
-// ===== 様子を見るでai_actorに選ばれた回数（5人分） =====
+// ===== 様子を見るでactorに選ばれた回数（5人分） =====
 f.count="0,0,0,0,0";
 [endscript]
 
@@ -75,7 +75,7 @@ f.like="10,0,0,0,0,0,0,0,0,30,0,0,0,0,0,0,0,30,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,10
 f.calm="100,80,110,100,120,110,90,100,110";
 // ===== 投票関連（9人分） =====
 f.votes="0,0,0,0,0,0,0,0,0";
-// ===== 様子を見るでai_actorに選ばれた回数（9人分） =====
+// ===== 様子を見るでactorに選ばれた回数（9人分） =====
 f.count="0,0,0,0,0,0,0,0,0";
 [endscript]
 
@@ -410,14 +410,11 @@ setLiar(gi(obs3,pick),4);
 
 [iscript]
 // ===== プレイヤー死亡判定 =====
-// 旧実装はここでf.targetを0/1のフラグに流用していたが、f.targetは「襲撃対象のキャラ番号」として
-// night.ks側（*morning→UI.ks *name_change）まで生存している必要があるため、
-// 衝突しないf.name2を代わりに使う（f.name2はこの時点で未使用・後段でも参照されない安全な一時変数）。
-f.name2=parseInt(f.result)===parseInt(f.player)?1:0;
-if(f.name2===1){f.player_death=1;}
+f.judge=parseInt(f.result)===parseInt(f.player)?1:0;
+if(f.judge===1){f.player_death=1;}
 [endscript]
 
-[call  storage="end.ks"  target="*player_death"  cond="f.name2==1"  ]
+[call  storage="end.ks"  target="*player_death"  cond="f.judge==1"  ]
 [iscript]
 var dead=parseInt(f.result);
 var aliveArr=String(f.alive).split(",");

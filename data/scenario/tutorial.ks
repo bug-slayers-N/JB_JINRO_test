@@ -37,7 +37,7 @@ f.seer_result = "2,0";
 f.psychic_result = "0";
 // 投票関連
 f.votes = "0,0,0,0,0";
-f.revote = 0;
+f.judge = 0;
 f.display01 = "";
 f.display02 = "";
 f.display03 = "";

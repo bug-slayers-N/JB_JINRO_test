@@ -194,7 +194,7 @@ else{f.pclaim=f.pclaim+","+entry;}
 *fake_seer
 
 [iscript]
-f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
+f.display01=(parseInt(f.actor)===parseInt(f.player))?1:0;
 [endscript]
 
 [jump  storage="specialist.ks"  target="*fake_seer_AI"  cond="f.display01==0"  ]
@@ -232,7 +232,7 @@ f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 
 [iscript]
 var n=parseInt(f.gamemode);
-var actorNum=parseInt(f.ai_actor);
+var actorNum=parseInt(f.actor);
 var roles=String(f.character).split(",").map(Number);
 var actorRole=roles[actorNum-1];
 var aliveArr=String(f.alive).split(",");
@@ -308,7 +308,7 @@ f.display01=res;
 *fake_seer_end
 
 [iscript]
-var actor=parseInt(f.ai_actor);
+var actor=parseInt(f.actor);
 var day=parseInt(f.day);
 var mainDay=day-1; // 今回発表するメインの報告のday
 var n=parseInt(f.gamemode);
@@ -371,7 +371,7 @@ return res;
 var presults=getPsychicResults();
 var todays=presults[mainDay-1]; // psychic_resultは添字0=day1なので、pclaimのmainDay(=f.day-1)に対応する添字はmainDay-1
 f.target=todays?todays[0]:0;
-f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
+f.display01=(parseInt(f.actor)===parseInt(f.player))?1:0;
 [endscript]
 
 [jump  storage="specialist.ks"  target="*fake_psychic_none"  cond="f.target<=0"  ]
@@ -401,7 +401,7 @@ f.display01=(parseInt(f.ai_actor)===parseInt(f.player))?1:0;
 *fake_psychic_AI
 
 [iscript]
-var actor=parseInt(f.ai_actor);
+var actor=parseInt(f.actor);
 var n=parseInt(f.gamemode);
 var roles=String(f.character).split(",").map(Number);
 var actorRole=roles[actor-1];
@@ -467,7 +467,7 @@ f.display01=res;
 *fake_psychic_end
 
 [iscript]
-var actor=parseInt(f.ai_actor);
+var actor=parseInt(f.actor);
 var day=parseInt(f.day);
 var mainDay=day-1; // 今回発表するメインの報告のday
 var n=parseInt(f.gamemode);
@@ -608,7 +608,7 @@ var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var psychicNum=0;
 for(var i=1;i<=n;i++){if(roles[i-1]===11){psychicNum=i;break;}}
-var dead=parseInt(f.role2);
+var dead=parseInt(f.keep);
 var hasExecution=(dead>0);
 function addPsychicResult(target,result){
 if(String(f.psychic_result)==="0"){f.psychic_result=target+","+result;}
@@ -682,12 +682,12 @@ f.jump=(coArr[playerNum-1]==="1"&&roles[playerNum-1]!==10&&aliveArr[playerNum-1]
 [endscript]
 
 [jump  storage="specialist.ks"  target="*fake_seer_night_ai_loop"  cond="f.jump==0"  ]
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="t"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="t"  val="player"  val_2="undefined"  ]
 [call  storage="specialist.ks"  target="*fake_seer_player"  ]
 *fake_seer_night_ai_loop
 
 [iscript]
-f.ai_actor=0;
+f.actor=0;
 [endscript]
 
 *fake_seer_night_ai_search
@@ -698,17 +698,17 @@ var roles=String(f.character).split(",").map(Number);
 var coArr=String(f.co).split(",");
 var aliveArr=String(f.alive).split(",");
 var playerNum=parseInt(f.player);
-var start=parseInt(f.ai_actor)+1;
+var start=parseInt(f.actor)+1;
 var found=0;
-// ai_actorより大きいキャラ番号の中で、一番小さい「生存中のAI偽占い師」を探す（プレイヤーは既に処理済みなので除外）
+// actorより大きいキャラ番号の中で、一番小さい「生存中のAI偽占い師」を探す（プレイヤーは既に処理済みなので除外）
 for(var i=start;i<=n;i++){
 if(i===playerNum)continue;
 if(coArr[i-1]==="1"&&roles[i-1]!==10&&aliveArr[i-1]==="1"){found=i;break;}
 }
-f.ai_actor=found;
+f.actor=found;
 [endscript]
 
-[jump  storage="specialist.ks"  target="*fake_seer_night_end"  cond="f.ai_actor==0"  ]
+[jump  storage="specialist.ks"  target="*fake_seer_night_end"  cond="f.actor==0"  ]
 [call  storage="specialist.ks"  target="*fake_seer_AI"  ]
 [jump  storage="specialist.ks"  target="*fake_seer_night_ai_search"  ]
 *fake_seer_night_end
@@ -727,12 +727,12 @@ f.jump=(coArr[playerNum-1]==="2"&&roles[playerNum-1]!==11&&aliveArr[playerNum-1]
 [endscript]
 
 [jump  storage="specialist.ks"  target="*fake_psychic_night_ai_loop"  cond="f.jump==0"  ]
-[tb_eval  exp="f.ai_actor=f.player"  name="ai_actor"  cmd="="  op="t"  val="player"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=f.player"  name="actor"  cmd="="  op="t"  val="player"  val_2="undefined"  ]
 [call  storage="specialist.ks"  target="*fake_psychic"  ]
 *fake_psychic_night_ai_loop
 
 [iscript]
-f.ai_actor=0;
+f.actor=0;
 [endscript]
 
 *fake_psychic_night_ai_search
@@ -743,17 +743,17 @@ var roles=String(f.character).split(",").map(Number);
 var coArr=String(f.co).split(",");
 var aliveArr=String(f.alive).split(",");
 var playerNum=parseInt(f.player);
-var start=parseInt(f.ai_actor)+1;
+var start=parseInt(f.actor)+1;
 var found=0;
-// ai_actorより大きいキャラ番号の中で、一番小さい「生存中のAI偽霊媒師」を探す（プレイヤーは既に処理済みなので除外）
+// actorより大きいキャラ番号の中で、一番小さい「生存中のAI偽霊媒師」を探す（プレイヤーは既に処理済みなので除外）
 for(var i=start;i<=n;i++){
 if(i===playerNum)continue;
 if(coArr[i-1]==="2"&&roles[i-1]!==11&&aliveArr[i-1]==="1"){found=i;break;}
 }
-f.ai_actor=found;
+f.actor=found;
 [endscript]
 
-[jump  storage="specialist.ks"  target="*fake_psychic_night_end"  cond="f.ai_actor==0"  ]
+[jump  storage="specialist.ks"  target="*fake_psychic_night_end"  cond="f.actor==0"  ]
 [call  storage="specialist.ks"  target="*fake_psychic"  ]
 [jump  storage="specialist.ks"  target="*fake_psychic_night_ai_search"  ]
 *fake_psychic_night_end
@@ -763,8 +763,8 @@ f.ai_actor=found;
 
 [call  storage="specialist.ks"  target="*seer_night"  ]
 [call  storage="specialist.ks"  target="*psychic_night"  ]
-[tb_eval  exp="f.ai_actor=0"  name="ai_actor"  cmd="="  op="t"  val="0"  ]
+[tb_eval  exp="f.actor=0"  name="actor"  cmd="="  op="t"  val="0"  ]
 [call  storage="specialist.ks"  target="*fake_seer_night"  ]
-[tb_eval  exp="f.ai_actor=0"  name="ai_actor"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[tb_eval  exp="f.actor=0"  name="actor"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [call  storage="specialist.ks"  target="*fake_psychic_night"  ]
 [return  ]

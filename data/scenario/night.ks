@@ -27,7 +27,7 @@ return res;
 // （5人モード限定。人狼1体のみだから「処刑して尚ゲーム続行」＝処刑対象は人狼ではなかったと断定できる。pclaimは5人モードに存在しないためsclaimのみ見る）
 if(n===5){
 var claims=getClaims('sclaim');
-var executed=parseInt(f.role2);
+var executed=parseInt(f.keep);
 if(executed>0){
 for(var c=0;c<claims.length;c++){
 var reporter=claims[c][1],target=claims[c][2],result=claims[c][3];
@@ -104,7 +104,7 @@ f.jump=(parseInt(f.role)===12)?1:2;
 *knight_back
 
 [tb_show_message_window  ]
-[tb_eval  exp="f.role2=f.target"  name="role2"  cmd="="  op="h"  val="target"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=f.target"  name="keep"  cmd="="  op="h"  val="target"  val_2="undefined"  ]
 [jump  storage="night.ks"  target="*knight_end"  ]
 *knight_ai
 
@@ -141,7 +141,7 @@ r-=weights[k];
 if(r<0){picked=cands[k];break;}
 }
 f.target=cands.length>0?picked:0;
-f.role2=f.target;
+f.keep=f.target;
 [endscript]
 
 *knight_end
@@ -235,8 +235,8 @@ f.target=target;
 // 現在値0(不明)→3(人間)、1(嘘つき)→9(狂人確定、嘘つき+人狼でないので狂人確定)、2(正直)→2のまま、5以上(確定値)→変更なし
 var n=parseInt(f.gamemode);
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
-if(parseInt(f.target)===parseInt(f.role2)){
-f.role2="skip";
+if(parseInt(f.target)===parseInt(f.keep)){
+f.judge="skip";
 var roles=String(f.character).split(",").map(Number);
 var knightNum=0;
 for(var i=1;i<=n;i++){if(roles[i-1]===12){knightNum=i;break;}}
@@ -256,7 +256,7 @@ f.liar=lr.join(",");
 }
 [endscript]
 
-[jump  storage="night.ks"  target="*morning"  cond="f.role2=='skip'"  ]
+[jump  storage="night.ks"  target="*morning"  cond="f.judge=='skip'"  ]
 [jump  storage="system.ks"  target="*death"  cond=""  ]
 *morning
 
@@ -265,7 +265,7 @@ f.liar=lr.join(",");
 [tb_show_message_window  ]
 [mask_off  time="300"  effect="fadeOut"  ]
 [call  storage="UI.ks"  target="*name_change"  ]
-[jump  storage="night.ks"  target="*morning_no_kill"  cond="f.role2=='skip'"  ]
+[jump  storage="night.ks"  target="*morning_no_kill"  cond="f.judge=='skip'"  ]
 *liar_attack
 
 [iscript]
@@ -286,8 +286,8 @@ var res=[];
 for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}
 return res;
 }
-// 襲撃失敗（護衛成功でrole2='skip'）ならここには来ない想定だが、念のため二重ガード
-if(f.role2!=='skip'){
+// 襲撃失敗（護衛成功でjudge='skip'）ならここには来ない想定だが、念のため二重ガード
+if(f.judge!=='skip'){
 // ===== ①襲撃トリガー：襲撃対象を人狼と報告していた占い師は嘘つき確定 =====
 // （人狼は仲間を襲撃対象に選ばない仕様（list_judge/ai_wolf双方で人狼同士を除外済み）なので、
 //   襲撃された時点で対象が人狼でないことはモード問わず確定する）

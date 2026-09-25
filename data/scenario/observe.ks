@@ -11,7 +11,7 @@ var lr=String(f.liar).split(",");
 var charArr=String(f.character).split(",");
 var calmArr=String(f.calm).split(",");
 var playerNum=parseInt(f.player);
-f.ai_result=0;
+f.judge=0;
 f.target=0;
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function isWolfTeam(role){return role<10;}
@@ -59,7 +59,7 @@ var rt=(df/2+pw/5)/100;
 if(Math.random()<rt){
 setLiar(li2);
 dt=true;
-if(ob===playerNum){f.target=tg;f.ai_result=1;}
+if(ob===playerNum){f.target=tg;f.judge=1;}
 }else{lk[li2]=parseInt(lk[li2])+10;}
 }
 }
@@ -67,7 +67,7 @@ f.like=lk.join(",");
 f.liar=lr.join(",");
 [endscript]
 
-[jump  storage="observe.ks"  target="*end"  cond="f.ai_result==0"  ]
+[jump  storage="observe.ks"  target="*end"  cond="f.judge==0"  ]
 [jump  storage="observe.ks"  target="*liar"  ]
 *end
 

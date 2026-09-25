@@ -38,17 +38,17 @@ totalW += baseW[c] * mult;
 }
 var r = Math.random() * totalW;
 var cum = 0;
-f.ai_actor = cands[cands.length - 1];
+f.actor = cands[cands.length - 1];
 for(var k = 0; k < cands.length; k++){
 cum += weights[k];
-if(r < cum){ f.ai_actor = cands[k]; break; }
+if(r < cum){ f.actor = cands[k]; break; }
 }
 [endscript]
 
 *command
 
 [iscript]
-var actor = parseInt(f.ai_actor);
+var actor = parseInt(f.actor);
 var p = [0, 2, 0, 0, 2, 1, 1, 2, 2, 0][actor];
 function getRole(i){ return parseInt(String(f.character).split(",")[i-1]); }
 var role = getRole(actor);

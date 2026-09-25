@@ -234,7 +234,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 *CO
 
 [call  storage="tendo.ks"  target="*show2"  ]
-[call  storage="tendo.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="tendo.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="tendo.ks"  target="*tendo_namechange"  ]
 [jump  storage="tendo.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]

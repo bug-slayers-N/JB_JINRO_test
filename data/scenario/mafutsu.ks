@@ -223,7 +223,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[0])<25?1:0;
 *CO
 
 [call  storage="mafutsu.ks"  target="*show2"  ]
-[call  storage="mafutsu.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="mafutsu.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="mafutsu.ks"  target="*show_raku"  ]
 [jump  storage="mafutsu.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]

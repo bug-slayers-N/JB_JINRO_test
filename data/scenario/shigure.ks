@@ -235,7 +235,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[5])<28?1:0;
 
 [call  storage="shigure.ks"  target="*namechange"  ]
 [call  storage="shigure.ks"  target="*show2"  ]
-[call  storage="shigure.ks"  target="*CO2"  cond="f.role2=='co'"  ]
+[call  storage="shigure.ks"  target="*CO2"  cond="f.judge=='co'"  ]
 [call  storage="shigure.ks"  target="*show_ki"  ]
 [jump  storage="shigure.ks"  target="*CO_day1"  cond="f.jump=='day1'"  ]
 [tb_start_tyrano_code]
