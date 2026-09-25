@@ -132,7 +132,7 @@ f.co=coArr.join(",");
 [call  storage="specialist.ks"  target="*seer_add_sclaim"  cond="f.jump==1"  ]
 [call  storage="specialist.ks"  target="*psychic_add_pclaim"  cond="f.jump==2"  ]
 [call  storage="specialist.ks"  target="*fake_seer_player"  cond="f.jump==3"  ]
-[call  storage="specialist.ks"  target="*fake_psychic_player"  cond="f.jump==4"  ]
+[call  storage="specialist.ks"  target="*fake_psychic"  cond="f.jump==4"  ]
 *player_CO_end
 
 [bg  time="500"  method="crossfade"  storage="93853245_p0.png"  ]
@@ -263,7 +263,7 @@ f.co=coArr.join(",");
 [call  storage="specialist.ks"  target="*seer_add_sclaim"  cond="f.jump==1"  ]
 [call  storage="specialist.ks"  target="*psychic_add_pclaim"  cond="f.jump==2"  ]
 [call  storage="specialist.ks"  target="*fake_seer_AI"  cond="f.jump==3"  ]
-[call  storage="specialist.ks"  target="*fake_psychic_AI"  cond="f.jump==4"  ]
+[call  storage="specialist.ks"  target="*fake_psychic"  cond="f.jump==4"  ]
 *AI_CO_end
 
 *CO_characall
