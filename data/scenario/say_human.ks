@@ -2,20 +2,20 @@
 
 *say_human
 
-[tb_eval  exp="f.display07=f.actor"  name="display07"  cmd="="  op="h"  val="actor"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=f.actor"  name="keep"  cmd="="  op="h"  val="actor"  val_2="undefined"  ]
 [tb_eval  exp="f.say_human=1"  name="say_human"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
-[call  storage="mafutsu.ks"  target="*s_human"  cond="f.display07==1"  ]
-[call  storage="sisigami.ks"  target="*s_human"  cond="f.display07==2"  ]
-[call  storage="murasame.ks"  target="*s_human"  cond="f.display07==3"  ]
-[call  storage="kano.ks"  target="*s_human"  cond="f.display07==4"  ]
-[call  storage="tendo.ks"  target="*s_human"  cond="f.display07==5"  ]
-[call  storage="shigure.ks"  target="*s_human"  cond="f.display07==6"  ]
-[call  storage="yamabuki.ks"  target="*s_human"  cond="f.display07==7"  ]
-[call  storage="gato.ks"  target="*s_human"  cond="f.display07==8"  ]
-[call  storage="urushibara.ks"  target="*s_human"  cond="f.display07==9"  ]
+[call  storage="mafutsu.ks"  target="*s_human"  cond="f.keep==1"  ]
+[call  storage="sisigami.ks"  target="*s_human"  cond="f.keep==2"  ]
+[call  storage="murasame.ks"  target="*s_human"  cond="f.keep==3"  ]
+[call  storage="kano.ks"  target="*s_human"  cond="f.keep==4"  ]
+[call  storage="tendo.ks"  target="*s_human"  cond="f.keep==5"  ]
+[call  storage="shigure.ks"  target="*s_human"  cond="f.keep==6"  ]
+[call  storage="yamabuki.ks"  target="*s_human"  cond="f.keep==7"  ]
+[call  storage="gato.ks"  target="*s_human"  cond="f.keep==8"  ]
+[call  storage="urushibara.ks"  target="*s_human"  cond="f.keep==9"  ]
 *p_stop
 
-[jump  storage="say_human.ks"  target="*say_human_lottery"  cond="f.display07==f.player"  ]
+[jump  storage="say_human.ks"  target="*say_human_lottery"  cond="f.keep==f.player"  ]
 [jump  storage="say_human.ks"  target="*say_human_lottery"  cond="f.player_death==1"  ]
 [glink  color="black"  storage="say_human.ks"  size="20"  text="止める"  autopos="true"  target="*p_stop_yes"  ]
 [glink  color="black"  storage="say_human.ks"  size="20"  text="止めない"  autopos="true"  target="*p_stop_no"  ]
@@ -32,14 +32,14 @@
 function getRole(i){return parseInt(String(f.character).split(',')[i-1]);}
 function isAlive(i){return String(f.alive).split(',')[i-1]==='1';}
 var n=parseInt(f.gamemode);
-var caller=parseInt(f.display07);
+var caller=parseInt(f.keep);
 var pn=parseInt(f.player);
 // ①死亡者と発言者を除くキャラを取得
 var pool=[];
 for(var i=1;i<=n;i++){if(i!==caller&&isAlive(i))pool.push(i);}
-// ②ランダムに並び替えてdisplay09に保存
+// ②ランダムに並び替えてkeepに保存
 for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=pool[i];pool[i]=pool[j];pool[j]=tmp;}
-f.display09=pool.join(",");
+f.keep=pool.join(",");
 // ③前から役職・性格に応じた確率でストップ抽選（プレイヤーは「止めない」を選んだので必ず0%）
 f.result=0;
 for(var i=0;i<pool.length;i++){
@@ -119,7 +119,7 @@ f.calm=calmArr.join(',');
 }
 }
 // 今回の位置を決定
-var pool=String(f.display09).split(",");
+var pool=String(f.keep).split(",");
 var n=pool.length;
 if(parseInt(f.jump)>n){
 f.jump="end";
@@ -154,21 +154,21 @@ f.jump="stop";
 [call  storage="yamabuki.ks"  target="*stop"  cond="f.actor==7"  ]
 [call  storage="gato.ks"  target="*stop"  cond="f.actor==8"  ]
 [call  storage="urushibara.ks"  target="*stop"  cond="f.actor==9"  ]
-[call  storage="mafutsu.ks"  target="*stop2"  cond="f.display07==1"  ]
-[call  storage="sisigami.ks"  target="*stop2"  cond="f.display07==2"  ]
-[call  storage="murasame.ks"  target="*stop2"  cond="f.display07==3"  ]
-[call  storage="kano.ks"  target="*stop2"  cond="f.display07==4"  ]
-[call  storage="tendo.ks"  target="*stop2"  cond="f.display07==5"  ]
-[call  storage="shigure.ks"  target="*stop2"  cond="f.display07==6"  ]
-[call  storage="yamabuki.ks"  target="*stop2"  cond="f.display07==7"  ]
-[call  storage="gato.ks"  target="*stop2"  cond="f.display07==8"  ]
-[call  storage="urushibara.ks"  target="*stop2"  cond="f.display07==9"  ]
+[call  storage="mafutsu.ks"  target="*stop2"  cond="f.keep==1"  ]
+[call  storage="sisigami.ks"  target="*stop2"  cond="f.keep==2"  ]
+[call  storage="murasame.ks"  target="*stop2"  cond="f.keep==3"  ]
+[call  storage="kano.ks"  target="*stop2"  cond="f.keep==4"  ]
+[call  storage="tendo.ks"  target="*stop2"  cond="f.keep==5"  ]
+[call  storage="shigure.ks"  target="*stop2"  cond="f.keep==6"  ]
+[call  storage="yamabuki.ks"  target="*stop2"  cond="f.keep==7"  ]
+[call  storage="gato.ks"  target="*stop2"  cond="f.keep==8"  ]
+[call  storage="urushibara.ks"  target="*stop2"  cond="f.keep==9"  ]
 [iscript]
 function addCalm(i,val){var arr=String(f.calm).split(',');arr[i-1]=String(parseFloat(arr[i-1])+val);f.calm=arr.join(',');}
 // かんたんモード補正（人間と言えはプレイヤー起因のためEzmode1では減衰させない）
 var counterDamage=(parseInt(f.Ezmode)===2)?-30:-15;
 addCalm(parseInt(f.actor),counterDamage);
-addCalm(parseInt(f.display07),counterDamage);
+addCalm(parseInt(f.keep),counterDamage);
 [endscript]
 
 [jump  storage="say_human.ks"  target="*end"  ]

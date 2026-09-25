@@ -130,7 +130,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
-[jump  storage="murasame.ks"  target="*add"  cond="f.display08=='add'"  ]
+[jump  storage="murasame.ks"  target="*add"  cond="f.judge=='add'"  ]
 [call  storage="murasame.ks"  target="*show"  ]
 *doubt3
 
@@ -189,7 +189,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[2])<27?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
-[jump  storage="murasame.ks"  target="*add"  cond="f.display08=='add'"  ]
+[jump  storage="murasame.ks"  target="*add"  cond="f.judge=='add'"  ]
 [chara_hide_all  time="0"  wait="true"  ]
 [call  storage="murasame.ks"  target="*show"  ]
 *cover3

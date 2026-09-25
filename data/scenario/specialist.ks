@@ -222,11 +222,11 @@ f.display01=(parseInt(f.actor)===parseInt(f.player))?1:0;
 [s  ]
 *fake_seer_player_human
 
-[tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=0"  name="keep"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [jump  storage="specialist.ks"  target="*fake_seer_end"  ]
 *fake_seer_player_wolf
 
-[tb_eval  exp="f.display01=1"  name="display01"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=1"  name="keep"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
 [jump  storage="specialist.ks"  target="*fake_seer_end"  ]
 *fake_seer_AI
 
@@ -302,7 +302,7 @@ res=9;
 }
 }
 f.target=t;
-f.display01=res;
+f.keep=res;
 [endscript]
 
 *fake_seer_end
@@ -352,7 +352,7 @@ var bt=safeCands.length>0?safeCands[Math.floor(Math.random()*safeCands.length)]:
 addSclaimRaw(d,actor,bt,0);
 }
 }
-addSclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.display01));
+addSclaimRaw(mainDay,actor,parseInt(f.target),parseInt(f.keep));
 [endscript]
 
 [return  ]
@@ -388,15 +388,15 @@ f.display01=(parseInt(f.actor)===parseInt(f.player))?1:0;
 [s  ]
 *fake_psychic_player_human
 
-[tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=0"  name="keep"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [jump  storage="specialist.ks"  target="*fake_psychic_end"  ]
 *fake_psychic_player_wolf
 
-[tb_eval  exp="f.display01=1"  name="display01"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=1"  name="keep"  cmd="="  op="t"  val="1"  val_2="undefined"  ]
 [jump  storage="specialist.ks"  target="*fake_psychic_end"  ]
 *fake_psychic_none
 
-[tb_eval  exp="f.display01=0"  name="display01"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[tb_eval  exp="f.keep=0"  name="keep"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [jump  storage="specialist.ks"  target="*fake_psychic_end"  ]
 *fake_psychic_AI
 
@@ -461,7 +461,7 @@ res=0;
 // 狂人：キャップなし。自分視点でliar=4(囮指定)なら人狼、それ以外は人間
 res=(getLiar(actor,dead)===4)?1:0;
 }
-f.display01=res;
+f.keep=res;
 [endscript]
 
 *fake_psychic_end
@@ -516,9 +516,9 @@ addPclaimRaw(d,actor,pastTarget,pastResult);
 }
 }
 // 今回分(mainDay)：対象者はpsychic_resultの実際の処刑対象から取得
-// 結果はf.display01(既に決定済みの人間/人狼の偽結果)をそのまま転記
+// 結果はf.keep(既に決定済みの人間/人狼の偽結果)をそのまま転記
 var mainTarget=(mainDay>=1 && presults[mainDay-1]) ? presults[mainDay-1][0] : 0;
-addPclaimRaw(mainDay, actor, mainTarget, parseInt(f.display01));
+addPclaimRaw(mainDay, actor, mainTarget, parseInt(f.keep));
 [endscript]
 
 [return  ]

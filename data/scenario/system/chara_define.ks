@@ -24,7 +24,6 @@
 [iscript] 
 f['player']=1; 
 f['role']=1; 
-f['role2']=1; 
 f['target']=1; 
 f['say_human']=0; 
 f['turn']=0; 
@@ -33,11 +32,6 @@ f['co']='0,0,0,0,0';
 f['like']='10,0,0,0,0,30,0,0,0,30,0,0,0,10,0,0,0,10,0,0'; 
 f['liar']='0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0'; 
 f['dead']=0; 
-f['vote_result']=0; 
-f['revote']=0; 
-f['ai_actor']=0; 
-f['ai_command']=0; 
-f['ai_result']=0; 
 f['votes']='0,0,0,0,0,0'; 
 f['name']='真経津'; 
 f['jump']=0; 
@@ -64,8 +58,10 @@ f['display08']=0;
 f['display09']=0; 
 f['calm_low']=0; 
 f['seer_result']=0; 
-f['suspect']='0,0,0,0,0,0,0,0,0,0'; 
 f['psychic_result']=0; 
 f['sclaim']=0; 
 f['pclaim']=0; 
+f['keep']=0; 
+f['actor']=0; 
+f['judge']=0; 
 [endscript] 

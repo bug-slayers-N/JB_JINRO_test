@@ -12,8 +12,6 @@
 [call  storage="specialist.ks"  target="*uranai_randam"  ]
 [call  storage="specialist.ks"  target="*game_start"  cond="f.role==10"  ]
 [iscript]
-// ===== 人狼の初期認識：人狼同士のliarを相互に確定(5)としてセット =====
-// モードに依存しない（5人モードは人狼が1人のため対象ペアが存在せず、ループは何もしない）
 (function(){
 var n=parseInt(f.gamemode);
 function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
@@ -72,6 +70,7 @@ f.result=0;
 f.target=0;
 f.actor=0;
 f.judge=0;
+f.keep=0;
 f.name2="";
 f.win=0;
 f.display01=0;
@@ -98,17 +97,17 @@ f.display09="";
 *push_done
 
 [call  storage="debate.ks"  target="*CO_judge"  ]
-[jump  storage="debate.ks"  target="*pCO_list"  cond="f.display02==1"  ]
+[jump  storage="debate.ks"  target="*pCO_list"  cond="f.judge==1"  ]
 [glink  color="btn_08_purple"  storage="debate.ks"  size="20"  text="COを求める"  x="300"  y="200"  width="150"  height=""  _clickable_img=""  target="*plz_CO"  ]
 *pCO_list
 
 [call  storage="debate.ks"  target="*CO_judge"  ]
-[jump  storage="debate.ks"  target="*CO_list"  cond="f.display02==1"  ]
+[jump  storage="debate.ks"  target="*CO_list"  cond="f.judge==1"  ]
 [glink  color="btn_08_blue"  storage="debate.ks"  size="20"  text="COする"  x="300"  y="50"  width="150"  height=""  _clickable_img=""  target="*CO"  ]
 *CO_list
 
 [call  storage="debate.ks"  target="*CO_judge"  ]
-[jump  storage="debate.ks"  target="*fake_CO_list"  cond="f.display02==1"  ]
+[jump  storage="debate.ks"  target="*fake_CO_list"  cond="f.judge==1"  ]
 [jump  storage="debate.ks"  target="*fake_CO_list"  cond="f.role>'9.5'"  ]
 [glink  color="btn_08_black"  storage="debate.ks"  size="20"  text="偽COする"  x="300"  y="125"  width="150"  height=""  _clickable_img=""  target="*fake_CO"  ]
 *fake_CO_list
@@ -250,10 +249,10 @@ f.result=coArr2.some(function(v){return v!=="0";})?0:1;
 
 [jump  storage="debate.ks"  target="*0CO"  cond="f.result==1"  ]
 [tb_start_text mode=1 ]
-[emb exp="f.display02"]
-[jump  storage="debate.ks"  target="*debate_claim_join_skip"  cond="f.display02==''||f.display03==''"  ]
-[r]
-*debate_claim_join_skip
+[emb exp="f.display02"][p]
+[jump  storage="debate.ks"  target="*debate_claim_join_skip"  cond="f.display02==''||f.display03==''"  ][p]
+[r][p]
+*debate_claim_join_skip[p]
 
 [emb exp="f.display03"][p]
 
@@ -271,7 +270,7 @@ f.result=coArr2.some(function(v){return v!=="0";})?0:1;
 [return  ]
 *CO_judge
 
-[tb_eval  exp="f.display01+=1"  name="display01"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
+[tb_eval  exp="f.keep+=1"  name="keep"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
 [iscript]
 function getCO(c){return parseInt(String(f.co).split(',')[c-1]);}
 var gm = parseInt(f.gamemode);
@@ -279,24 +278,24 @@ var coArr = String(f.co).split(',');
 var has1 = coArr.indexOf('1') !== -1;
 var has2 = coArr.indexOf('2') !== -1;
 var role = parseInt(f.role);
-var d1 = parseInt(f.display01);
+var d1 = parseInt(f.keep);
 if(d1 === 1){
 var cond = (gm === 5 && has1) || (gm === 9 && has1 && has2);
-f.display02 = cond ? 1 : 0;
+f.judge = cond ? 1 : 0;
 }else if(d1 === 2){
 if(role === 10 && has1){
-f.display02 = 1;
+f.judge = 1;
 }else if(role === 11 && has2){
-f.display02 = 1;
+f.judge = 1;
 }else if(role !== 10 && role !== 11){
-f.display02 = 1;
+f.judge = 1;
 }else{
-f.display02 = 0;
+f.judge = 0;
 }
 }else if(d1 === 3){
 var condA = (gm === 5 && has1) || (gm === 9 && has1 && has2);
 var condB = getCO(parseInt(f.player)) !== 0;
-f.display02 = (condA || condB) ? 1 : 0;
+f.judge = (condA || condB) ? 1 : 0;
 }
 [endscript]
 

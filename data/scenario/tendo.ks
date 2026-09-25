@@ -138,7 +138,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [jump  storage="doubt.ks"  target="*doubt"  ]
 *doubt2
 
-[jump  storage="tendo.ks"  target="*add"  cond="f.display08=='add'"  ]
+[jump  storage="tendo.ks"  target="*add"  cond="f.judge=='add'"  ]
 [call  storage="tendo.ks"  target="*show"  ]
 *doubt3
 
@@ -198,7 +198,7 @@ f.calm_low=parseFloat(String(f.calm).split(',')[4])<30?1:0;
 [jump  storage="cover.ks"  target="*cover"  ]
 *cover2
 
-[jump  storage="tendo.ks"  target="*add"  cond="f.display08=='add'"  ]
+[jump  storage="tendo.ks"  target="*add"  cond="f.judge=='add'"  ]
 [call  storage="tendo.ks"  target="*show"  ]
 *cover3
 
