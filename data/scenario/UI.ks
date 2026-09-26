@@ -330,11 +330,26 @@ return label+"の結果報告は次の通りです。"+blocks.join("");
 }
 f.display02=buildClaimText("s");
 f.display03=buildClaimText("p");
-f.judge=(f.display02!==""||f.display03!=="")?1:0;
+// 9人モード以上でプレイヤーが人狼陣営（役職<=5）の場合、仲間の人狼名を状況確認に追加表示する
+f.display01="";
+if(parseInt(f.gamemode)>=9&&parseInt(f.role)<=5){
+var charArr=String(f.character).split(",");
+var wolfNames=[];
+for(var w=0;w<charArr.length;w++){
+if(w+1===parseInt(f.player))continue;
+if(parseInt(charArr[w])<=5)wolfNames.push(charNames[w+1]);
+}
+if(wolfNames.length>0)f.display01="仲間の人狼→"+wolfNames.join("、");
+}
 [endscript]
 
 [tb_show_message_window  ]
-[jump  storage="UI.ks"  target="*check_report_skip"  cond="f.judge==0"  ]
+[jump  storage="UI.ks"  target="*check_wolf_skip"  cond="f.display01==''"  ]
+[emb exp="f.display01"][p]
+
+*check_wolf_skip
+
+[jump  storage="UI.ks"  target="*check_report_skip"  cond="f.display02=='' && f.display03==''"  ]
 
 [emb exp="f.display02"]
 [jump  storage="UI.ks"  target="*check_claim_join_skip"  cond="f.display02==''||f.display03==''"  ]

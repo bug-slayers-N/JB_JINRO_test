@@ -40,7 +40,7 @@ if(t===ob)continue;
 if(al[t-1]==="0")continue;
 var li=gi(ob,t);
 var lv=parseInt(lr[li]);
-if(lv!==0&&lv!==2)continue;
+if(lv!==0&&lv!==3)continue;
 var pc=getCalm(t)+parseInt(lk[li]);
 pl.push({target:t,perceived:pc});
 }
@@ -53,14 +53,18 @@ var tg=ot[i].target;
 var li2=gi(ob,tg);
 var df=pw-ot[i].perceived;
 if(df<=0){lk[li2]=parseInt(lk[li2])+10;continue;}
-var tr=parseInt(charArr[tg-1]);
-if(!isWolfTeam(tr)){lk[li2]=parseInt(lk[li2])+10;continue;}
 var rt=(df/2+pw/5)/100;
+var tr=parseInt(charArr[tg-1]);
+if(isWolfTeam(tr)){
 if(Math.random()<rt){
 setLiar(li2);
 dt=true;
 if(ob===playerNum){f.target=tg;f.judge=1;}
 }else{lk[li2]=parseInt(lk[li2])+10;}
+}else{
+if(rt>=1){lk[li2]=parseInt(lk[li2])+120;}
+else{lk[li2]=parseInt(lk[li2])+10;}
+}
 }
 }
 f.like=lk.join(",");

@@ -233,12 +233,27 @@ return label+"の結果報告は次の通りです。"+blocks.join("");
 }
 f.display02=buildClaimText("s");
 f.display03=buildClaimText("p");
+// 9人モード以上でプレイヤーが人狼陣営（役職<=5）の場合、仲間の人狼名を状況確認に追加表示する
+f.display01="";
+if(parseInt(f.gamemode)>=9&&parseInt(f.role)<=5){
+var charArr=String(f.character).split(",");
+var wolfNames=[];
+for(var w=0;w<charArr.length;w++){
+if(w+1===parseInt(f.player))continue;
+if(parseInt(charArr[w])<=5)wolfNames.push(charNames[w+1]);
+}
+if(wolfNames.length>0)f.display01="仲間の人狼→"+wolfNames.join("、");
+}
 [endscript]
 
 [tb_start_text mode=1 ]
 #システム
 残りの生存者は[emb exp="f.result"]です。[p]
 
+[jump  storage="debate.ks"  target="*check_wolf_skip"  cond="f.display01==''"  ]
+[emb exp="f.display01"][p]
+
+*check_wolf_skip
 
 [_tb_end_text]
 

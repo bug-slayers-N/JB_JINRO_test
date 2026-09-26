@@ -109,17 +109,24 @@ f.jump=(parseInt(f.role)===12)?1:2;
 *knight_ai
 
 [iscript]
-// AIが騎士を担う場合：自分以外の生存者から護衛対象を選ぶ（listAの自己除外と同じ条件）
+// AIが騎士を担う場合：死亡者／騎士自身／騎士視点のliarが1(嘘つき)・5(人狼確定)・9(狂人確定)のキャラを除外して護衛対象を選ぶ
+// （人間プレイヤーは無条件除外にはしない。liar1/5/9に該当すればその条件で結果的に除外される）
 // 占い師CO済みキャラは当選確率7倍。CO済みが2人以上いる場合は平常心(calm)が最も高い1人のみ7倍とする。
 var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var coArr=String(f.co).split(",");
 var calmArr=String(f.calm).split(",");
-var playerNum=parseInt(f.player);
+var roles=String(f.character).split(",").map(Number);
+var knightNum=0;
+for(var i=1;i<=n;i++){if(roles[i-1]===12){knightNum=i;break;}}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+function getLiar(b){return parseInt(String(f.liar).split(',')[gi(knightNum,b)]);}
 var cands=[];
 for(var i=1;i<=n;i++){
-if(i===playerNum)continue;
+if(i===knightNum)continue;
 if(aliveArr[i-1]==="0")continue;
+var lv=getLiar(i);
+if(lv===1||lv===5||lv===9)continue;
 cands.push(i);
 }
 var coCands=cands.filter(function(c){return coArr[c-1]==="1";});

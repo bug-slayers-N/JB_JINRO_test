@@ -524,6 +524,14 @@ var n = parseInt(f.gamemode);
 var coArr = String(f.co).split(",");
 var aliveArr = String(f.alive).split(",");
 var result = parseInt(f.result);
+// ===== 複数人CO時のペナルティ：同じ役職でCOしている全員に「人数×10」の平常心ダメージ =====
+function addCalm(i,val){var arr=String(f.calm).split(',');arr[i-1]=String(parseFloat(arr[i-1])+val);f.calm=arr.join(',');}
+var coCount = coArr.filter(function(c){return c === String(result);}).length;
+for(var ci = 1; ci <= n; ci++){
+if(coArr[ci-1] === String(result)){
+addCalm(ci, -coCount*10);
+}
+}
 var cands = [];
 for(var i = 1; i <= n; i++){
 if(aliveArr[i-1] !== "1") continue;
