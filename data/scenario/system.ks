@@ -200,7 +200,23 @@ if(t===obs)continue;
 if(getLiar(obs,t)===1)setLiar(gi(obs,t),5);
 }
 }
-// ---陣営人数確定による残りメンバーの人間確定：1・5・9の合計がgm5=2/gm9=3に到達したら、残りの0/2/3を2に（4以上は不可侵）---
+// ---人狼頭数確定による残りメンバーの仮人間化：人狼(5)確定数がgm5=1/gm9=2に到達したら、残りの0を3に、1(嘘つき)は人狼が出尽くした以上狂人と特定できるので9に---
+var wolfQuotaTarget=(n===5)?1:2;
+for(var obs=1;obs<=n;obs++){
+var wolfCount=0;
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
+if(getLiar(obs,t)===5)wolfCount++;
+}
+if(wolfCount<wolfQuotaTarget)continue;
+for(var t=1;t<=n;t++){
+if(t===obs)continue;
+var v=getLiar(obs,t);
+if(v===0)setLiar(gi(obs,t),3);
+if(v===1)setLiar(gi(obs,t),9);
+}
+}
+// ---陣営人数確定による残りメンバーの人間確定：1・5・9の合計がgm5=2/gm9=3に到達したら、残りの0/3を2に（4以上は不可侵）---
 var campCountTarget=(n===5)?2:3;
 for(var obs=1;obs<=n;obs++){
 var campCount=0;
@@ -213,7 +229,7 @@ if(campCount<campCountTarget)continue;
 for(var t=1;t<=n;t++){
 if(t===obs)continue;
 var v=getLiar(obs,t);
-if(v===0||v===2||v===3)setLiar(gi(obs,t),2);
+if(v===0||v===3)setLiar(gi(obs,t),2);
 }
 }
 // ===================================================
@@ -244,8 +260,10 @@ setLiar(gi(w,reporter),9);
 }
 // ---収束ループ（観測者ごとの主観推論を4回まわして収束させる）---
 for(var loop=0;loop<4;loop++){
-// 嘘つき(1)発見→無条件で狂人(9)
+// 嘘つき(1)発見→無条件で狂人(9)　※人狼視点のみ有効。人狼は味方を初期認識済みなので、未知の嘘つきは狂人と断定できるが、
+// それ以外の視点（村人・占い師・霊媒師・騎士）は嘘つきが人狼側か狂人側か区別できないため対象外とする
 for(var obs=1;obs<=n;obs++){
+if(getRole(obs)>5)continue;
 for(var t=1;t<=n;t++){
 if(t===obs)continue;
 if(getLiar(obs,t)===1)setLiar(gi(obs,t),9);

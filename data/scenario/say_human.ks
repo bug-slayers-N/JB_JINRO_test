@@ -37,9 +37,9 @@ var pn=parseInt(f.player);
 // ①死亡者と発言者を除くキャラを取得
 var pool=[];
 for(var i=1;i<=n;i++){if(i!==caller&&isAlive(i))pool.push(i);}
-// ②ランダムに並び替えてkeepに保存
+// ②ランダムに並び替えてjudgeに保存（f.keepは呼びかけ人IDの退避用として最後まで温存する。f.judgeはこのシーンで未使用のため流用）
 for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=pool[i];pool[i]=pool[j];pool[j]=tmp;}
-f.keep=pool.join(",");
+f.judge=pool.join(",");
 // ③前から役職・性格に応じた確率でストップ抽選（プレイヤーは「止めない」を選んだので必ず0%）
 f.result=0;
 for(var i=0;i<pool.length;i++){
@@ -119,7 +119,7 @@ f.calm=calmArr.join(',');
 }
 }
 // 今回の位置を決定
-var pool=String(f.keep).split(",");
+var pool=String(f.judge).split(",");
 var n=pool.length;
 if(parseInt(f.jump)>n){
 f.jump="end";

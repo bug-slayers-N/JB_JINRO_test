@@ -106,6 +106,8 @@ for(var i=0;i<charArr.length;i++){
 if(parseInt(charArr[i])===10){seerChar=i+1;break;}
 }
 if(seerChar>0){
+var n=parseInt(f.gamemode);
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 // seer_resultを取得 [[target,result],...]（添字0=0日目=最初のランダム占い,添字1=1日目...）
 function getSeerResults(){
 if(String(f.seer_result)==="0")return [];
@@ -138,6 +140,16 @@ if(!exists){
 var entry=day+","+seerChar+","+target+","+result;
 if(String(f.sclaim)==="0"){f.sclaim=entry;}
 else{f.sclaim=f.sclaim+","+entry;}
+// 占い結果報告による好感度・平常心の変動（X=target→A=seerCharの好感度、Xの平常心）。候補切れダミー(target=9,result=9)は対象外
+if(target>0&&target!==seerChar&&!(target===9&&result===9)){
+var lk=String(f.like).split(',');
+var likeIdx=gi(target,seerChar);
+lk[likeIdx]=String(parseInt(lk[likeIdx])+(result===1?-20:20));
+f.like=lk.join(',');
+var calmArr=String(f.calm).split(',');
+calmArr[target-1]=String(parseFloat(calmArr[target-1])+(result===1?-15:15));
+f.calm=calmArr.join(',');
+}
 }
 }
 }
@@ -332,6 +344,16 @@ if(parseInt(lr[idx])<5){
 lr[idx]=(result===1)?"4":"3";
 f.liar=lr.join(',');
 }
+}
+// 占い結果報告による好感度・平常心の変動（X=target→A=reporterの好感度、Xの平常心）。候補切れダミー(target=9,result=9)は対象外
+if(target>0&&target!==reporter&&!(target===9&&result===9)){
+var lk=String(f.like).split(',');
+var likeIdx=gi(target,reporter);
+lk[likeIdx]=String(parseInt(lk[likeIdx])+(result===1?-20:20));
+f.like=lk.join(',');
+var calmArr=String(f.calm).split(',');
+calmArr[target-1]=String(parseFloat(calmArr[target-1])+(result===1?-15:15));
+f.calm=calmArr.join(',');
 }
 }
 var sclaimArr=getSclaim();

@@ -36,6 +36,7 @@ f.result = turn>=threshold ? 1 : 0;
 [tb_eval  exp="f.turn=0"  name="turn"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [tb_eval  exp="f.day+=1"  name="day"  cmd="+="  op="t"  val="1"  val_2="undefined"  ]
 [tb_eval  exp="f.action=0"  name="action"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
+[tb_eval  exp="f.judge=0"  name="judge"  cmd="="  op="t"  val="0"  val_2="undefined"  ]
 [jump  storage="vote.ks"  target="*player_vote_end"  cond="f.player_death==1"  ]
 [jump  storage="mafutsu.ks"  target="*vote"  cond="f.player==1"  ]
 [jump  storage="sisigami.ks"  target="*vote"  cond="f.player==2"  ]

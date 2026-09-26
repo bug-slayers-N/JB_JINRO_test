@@ -75,6 +75,7 @@ var actorNum=parseInt(f.actor);
 var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
 var lk=String(f.like).split(",");
+var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
 function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
 function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
@@ -84,27 +85,40 @@ function getCalm(num){return parseFloat(calmArr[num-1]);}
 function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function isAlive(i){return aliveArr[i-1]==="1";}
 function reportedWolf(actor,c){
-// 全sclaimエントリを走査し、最新分だけでなく過去のいずれかで
-// c(候補)がactor(行動主=人狼)を人狼だと申告していれば除外対象にする
+// sclaimの全履歴を走査し、いずれかでc(候補)がactor(行動主=人狼)を人狼だと申告していれば除外対象にする（pclaimは見ない）
 var scList=getClaimList(f.sclaim);
 for(var k=0;k<scList.length;k++){
 if(scList[k][1]===c&&scList[k][2]===actor&&scList[k][3]===1)return true;
 }
-var pc=latestClaimBy(getClaimList(f.pclaim),c);
-if(pc&&pc[2]===actor&&pc[3]===1)return true;
 return false;
+}
+function isUnanimousSafe(t){
+for(var obs=1;obs<=n;obs++){
+if(obs===t)continue;
+if(!isAlive(obs))continue;
+var v=parseInt(lr[gi(obs,t)]);
+if(!(v===2||v>=10))return false;
+}
+return true;
 }
 var actorCO=coArr[actorNum-1]!=="0";
 var candidates=[];
 for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i)||reportedWolf(actorNum,i))continue;
 if(actorCO&&coArr[i-1]!=="0")continue;
+if(isUnanimousSafe(i))continue;
 candidates.push(i);
 }
 candidates.sort(function(a,b){var d=getPC(actorNum,b)-getPC(actorNum,a);return d!==0?d:a-b;});
+var aliveCount=0;
+for(var i=1;i<=n;i++){if(isAlive(i))aliveCount++;}
+if(aliveCount<=4){
+f.target=candidates.length>0?candidates[0]:0;
+}else{
 var topN=Math.ceil(candidates.length*0.5);
 var pool=candidates.slice(0,topN);
 f.target=pool.length>0?pool[Math.floor(Math.random()*pool.length)]:0;
+}
 [endscript]
 
 [jump  storage="cover.ks"  target="*back"  cond="f.target==0"  ]
@@ -116,9 +130,11 @@ f.target=pool.length>0?pool[Math.floor(Math.random()*pool.length)]:0;
 var actorNum=parseInt(f.actor);
 var n=parseInt(f.gamemode);
 var aliveArr=String(f.alive).split(",");
+var lr=String(f.liar).split(",");
 var coArr=String(f.co).split(",");
 function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_var).split(',');var res=[];for(var i=0;i<arr.length;i+=4){res.push([parseInt(arr[i]),parseInt(arr[i+1]),parseInt(arr[i+2]),parseInt(arr[i+3])]);}return res;}
 function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 var actorCO=coArr[actorNum-1]!=="0";
 function isAlive(i){return aliveArr[i-1]==="1";}
 function reportedWolf(seer,target){
@@ -128,10 +144,20 @@ if(sc&&sc[2]===target&&sc[3]===1)return true;
 if(pc&&pc[2]===target&&pc[3]===1)return true;
 return false;
 }
+function isUnanimousSafe(t){
+for(var obs=1;obs<=n;obs++){
+if(obs===t)continue;
+if(!isAlive(obs))continue;
+var v=parseInt(lr[gi(obs,t)]);
+if(!(v===2||v>=10))return false;
+}
+return true;
+}
 function isExcluded(i){
 if(i===actorNum||!isAlive(i))return true;
 if(reportedWolf(i,actorNum)||reportedWolf(actorNum,i))return true;
 if(actorCO&&coArr[i-1]!=="0")return true;
+if(isUnanimousSafe(i))return true;
 return false;
 }
 if(Math.random()>=0.5){
@@ -170,13 +196,22 @@ var calmArr=String(f.calm).split(",");
 function getCalm(num){var v=parseFloat(calmArr[num-1]);if(num===6&&isAlive(7))v*=1.1;if(num===7&&isAlive(6))v*=1.1;if(num===9&&isAlive(8))v*=1.4;return v;}
 function getPC(actor,tgt){return getCalm(tgt)+getLike(actor,tgt);}
 function getSeerResultList(){if(String(f.seer_result)==="0")return [];var arr=String(f.seer_result).split(',');var res=[];for(var i=0;i<arr.length;i+=2){res.push([parseInt(arr[i]),parseInt(arr[i+1])]);}return res;}
+function isUnanimousSafe(t){
+for(var obs=1;obs<=n;obs++){
+if(obs===t)continue;
+if(!isAlive(obs))continue;
+var v=getLiar(obs,t);
+if(!(v===2||v>=10))return false;
+}
+return true;
+}
 var target=0;
-// ①本物の占い結果で「人間」と出ている＋生存＋未CO のキャラからランダム
+// ①本物の占い結果で「人間」と出ている＋生存＋未CO＋共通除外に該当しない のキャラからランダム
 var seerResults=getSeerResultList();
 var step1=[];
 for(var si=0;si<seerResults.length;si++){
 var srTgt=seerResults[si][0],srRes=seerResults[si][1];
-if(srRes===0&&isAlive(srTgt)&&srTgt!==actorNum&&!hasCO(srTgt))step1.push(srTgt);
+if(srRes===0&&isAlive(srTgt)&&srTgt!==actorNum&&!hasCO(srTgt)&&!isUnanimousSafe(srTgt))step1.push(srTgt);
 }
 if(step1.length>0){
 target=step1[Math.floor(Math.random()*step1.length)];
@@ -187,6 +222,7 @@ if(target===0){
 var step2=[];
 for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i))continue;
+if(isUnanimousSafe(i))continue;
 if(getLiar(actorNum,i)<10)continue;
 var knownByAll=true;
 for(var j=1;j<=n;j++){
@@ -199,19 +235,27 @@ if(step2.length>0){
 target=step2[Math.floor(Math.random()*step2.length)];
 }
 }
-// ③本人視点のliarが0・2・3のキャラのうち、知覚平常心（平常心＋好感度）上位50%からランダム
+// ③本人視点のliarが2（正直）のキャラがいれば、その中から完全ランダムで先に当選を決める。
+// いなければ本人視点のliarが0・3のキャラのうち、知覚平常心（平常心＋好感度）上位50%からランダム
 if(target===0){
 var step3=[];
+var step3_liar2=[];
 for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i))continue;
+if(isUnanimousSafe(i))continue;
 var lv=getLiar(actorNum,i);
-if(lv===0||lv===2||lv===3)step3.push(i);
+if(lv===2){step3_liar2.push(i);}
+else if(lv===0||lv===3){step3.push(i);}
 }
+if(step3_liar2.length>0){
+target=step3_liar2[Math.floor(Math.random()*step3_liar2.length)];
+}else{
 step3.sort(function(a,b){var d=getPC(actorNum,b)-getPC(actorNum,a);return d!==0?d:a-b;});
 var topN=Math.ceil(step3.length*0.5);
 var pool=step3.slice(0,topN);
 if(pool.length>0){
 target=pool[Math.floor(Math.random()*pool.length)];
+}
 }
 }
 // ④ここまでで決まらなければtarget=0のまま
@@ -235,12 +279,22 @@ function getLike(a,b){return parseInt(lk[gi(a,b)]);}
 var calmArr=String(f.calm).split(",");
 function getCalm(num){var v=parseFloat(calmArr[num-1]);if(num===6&&isAlive(7))v*=1.1;if(num===7&&isAlive(6))v*=1.1;if(num===9&&isAlive(8))v*=1.4;return v;}
 function getPC(actor,tgt){return getCalm(tgt)+getLike(actor,tgt);}
+function isUnanimousSafe(t){
+for(var obs=1;obs<=n;obs++){
+if(obs===t)continue;
+if(!isAlive(obs))continue;
+var v=getLiar(obs,t);
+if(!(v===2||v>=10))return false;
+}
+return true;
+}
 var target=0;
 // ②本人視点のliarが10以上（役職確定・村人陣営側）だが、
 // 他の生存者の少なくとも1人はまだliar10未満（＝共通認識にはなっていない）のキャラからランダム
 var step2=[];
 for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i))continue;
+if(isUnanimousSafe(i))continue;
 if(getLiar(actorNum,i)<10)continue;
 var knownByAll=true;
 for(var j=1;j<=n;j++){
@@ -252,19 +306,27 @@ if(!knownByAll)step2.push(i);
 if(step2.length>0){
 target=step2[Math.floor(Math.random()*step2.length)];
 }
-// ③本人視点のliarが0・2・3のキャラのうち、知覚平常心（平常心＋好感度）上位50%からランダム
+// ③本人視点のliarが2（正直）のキャラがいれば、その中から完全ランダムで先に当選を決める。
+// いなければ本人視点のliarが0・3のキャラのうち、知覚平常心（平常心＋好感度）上位50%からランダム
 if(target===0){
 var step3=[];
+var step3_liar2=[];
 for(var i=1;i<=n;i++){
 if(i===actorNum||!isAlive(i))continue;
+if(isUnanimousSafe(i))continue;
 var lv=getLiar(actorNum,i);
-if(lv===0||lv===2||lv===3)step3.push(i);
+if(lv===2){step3_liar2.push(i);}
+else if(lv===0||lv===3){step3.push(i);}
 }
+if(step3_liar2.length>0){
+target=step3_liar2[Math.floor(Math.random()*step3_liar2.length)];
+}else{
 step3.sort(function(a,b){var d=getPC(actorNum,b)-getPC(actorNum,a);return d!==0?d:a-b;});
 var topN=Math.ceil(step3.length*0.5);
 var pool=step3.slice(0,topN);
 if(pool.length>0){
 target=pool[Math.floor(Math.random()*pool.length)];
+}
 }
 }
 // ④ここまでで決まらなければtarget=0のまま

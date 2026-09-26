@@ -487,6 +487,23 @@ var resText=claim[3]===1?"人狼":"人間";
 return reporterName+"→"+names[claim[2]]+":"+resText;
 }
 var n=parseInt(f.gamemode);
+var today=parseInt(f.day);
+function gi(a,b){var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
+// 占い結果報告による好感度・平常心の変動（X=target→A=reporterの好感度、Xの平常心）。
+// claim[0](day)が今日と一致する＝今朝新規に確定した報告の時だけ発動し、過去の報告の再表示では発動しない。
+// 候補切れダミー(target=9,result=9)は対象外
+function applyReportReaction(reporter,claim){
+if(claim[0]!==today)return;
+var target=claim[2],result=claim[3];
+if(target<=0||target===reporter||(target===9&&result===9))return;
+var lk=String(f.like).split(',');
+var likeIdx=gi(target,reporter);
+lk[likeIdx]=String(parseInt(lk[likeIdx])+(result===1?-20:20));
+f.like=lk.join(',');
+var calmArr=String(f.calm).split(',');
+calmArr[target-1]=String(parseFloat(calmArr[target-1])+(result===1?-15:15));
+f.calm=calmArr.join(',');
+}
 var sclaimArr=getSclaim();
 var pclaimArr=getPclaim();
 var seerLines=[];
@@ -494,7 +511,10 @@ var psychicLines=[];
 for(var i=1;i<=n;i++){
 if(getCO(i)===1&&isAlive(i)){
 var e=latestByReporter(sclaimArr,i);
-if(e)seerLines.push(formatClaimLine(names[i],e));
+if(e){
+seerLines.push(formatClaimLine(names[i],e));
+applyReportReaction(i,e);
+}
 }
 if(getCO(i)===2&&isAlive(i)){
 var e2=latestByReporter(pclaimArr,i);

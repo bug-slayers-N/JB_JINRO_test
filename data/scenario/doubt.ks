@@ -111,34 +111,37 @@ return 0;
 }
 var targets=getTargets(actorNum);
 var target=0;
-// ① 自分を人狼と申告したCOが存在すれば75%で抽選
+// ① 自分を人狼と申告したCOが存在すれば75%で抽選（f.sclaimのみ参照。f.pclaimは見ない）
 if(target===0){
 var accusers=targets.filter(function(t){
 if(coArr[t-1]==="0")return false;
 var sc=latestClaimBy(getClaimList(f.sclaim),t);
-var pc=latestClaimBy(getClaimList(f.pclaim),t);
-var i1=sc&&sc[2]===actorNum&&sc[3]===1;
-var i2=pc&&pc[2]===actorNum&&pc[3]===1;
-return i1||i2;
+return sc&&sc[2]===actorNum&&sc[3]===1;
 });
 if(accusers.length>0&&Math.random()<0.75){
 target=accusers[Math.floor(Math.random()*accusers.length)];
 }
 }
-// ② 全生存者視点でliar=1または4のキャラが当選
+// ② 自分視点でliar=4（囮）、または全生存者視点でliar=1/5/9のいずれかで統一されているキャラが当選
 if(target===0){
-var bustedAll=targets.filter(function(t){
+var decoyForActor=targets.filter(function(t){
+return parseInt(lr[gi(actorNum,t)])===4;
+});
+var unanimous159=targets.filter(function(t){
 for(var obs=1;obs<=parseInt(f.gamemode);obs++){
 if(obs===t)continue;
 if(aliveArr[obs-1]==="0")continue;
 var v=parseInt(lr[gi(obs,t)]);
-if(v!==1&&v!==4)return false;
+if(v!==1&&v!==5&&v!==9)return false;
 }
 return true;
 });
-if(bustedAll.length>0){
-bustedAll.sort(function(a,b){return getCalm(b)-getCalm(a);});
-target=bustedAll[0];
+var candSet=[];
+for(var i=0;i<decoyForActor.length;i++){if(candSet.indexOf(decoyForActor[i])===-1)candSet.push(decoyForActor[i]);}
+for(var j=0;j<unanimous159.length;j++){if(candSet.indexOf(unanimous159[j])===-1)candSet.push(unanimous159[j]);}
+if(candSet.length>0){
+candSet.sort(function(a,b){return getCalm(b)-getCalm(a);});
+target=candSet[0];
 }
 }
 // ③ 自己防衛
@@ -169,6 +172,7 @@ function getClaimList(f_var){if(String(f_var)==="0")return [];var arr=String(f_v
 function latestClaimBy(list,reporter){var found=null;for(var i=0;i<list.length;i++){if(list[i][1]===reporter)found=list[i];}return found;}
 function gi(a,b){var n=parseInt(f.gamemode);var o=(a-1)*(n-1);var t=[];for(var i=1;i<=n;i++){if(i!==a)t.push(i);}return o+t.indexOf(b);}
 function getCalm(num){var v=parseFloat(String(f.calm).split(',')[num-1]);if(num===6&&aliveArr[6]==="1")v*=1.2;if(num===7&&aliveArr[5]==="1")v*=1.2;if(num===9&&aliveArr[7]==="1")v*=1.4;return v;}
+function getPC(actor,tgt){return getCalm(tgt)+parseInt(lk[gi(actor,tgt)]);}
 function isWolfFor(actor,tgt){var v=parseInt(lr[gi(actor,tgt)]);return v===1||v===5;}
 function hasCO(num){return coArr[num-1]!=="0";}
 function reportedHuman(actor,tgt){
@@ -191,20 +195,20 @@ if(wolfList.length>0){
 var others=targets.filter(function(t){return wolfList.indexOf(t)===-1;});
 var coList=others.filter(function(t){return hasCO(t);});
 if(coList.length>0){
-coList.sort(function(a,b){return getCalm(b)-getCalm(a);});
+coList.sort(function(a,b){return getPC(actorNum,b)-getPC(actorNum,a);});
 target=coList[0];
 }else{
-others.sort(function(a,b){return getCalm(b)-getCalm(a);});
+others.sort(function(a,b){return getPC(actorNum,b)-getPC(actorNum,a);});
 if(others.length>0)target=others[0];
 }
 }else{
 var coList=targets.filter(function(t){return hasCO(t);});
 if(coList.length>0){
-coList.sort(function(a,b){return getCalm(b)-getCalm(a);});
+coList.sort(function(a,b){return getPC(actorNum,b)-getPC(actorNum,a);});
 target=coList[0];
 }else{
 var sorted=targets.slice();
-sorted.sort(function(a,b){return getCalm(b)-getCalm(a);});
+sorted.sort(function(a,b){return getPC(actorNum,b)-getPC(actorNum,a);});
 if(sorted.length>0)target=sorted[0];
 }
 }

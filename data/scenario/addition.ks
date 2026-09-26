@@ -117,7 +117,7 @@ var damage=(40*yusaburi)/2;
 var em=parseInt(f.Ezmode);
 if(em===2){damage*=2;}else if(em===1&&parseInt(winnerNum)!==parseInt(f.player)){damage*=0.5;}
 var calmArr2=String(f.calm).split(",");
-calmArr2[targetNum-1]=String(parseFloat(calmArr2[targetNum-1])-damage);
+calmArr2[targetNum-1]=String(Math.round((parseFloat(calmArr2[targetNum-1])-damage)*1000)/1000);
 f.calm=calmArr2.join(",");
 // target→winnerの好感度も本来(-10)の半分だけ減算
 var lkArr=String(f.like).split(",");
@@ -128,7 +128,7 @@ f.like=lkArr.join(",");
 var murasame=winnerNum===3;
 var addVal=(murasame?30:20)/2;
 var calmArr2=String(f.calm).split(",");
-calmArr2[targetNum-1]=String(parseFloat(calmArr2[targetNum-1])+addVal);
+calmArr2[targetNum-1]=String(Math.round((parseFloat(calmArr2[targetNum-1])+addVal)*1000)/1000);
 f.calm=calmArr2.join(",");
 // target→winnerの好感度も本来の効果値と同じだけ（半減済みのaddVal分）加算
 var lkArr=String(f.like).split(",");
